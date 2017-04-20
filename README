@@ -1,0 +1,9 @@
+README
+r267 - Render based on Vulkan API
+Simple renderer with main task made more with less code.
+
+Planed struct:
+base - only base functional from Vulkan to init and render.
+utils - additional functional like camera, loader for models and textures.
+vector - basic api for vector draw.
+toolbar - toolbar api.
