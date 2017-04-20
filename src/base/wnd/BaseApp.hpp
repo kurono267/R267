@@ -1,6 +1,9 @@
 #pragma once
 
 #include <memory>
+
+namespace r267 {
+
 class MainApp;
 struct GLFWKey;
 struct GLFWMouse;
@@ -29,3 +32,5 @@ class BaseApp {
 		spMainApp mainApp;
 };
 typedef std::shared_ptr<BaseApp> spBaseApp;
+
+};

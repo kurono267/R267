@@ -1,4 +1,6 @@
-#include "base/MainApp.hpp"
+#include "base/wnd/MainApp.hpp"
+
+using namespace r267;
 
 class TriangleApp : public BaseApp {
 	public:

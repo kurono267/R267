@@ -1,5 +1,7 @@
 #include "MainApp.hpp"
 
+using namespace r267;
+
 GLFWKey::GLFWKey() : key(0), scancode(0), action(0), mods(0) {}
 
 GLFWKey::GLFWKey(const GLFWKey& state) : key(state.key), scancode(state.scancode), action(state.action), mods(state.mods) {}
@@ -33,10 +35,10 @@ void MainApp::exit(){
 bool MainApp::is(){
 	return _isRun;
 }
-/*
-VulkanAPI& MainApp::vulkan(){
+
+Instance& MainApp::vulkan(){
 	return _vulkan;
-}*/
+}
 			
 void MainApp::run(){
 	_app->mainApp = shared_from_this();
@@ -50,8 +52,8 @@ void MainApp::run(){
 		if(glfwWindowShouldClose(_window))_isRun = false;
 	}
 	_app->onExit();
-	//_vulkan.device().getDevice().waitIdle();
-	//_vulkan.release();
+	_vulkan.device().getDevice().waitIdle();
+	_vulkan.release();
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 	::exit(EXIT_SUCCESS);
@@ -65,27 +67,26 @@ glm::ivec2 MainApp::wndSize(){
 }
 
 void MainApp::create(const std::string& title,const int width,const int height){
-	glfwSetErrorCallback(&MainApp::__glfwOnError);
-	if (!glfwInit())
-		::exit(EXIT_FAILURE);
-
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-	if (!_window){
-		glfwTerminate();
-		::exit(EXIT_FAILURE);
-	}
-	glfwSetKeyCallback(_window, &MainApp::__glfwOnKey);
-	glfwSetCursorPosCallback(_window, &MainApp::__glfwOnMousePos);
-	glfwSetMouseButtonCallback(_window, &MainApp::__glfwOnMouseBtn);
-	glfwSetScrollCallback(_window, &MainApp::__glfwOnScroll);
-/*
 	try {
-		_vulkan.init(_window,wndSize());
+		glfwSetErrorCallback(&MainApp::__glfwOnError);
+		if (!glfwInit())
+			::exit(EXIT_FAILURE);
+
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		_window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+		if (!_window){
+			glfwTerminate();
+			::exit(EXIT_FAILURE);
+		}
+		glfwSetKeyCallback(_window, &MainApp::__glfwOnKey);
+		glfwSetCursorPosCallback(_window, &MainApp::__glfwOnMousePos);
+		glfwSetMouseButtonCallback(_window, &MainApp::__glfwOnMouseBtn);
+		glfwSetScrollCallback(_window, &MainApp::__glfwOnScroll);
+
+		_vulkan.init(title,_window,wndSize());
 	} catch(std::exception& e){
 		std::cout << e.what() << std::endl;
-	}*/
+	}
 }
 
 void MainApp::vsync(bool on){

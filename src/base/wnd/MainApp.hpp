@@ -4,11 +4,14 @@
 #include <memory>
 #include <iostream>
 #include <base/default.hpp>
+#include <base/vk/instance.hpp>
+
+#include "BaseApp.hpp"
+
+namespace r267 {
 
 const int DefaultWidth = 1280;
 const int DefaultHeight = 720;
-
-#include "BaseApp.hpp"
 
 struct GLFWKey {
 	GLFWKey();
@@ -59,7 +62,7 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 		void run();
 		bool is();
 
-		//VulkanAPI& vulkan();
+		Instance& vulkan();
 
 		static ptr& instance(){
 			static ptr app; // lazy singleton, instantiated on first use
@@ -105,5 +108,7 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 
 		bool _isRun;
 
-		//VulkanAPI _vulkan;
+		Instance _vulkan;
+};
+
 };
