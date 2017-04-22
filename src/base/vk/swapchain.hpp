@@ -27,5 +27,7 @@ class Swapchain {
 		std::vector<vk::ImageView> _imageViews;
 };
 
+typedef std::shared_ptr<Swapchain> spSwapchain;
+
 };
 
