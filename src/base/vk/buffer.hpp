@@ -34,7 +34,7 @@ class Buffer {
 		vk::Buffer       buffer;
 		vk::DeviceMemory memory;
 	public:
-		Buffer(Device device,vk::Queue queue,vk::CommandPool pool);
+		Buffer(spDevice device,vk::Queue queue,vk::CommandPool pool);
 
 		void create(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties);
 
@@ -46,7 +46,7 @@ class Buffer {
 	protected:
 		Buffer createOther(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties);
 
-		Device _lvuDevice; // Out inner using device
+		spDevice _lvuDevice; // Out inner using device
 
 		vk::Device      _device;
 		vk::PhysicalDevice _pDevice;

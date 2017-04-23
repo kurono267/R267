@@ -101,10 +101,16 @@ void Device::create(const vk::Instance& instance,const vk::SurfaceKHR& surface,c
 	_instance = instance;_surface = surface;_size = size;
 	pickPhysicalDevice();
 	createLogicalDevice();
-	_swapchain.create(_pDevice,_device,_surface,size);
+	_swapchain = std::make_shared<Swapchain>();
+	_swapchain->create(_pDevice,_device,_surface,size);
 }
 
-Swapchain  Device::getSwapchain(){
+void Device::release(){
+	_swapchain->release();
+	_device.destroy();
+}
+
+spSwapchain  Device::getSwapchain(){
 	return _swapchain;
 }
 

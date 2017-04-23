@@ -30,6 +30,11 @@ class BaseApp {
 		virtual bool onExit() = 0;
 
 		spMainApp mainApp;
+	protected: // Main access level
+		spInstance  vulkan;
+		spDevice    device;
+		spSwapchain swapchain;
+		vk::Device  vk_device;
 };
 typedef std::shared_ptr<BaseApp> spBaseApp;
 

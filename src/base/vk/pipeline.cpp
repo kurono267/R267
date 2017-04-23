@@ -89,21 +89,6 @@ void RenderPattern::createRenderPass(const vk::Format& swapchainFormat){
 	_renderPassInfo.setPSubpasses(&_subPass);
 }
 
-static RenderPattern&& basic(const spSwapchain& swapchain){
-	// Create Basic Render Pattern
-	RenderPattern pattern;
-	pattern.inputAssembly(vk::PrimitiveTopology::eTriangleList);
-	auto extent = swapchain->getExtent();
-	pattern.viewport(0,0,extent.width,extent.height);
-	pattern.scissor(vk::Offset2D(),extent);
-	pattern.rasterizer();
-	pattern.multisampling();
-	pattern.blend();
-
-	pattern.createRenderPass(swapchain->getFormat());
-	return std::move(pattern);
-}
-
 vk::ShaderModule createShaderModule(vk::Device device,const std::string& filename){
 	auto shaderCode = readFile(filename);
 	vk::ShaderModuleCreateInfo createInfo(vk::ShaderModuleCreateFlags(),shaderCode.size(),(uint32_t*) shaderCode.data());
@@ -111,7 +96,7 @@ vk::ShaderModule createShaderModule(vk::Device device,const std::string& filenam
 	return device.createShaderModule(createInfo);
 }
 
-void Pipeline::addShaderModule(const vk::ShaderStageFlagBits& type,const std::string& filename){
+void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& filename){
 	vk::PipelineShaderStageCreateInfo shaderStageInfo(
 		vk::PipelineShaderStageCreateFlags(),
 		type,
@@ -174,4 +159,8 @@ void Pipeline::create(){
 		_renderPass,0);
 
 	_pipeline = _device.createGraphicsPipelines(nullptr,pipelineInfo)[0];
+}
+
+vk::RenderPass Pipeline::getRenderPass(){
+	return _renderPass;
 }

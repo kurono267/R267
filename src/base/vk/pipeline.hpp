@@ -43,7 +43,20 @@ class RenderPattern {
 
 		void createRenderPass(const vk::Format& swapchainFormat);
 
-		static RenderPattern&& basic(const spSwapchain& swapchain);
+		static RenderPattern&& basic(const spSwapchain& swapchain){
+			// Create Basic Render Pattern
+			RenderPattern pattern;
+			pattern.inputAssembly(vk::PrimitiveTopology::eTriangleList);
+			auto extent = swapchain->getExtent();
+			pattern.viewport(0,0,extent.width,extent.height);
+			pattern.scissor(vk::Offset2D(),extent);
+			pattern.rasterizer();
+			pattern.multisampling();
+			pattern.blend();
+
+			pattern.createRenderPass(swapchain->getFormat());
+			return std::move(pattern);
+		}
 	private:
 		vk::PipelineInputAssemblyStateCreateInfo _assembly;
 		vk::Viewport                             _viewport;
@@ -62,12 +75,14 @@ class RenderPattern {
 class Pipeline {
 	public:
 		Pipeline(const RenderPattern& rp,vk::Device device) : _device(device),_renderpattern(rp) {}
-		~Pipeline();
+		~Pipeline(){}
 
 		void setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage);
-		void addShaderModule(const vk::ShaderStageFlagBits& type,const std::string& filename);
+		void addShader(const vk::ShaderStageFlagBits& type,const std::string& filename);
 
 		void create();
+
+		vk::RenderPass getRenderPass();
 
 		operator vk::Pipeline(){return _pipeline;}
 	protected:
@@ -82,6 +97,8 @@ class Pipeline {
 		vk::RenderPass              _renderPass;
 		vk::Pipeline                _pipeline;
 };
+
+typedef std::shared_ptr<Pipeline> spPipeline;
 
 };
 

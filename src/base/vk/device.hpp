@@ -24,6 +24,7 @@ class Device {
 		~Device(){}
 
 		void create(const vk::Instance& instance,const vk::SurfaceKHR& surface,const glm::ivec2& size);
+		void release();
 
 		QueueFamilyIndices queueFamiliesIndices();
 
@@ -31,7 +32,7 @@ class Device {
 		vk::PhysicalDevice getPhysicalDevice();
 		vk::Queue  getGraphicsQueue();
 		vk::Queue  getPresentQueue();
-		Swapchain  getSwapchain();
+		spSwapchain  getSwapchain();
 	protected:
 		void pickPhysicalDevice();
 		bool isDeviceSuitable(const vk::PhysicalDevice& device);
@@ -47,10 +48,12 @@ class Device {
 		vk::Queue          _graphicsQueue;
 		vk::SurfaceKHR     _surface;
 
-		Swapchain          _swapchain;
+		spSwapchain          _swapchain;
 
 		glm::ivec2         _size;
 };
+
+typedef std::shared_ptr<r267::Device> spDevice;
 
 };
 

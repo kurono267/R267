@@ -12,14 +12,20 @@ void Instance::init(const std::string& title, GLFWwindow* window, const glm::ive
 	setupDebugCallback();
 	createSurface(window);
 
-	_device.create(_instance,_surface,size);
+	std::cout << "t0" << std::endl;
+	_device = std::make_shared<r267::Device>();
+	std::cout << "t0" << std::endl;
+	_device->create(_instance,_surface,size);
+	std::cout << "t1" << std::endl;
 }
 
-Device& Instance::device(){
+spDevice Instance::device(){
 	return _device;
 }
 
 void Instance::release(){
+	_device->release();
+	_instance.destroySurfaceKHR(_surface);
 	_instance.destroyDebugReportCallbackEXT(_callback,nullptr);
 	_instance.destroy(nullptr); // Destroy instance
 }

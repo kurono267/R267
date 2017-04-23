@@ -36,7 +36,7 @@ bool MainApp::is(){
 	return _isRun;
 }
 
-Instance& MainApp::vulkan(){
+spInstance MainApp::vulkan(){
 	return _vulkan;
 }
 			
@@ -52,8 +52,8 @@ void MainApp::run(){
 		if(glfwWindowShouldClose(_window))_isRun = false;
 	}
 	_app->onExit();
-	_vulkan.device().getDevice().waitIdle();
-	_vulkan.release();
+	_vulkan->device()->getDevice().waitIdle();
+	_vulkan->release();
 	glfwDestroyWindow(_window);
 	glfwTerminate();
 	::exit(EXIT_SUCCESS);
@@ -83,7 +83,8 @@ void MainApp::create(const std::string& title,const int width,const int height){
 		glfwSetMouseButtonCallback(_window, &MainApp::__glfwOnMouseBtn);
 		glfwSetScrollCallback(_window, &MainApp::__glfwOnScroll);
 
-		_vulkan.init(title,_window,wndSize());
+		_vulkan = std::make_shared<Instance>();
+		_vulkan->init(title,_window,wndSize());
 	} catch(std::exception& e){
 		std::cout << e.what() << std::endl;
 	}

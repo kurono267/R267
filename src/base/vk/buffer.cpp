@@ -9,7 +9,7 @@ sVertex::sVertex(const float& px,const float& py,const float& pz,const float& u,
 	pos(px,py,pz),uv(u,v),normal(nx,ny,nz)
 {}
 
-Buffer::Buffer(Device device,vk::Queue queue,vk::CommandPool pool) : _lvuDevice(device),_device(device.getDevice()), _pDevice(device.getPhysicalDevice()), _queue(queue), _pool(pool) {}
+Buffer::Buffer(spDevice device,vk::Queue queue,vk::CommandPool pool) : _lvuDevice(device),_device(device->getDevice()), _pDevice(device->getPhysicalDevice()), _queue(queue), _pool(pool) {}
 
 Buffer Buffer::createOther(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties){
     Buffer result(_lvuDevice,_queue,_pool);

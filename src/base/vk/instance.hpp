@@ -17,7 +17,7 @@ class Instance {
 		void init(const std::string& title, GLFWwindow* window,const glm::ivec2& size);
 		void release();
 
-		r267::Device& device();
+		r267::spDevice device();
 	protected:
 		void initVulkan();
 		void createInstance();
@@ -34,10 +34,12 @@ class Instance {
 		vk::DebugReportCallbackEXT _callback;
 		vk::SurfaceKHR _surface;
 
-		r267::Device _device;
+		r267::spDevice _device;
 		
 		glm::ivec2 _size;
 		std::string _title;
 };
+
+typedef std::shared_ptr<Instance> spInstance;
 
 };

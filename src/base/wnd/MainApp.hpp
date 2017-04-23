@@ -62,7 +62,7 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 		void run();
 		bool is();
 
-		Instance& vulkan();
+		spInstance vulkan();
 
 		static ptr& instance(){
 			static ptr app; // lazy singleton, instantiated on first use
@@ -108,7 +108,7 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 
 		bool _isRun;
 
-		Instance _vulkan;
+		spInstance _vulkan;
 };
 
 };

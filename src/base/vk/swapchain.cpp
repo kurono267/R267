@@ -40,6 +40,7 @@ vk::Extent2D chooseSwapExtent(const vk::SurfaceCapabilitiesKHR& capabilities,con
 }
 
 void Swapchain::create(const vk::PhysicalDevice& pDevice,const vk::Device& device,const vk::SurfaceKHR& surface,const glm::ivec2& size){
+	_device = device;
 	SwapchainSupportDetails swapChainSupport = swapchainSupport(pDevice,surface);
 
 	vk::SurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
@@ -104,6 +105,13 @@ void Swapchain::createImageViews(const vk::Device& device){
 
 		_imageViews[i] = device.createImageView(createInfo);
 	}
+}
+
+void Swapchain::release(){
+	for (uint i = 0; i < _images.size(); i++) {
+		_device.destroyImageView(_imageViews[i]);
+	}
+	_device.destroySwapchainKHR(_swapchain);
 }
 
 vk::SwapchainKHR Swapchain::getSwapchain() const {return _swapchain;}

@@ -6,7 +6,7 @@ Uniform::Uniform() : _is(false), _size(0), _data(nullptr) {}
 
 Uniform::~Uniform(){}
 
-void Uniform::create(Device device,vk::Queue queue,vk::CommandPool pool){
+void Uniform::create(spDevice device,vk::Queue queue,vk::CommandPool pool){
 	if(!_size)throw std::logic_error("Uniform failed: don't set size");
 
 	vk::DeviceSize bufferSize = _size;
