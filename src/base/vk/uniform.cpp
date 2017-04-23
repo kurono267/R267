@@ -14,12 +14,12 @@ void Uniform::create(spDevice device,vk::Queue queue,vk::CommandPool pool){
 	_gpu = std::make_shared<Buffer>(device,queue,pool);
 	_cpu = std::make_shared<Buffer>(device,queue,pool);
 
-	_gpu->create(bufferSize,
+	_cpu->create(bufferSize,
 		vk::BufferUsageFlagBits::eTransferSrc,
 		vk::MemoryPropertyFlagBits::eHostVisible | 
 		vk::MemoryPropertyFlagBits::eHostCoherent);
 
-	_cpu->create(bufferSize,
+	_gpu->create(bufferSize,
 		vk::BufferUsageFlagBits::eTransferDst |
 		vk::BufferUsageFlagBits::eUniformBuffer,
 		vk::MemoryPropertyFlagBits::eDeviceLocal);

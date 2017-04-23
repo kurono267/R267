@@ -1,5 +1,6 @@
 #include "base/wnd/MainApp.hpp"
 #include <base/vk/pipeline.hpp>
+#include <base/vk/additional.hpp>
 
 using namespace r267;
 
@@ -31,21 +32,14 @@ class TriangleApp : public BaseApp {
 			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
 			_main->create();
 
-			auto imageViews = swapchain->getImageViews();
-			auto extent = swapchain->getExtent();
-			for(int i = 0;i<imageViews.size();++i){
-				vk::ImageView attachments[] = {imageViews[i]};
+			_vb = std::make_shared<Buffer>(device,device->getGraphicsQueue(),_commandPool);
+			_vb->createVB({sVertex(0.0f, -1.0f, 0.0f),sVertex(1.0f, 1.0f, 0.0f),sVertex(-1.0f, 1.0f, 0.0f)});
 
-				vk::FramebufferCreateInfo framebufferInfo(
-					vk::FramebufferCreateFlags(), // Default
-					_main->getRenderPass(), // Current render pass
-					1, attachments, // Attachments
-					extent.width, // Width
-					extent.height, // Height
-					1 // Layers
-				);
-				_framebuffers.push_back(vk_device.createFramebuffer(framebufferInfo));
-			}
+			_ib = std::make_shared<Buffer>(device,device->getGraphicsQueue(),_commandPool);
+			_ib->createIB({0,1,2});
+
+			auto extent = swapchain->getExtent();
+			_framebuffers = createFrameBuffers(device,_main);
 
 			vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, _framebuffers.size());
 			_commandBuffers = vk_device.allocateCommandBuffers(allocInfo);
@@ -67,16 +61,18 @@ class TriangleApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-					_commandBuffers[i].draw(3, 1, 0, 0);
+				VkDeviceSize offsets[] = {0};
+					_commandBuffers[i].bindVertexBuffers(0,1,&_vb->buffer,offsets);
+					_commandBuffers[i].bindIndexBuffer(_ib->buffer,0,vk::IndexType::eUint32);
+					_commandBuffers[i].drawIndexed(3, 1, 0, 0 , 0);
 
 				_commandBuffers[i].endRenderPass();
 				_commandBuffers[i].end();
 			}
 
 			// Create semaphores
-			vk::SemaphoreCreateInfo semaphoreInfo;
-			_imageAvailable = vk_device.createSemaphore(semaphoreInfo);
-			_renderFinish = vk_device.createSemaphore(semaphoreInfo);
+			_imageAvailable = vk_device.createSemaphore(vk::SemaphoreCreateInfo());
+			_renderFinish = vk_device.createSemaphore(vk::SemaphoreCreateInfo());
 
 			return true;
 		}
@@ -129,6 +125,9 @@ class TriangleApp : public BaseApp {
 		// Semaphores
 		vk::Semaphore _imageAvailable;
 		vk::Semaphore _renderFinish;
+
+		spBuffer _vb;
+		spBuffer _ib;
 };
 
 int main(){

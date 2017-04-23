@@ -106,6 +106,7 @@ void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& 
 	_shaders.push_back(shaderStageInfo);
 }
 
+// TODO Move to Uniform
 void Pipeline::setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage){
 	// Create descriptor set
 	vk::DescriptorSetLayoutBinding layoutBind(binding,vk::DescriptorType::eUniformBuffer,1,stage);
@@ -132,7 +133,7 @@ void Pipeline::create(){
 
 	vk::PipelineLayoutCreateInfo pipelineLayoutInfo(
 		vk::PipelineLayoutCreateFlags(),
-		1, &_uboLayout);
+		0, &_uboLayout);
 
 	auto bindingDescription = sVertex::bindingDesc();
     auto attributeDescriptions = sVertex::attributes();
