@@ -2,6 +2,8 @@
 #include <base/vk/pipeline.hpp>
 #include <base/vk/additional.hpp>
 
+#include <chrono>
+
 using namespace r267;
 
 struct UBO {
@@ -26,8 +28,9 @@ class TriangleApp : public BaseApp {
 			_commandPool = vk_device.createCommandPool(poolInfo); 
 
 			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
-			_color.set(sizeof(UBO),&_colorData);
+			_color.set(sizeof(UBO));
 			_color.create(device,device->getGraphicsQueue(),_commandPool);
+			_color.set(sizeof(UBO),&_colorData);
 
 			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
 			_main->create();
@@ -61,9 +64,14 @@ class TriangleApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-				VkDeviceSize offsets[] = {0};
+				vk::DeviceSize offsets[] = {0};
 					_commandBuffers[i].bindVertexBuffers(0,1,&_vb->buffer,offsets);
 					_commandBuffers[i].bindIndexBuffer(_ib->buffer,0,vk::IndexType::eUint32);
+
+					vk::DescriptorSet descSets[] = {_main->getDescriptorSet()};
+
+					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
+
 					_commandBuffers[i].drawIndexed(3, 1, 0, 0 , 0);
 
 				_commandBuffers[i].endRenderPass();
@@ -74,10 +82,17 @@ class TriangleApp : public BaseApp {
 			_imageAvailable = vk_device.createSemaphore(vk::SemaphoreCreateInfo());
 			_renderFinish = vk_device.createSemaphore(vk::SemaphoreCreateInfo());
 
+			prev = std::chrono::steady_clock::now();
+
 			return true;
 		}
 		bool draw(){
 			unsigned int imageIndex = vk_device.acquireNextImageKHR(swapchain->getSwapchain(),std::numeric_limits<uint64_t>::max(),_imageAvailable,nullptr).value;
+
+			auto next = std::chrono::steady_clock::now();
+			auto dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
+			std::cout << "FPS " << 1.0f/dt << std::endl;
+			prev = next;
 
 			vk::Semaphore waitSemaphores[] = {_imageAvailable};
 			vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -128,6 +143,8 @@ class TriangleApp : public BaseApp {
 
 		spBuffer _vb;
 		spBuffer _ib;
+
+		std::chrono::time_point<std::chrono::steady_clock> prev;
 };
 
 int main(){

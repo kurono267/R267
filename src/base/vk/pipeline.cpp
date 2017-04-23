@@ -119,10 +119,10 @@ void Pipeline::setUniformBuffer(const Uniform& buffer,const size_t& binding,cons
 	vk::DescriptorPool descPool = _device.createDescriptorPool(poolInfo);
 
 	vk::DescriptorSetAllocateInfo allocInfo(descPool,1,&_uboLayout);
-	vk::DescriptorSet descSet = _device.allocateDescriptorSets(allocInfo)[0];
+	_descSet = _device.allocateDescriptorSets(allocInfo)[0];
 
 	vk::DescriptorBufferInfo bufferInfo(buffer.vk_buffer(),0,buffer.size());
-	vk::WriteDescriptorSet descriptorWrite(descSet,0,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr);
+	vk::WriteDescriptorSet descriptorWrite(_descSet,0,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr);
 
 	_device.updateDescriptorSets({descriptorWrite},nullptr);
 }
@@ -133,7 +133,7 @@ void Pipeline::create(){
 
 	vk::PipelineLayoutCreateInfo pipelineLayoutInfo(
 		vk::PipelineLayoutCreateFlags(),
-		0, &_uboLayout);
+		1, &_uboLayout);
 
 	auto bindingDescription = sVertex::bindingDesc();
     auto attributeDescriptions = sVertex::attributes();
@@ -144,7 +144,7 @@ void Pipeline::create(){
     	attributeDescriptions.size(),attributeDescriptions.data()
     );
 
-	vk::PipelineLayout pLayout = _device.createPipelineLayout(pipelineLayoutInfo);
+	_pLayout = _device.createPipelineLayout(pipelineLayoutInfo);
 
 	vk::GraphicsPipelineCreateInfo pipelineInfo(vk::PipelineCreateFlags(),
 		_shaders.size(),_shaders.data(),
@@ -156,7 +156,7 @@ void Pipeline::create(){
 		nullptr, // Depth and stencil
 		&_renderpattern._blend,
 		nullptr,
-		pLayout,
+		_pLayout,
 		_renderPass,0);
 
 	_pipeline = _device.createGraphicsPipelines(nullptr,pipelineInfo)[0];

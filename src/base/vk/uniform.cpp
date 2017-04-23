@@ -29,9 +29,10 @@ void Uniform::create(spDevice device,vk::Queue queue,vk::CommandPool pool){
 
 void Uniform::set(const size_t& size,const void* data){
 	if(!_size)_size = size;
-	if(!_data)return;
+	if(!data)return;
 	if(_is){
 		if(_size != size)throw std::logic_error("Uniform failed: different size");
+		std::cout << "Uniform Set" << std::endl;
 		_cpu->set(data,size);
 		_cpu->copy(*_cpu,*_gpu,size);
 	} else throw std::logic_error("Uniform failed: wrong set data, buffer don't exist");

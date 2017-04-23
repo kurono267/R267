@@ -84,6 +84,9 @@ class Pipeline {
 
 		vk::RenderPass getRenderPass();
 
+		vk::DescriptorSet getDescriptorSet(){return _descSet;}
+		vk::PipelineLayout      getPipelineLayout(){return _pLayout;}
+
 		operator vk::Pipeline(){return _pipeline;}
 	protected:
 		RenderPattern _renderpattern;
@@ -92,10 +95,12 @@ class Pipeline {
 
 		std::vector<vk::PipelineShaderStageCreateInfo> _shaders;
 		vk::DescriptorSetLayout _uboLayout;
+		vk::DescriptorSet       _descSet;
 		vk::PipelineViewportStateCreateInfo      _viewportState;
 
 		vk::RenderPass              _renderPass;
 		vk::Pipeline                _pipeline;
+		vk::PipelineLayout          _pLayout;
 };
 
 typedef std::shared_ptr<Pipeline> spPipeline;
