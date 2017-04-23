@@ -36,4 +36,6 @@ class Cube : public Shape {
 		virtual void createShape();
 };
 
+typedef std::shared_ptr<Shape> spShape;
+
 };
