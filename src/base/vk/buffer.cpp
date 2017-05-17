@@ -73,24 +73,9 @@ void Buffer::createIB(const std::vector<uint>& indices) {
 }
 
 void Buffer::copy(vk::Buffer src,vk::Buffer dst,vk::DeviceSize size){
-	vk::CommandBufferAllocateInfo allocInfo(_pool,vk::CommandBufferLevel::ePrimary,1);
-
-	auto cmdBuffers = _device.allocateCommandBuffers(allocInfo);
-
-	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
-
-	cmdBuffers[0].begin(beginInfo);
-		cmdBuffers[0].copyBuffer(src,dst,vk::BufferCopy(0,0,size));
-	cmdBuffers[0].end();
-
-	vk::SubmitInfo submitInfo;
-	submitInfo.setCommandBufferCount(1);
-	submitInfo.setPCommandBuffers(&cmdBuffers[0]);
-
-	_queue.submit(submitInfo,vk::Fence());
-	_queue.waitIdle();
-
-	_device.freeCommandBuffers(_pool,cmdBuffers);
+	auto commands = beginSingle(_device,_pool);
+		commands.copyBuffer(src,dst,vk::BufferCopy(0,0,size));
+	endSingle(_device,_queue,_pool,commands);
 }
 
 void Buffer::set(const void* data,const size_t& size){

@@ -68,3 +68,25 @@ uint32_t r267::findMemoryType(vk::PhysicalDevice pDevice,uint32_t typeFilter, vk
 
 	throw std::runtime_error("failed to find suitable memory type!");
 }
+
+vk::CommandBuffer r267::beginSingle(vk::Device device,vk::CommandPool pool){
+	vk::CommandBufferAllocateInfo allocInfo(pool,vk::CommandBufferLevel::ePrimary,1);
+	auto cmdBuffers = device.allocateCommandBuffers(allocInfo);
+
+	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eOneTimeSubmit);
+	cmdBuffers[0].begin(beginInfo);
+	return cmdBuffers[0];
+}
+
+void r267::endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::CommandBuffer commands){
+	commands.end();
+
+	vk::SubmitInfo submitInfo;
+	submitInfo.setCommandBufferCount(1);
+	submitInfo.setPCommandBuffers(&commands);
+
+	queue.submit(submitInfo,vk::Fence());
+	queue.waitIdle();
+
+	device.freeCommandBuffers(pool,{commands});
+}

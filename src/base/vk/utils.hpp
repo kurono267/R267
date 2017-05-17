@@ -29,5 +29,8 @@ std::vector<char> readFile(const std::string& filename);
 
 const vk::ColorComponentFlags RGBA = vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG | vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA;
 
+vk::CommandBuffer beginSingle(vk::Device device,vk::CommandPool pool);
+void              endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::CommandBuffer commands);
+
 };
 

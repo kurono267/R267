@@ -22,8 +22,8 @@ class QuadApp : public BaseApp {
 			auto baseRP = RenderPattern::basic(swapchain);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/triangle/main_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/triangle/main_frag.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/quad/main_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/quad/main_frag.spv");
 
 			vk::CommandPoolCreateInfo poolInfo(vk::CommandPoolCreateFlags(),device->queueFamiliesIndices().graphicsFamily);
 			_commandPool = vk_device.createCommandPool(poolInfo); 

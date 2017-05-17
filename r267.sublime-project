@@ -1,0 +1,64 @@
+{
+	"build_systems":
+	[
+		{
+			"file_regex": "(.+[^:]):(\\d+):(\\d+): (?:fatal )?((?:error|warning): .+)$",
+			"name": "r267 (Linux)",
+			"shell_cmd": "make -j8",
+			"syntax": "Packages/CMakeBuilder/Syntax/Make.sublime-syntax",
+			"variants":
+			[
+				{
+					"name": "clean",
+					"shell_cmd": "make -j8 clean"
+				},
+				{
+					"name": "rebuild_cache",
+					"shell_cmd": "make -j8 rebuild_cache"
+				},
+				{
+					"name": "r267",
+					"shell_cmd": "make -j8 r267"
+				},
+				{
+					"name": "shader_quad_main_frag",
+					"shell_cmd": "make -j8 shader_quad_main_frag"
+				},
+				{
+					"name": "triangle",
+					"shell_cmd": "make -j8 triangle"
+				},
+				{
+					"name": "shader_triangle_main_vert",
+					"shell_cmd": "make -j8 shader_triangle_main_vert"
+				},
+				{
+					"name": "shader_triangle_main_frag",
+					"shell_cmd": "make -j8 shader_triangle_main_frag"
+				},
+				{
+					"name": "quad",
+					"shell_cmd": "make -j8 quad"
+				},
+				{
+					"name": "shader_quad_main_vert",
+					"shell_cmd": "make -j8 shader_quad_main_vert"
+				}
+			],
+			"working_dir": "${project_path}/build"
+		}
+	],
+	"cmake":
+	{
+		"build_folder": "${project_path}/build"
+	},
+	"folders":
+	[
+		{
+			"path": "."
+		},
+		{
+			"path": "/home/kurono267/workspace/lgl"
+		}
+	]
+}

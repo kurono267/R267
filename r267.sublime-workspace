@@ -1,0 +1,1630 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"make",
+				"make_vec2f"
+			],
+			[
+				"wS",
+				"wSize"
+			],
+			[
+				"program",
+				"programCount"
+			],
+			[
+				"MAX_",
+				"MAX_EDGES_ID"
+			],
+			[
+				"m",
+				"make_vec3f"
+			],
+			[
+				"mak",
+				"make_vec3f"
+			],
+			[
+				"Mem",
+				"Memory"
+			],
+			[
+				"Memr",
+				"MemoryLevels"
+			],
+			[
+				"whi",
+				"whittedLevel"
+			],
+			[
+				"currN",
+				"currNormalData"
+			],
+			[
+				"clear",
+				"clear_WhittedLevel"
+			],
+			[
+				"Wh",
+				"WhittedLevel"
+			],
+			[
+				"make_",
+				"make_vec4f"
+			],
+			[
+				"light",
+				"lightColor"
+			],
+			[
+				"resu",
+				"resultPos"
+			],
+			[
+				"isM",
+				"isMotionCamera"
+			],
+			[
+				"_c",
+				"_commandBuffers"
+			],
+			[
+				"_co",
+				"_commandPool"
+			],
+			[
+				"_com",
+				"_commandBuffers"
+			],
+			[
+				"_comm",
+				"_commandPool"
+			],
+			[
+				"_render",
+				"_renderPass"
+			],
+			[
+				"Re",
+				"RenderPass"
+			],
+			[
+				"_im",
+				"_imageViews"
+			],
+			[
+				"off",
+				"yOffset"
+			],
+			[
+				"_bl",
+				"_blend"
+			],
+			[
+				"RenderP",
+				"RenderPattern"
+			],
+			[
+				"name",
+				"namespace"
+			],
+			[
+				"itse",
+				"interpSize"
+			],
+			[
+				"inf",
+				"invF"
+			],
+			[
+				"frameT",
+				"frameTriangles"
+			],
+			[
+				"tri",
+				"tri_id0"
+			],
+			[
+				"mip",
+				"mipLevel"
+			],
+			[
+				"prevC",
+				"prevColor"
+			],
+			[
+				"frame",
+				"frameInterp"
+			],
+			[
+				"TILE",
+				"TILE_SIZE_DRAW"
+			],
+			[
+				"mPr",
+				"mPrevVX"
+			],
+			[
+				"PathS",
+				"PathSamples"
+			],
+			[
+				"Path",
+				"PathSample"
+			],
+			[
+				"Pa",
+				"PathVertex"
+			],
+			[
+				"back",
+				"backplate"
+			],
+			[
+				"F",
+				"FI_TX"
+			],
+			[
+				"FI",
+				"FI_TY"
+			],
+			[
+				"til",
+				"tileNumTriangles"
+			],
+			[
+				"task",
+				"taskIndex"
+			],
+			[
+				"ma",
+				"make_vec2f"
+			],
+			[
+				"com",
+				"computeSize"
+			],
+			[
+				"numT",
+				"numTiles"
+			],
+			[
+				"lo",
+				"local2world"
+			],
+			[
+				"_fr",
+				"_framebufferCPU"
+			],
+			[
+				"_fra",
+				"_framebufferGPU"
+			],
+			[
+				"pro",
+				"programIndex"
+			],
+			[
+				"foreach",
+				"foreach_unique"
+			],
+			[
+				"currC",
+				"currCamera"
+			],
+			[
+				"leve",
+				"levelSize"
+			],
+			[
+				"con",
+				"continue"
+			],
+			[
+				"comp",
+				"computeFrameData"
+			],
+			[
+				"sub",
+				"subpixels"
+			],
+			[
+				"make_ve",
+				"make_vec2i"
+			],
+			[
+				"fS",
+				"fScreenCurr"
+			],
+			[
+				"KEY",
+				"KEY_FRAME_HEIGHT"
+			],
+			[
+				"KE",
+				"KEY_FRAME_WIDTH"
+			],
+			[
+				"RTRe",
+				"RTRenderer"
+			],
+			[
+				"g_pr",
+				"g_prevRenderTime"
+			],
+			[
+				"g_R",
+				"g_renderTime"
+			],
+			[
+				"diff",
+				"diffAt"
+			],
+			[
+				"atS",
+				"atScale"
+			],
+			[
+				"Qu",
+				"QuaternionT"
+			],
+			[
+				"g_",
+				"g_avgDt"
+			],
+			[
+				"g_p",
+				"g_prevRenderTime"
+			],
+			[
+				"prev",
+				"prevPos"
+			],
+			[
+				"scal",
+				"scalePrev"
+			],
+			[
+				"Ve",
+				"Vec3f"
+			],
+			[
+				"sc",
+				"scaleCurr"
+			],
+			[
+				"sca",
+				"scalePrev"
+			],
+			[
+				"Plug",
+				"Plug_Vec3"
+			],
+			[
+				"g_show",
+				"g_showTime"
+			],
+			[
+				"int",
+				"interpFrame"
+			],
+			[
+				"update",
+				"updateDraw"
+			],
+			[
+				"EMBREE",
+				"EMBREE_BUFFERS"
+			],
+			[
+				"sho",
+				"show_frame"
+			],
+			[
+				"shr",
+				"shared_ptr"
+			],
+			[
+				"all",
+				"allDownY"
+			],
+			[
+				"THR",
+				"TRIANGLES_PER_THREAD"
+			],
+			[
+				"ra",
+				"rayCurr"
+			],
+			[
+				"isB",
+				"isBadCurr"
+			],
+			[
+				"g_a",
+				"g_avgDt"
+			],
+			[
+				"an",
+				"angle"
+			],
+			[
+				"rot",
+				"rotation"
+			],
+			[
+				"Vec",
+				"Vec3f"
+			],
+			[
+				"Cam",
+				"CameraData"
+			],
+			[
+				"_f",
+				"_focalDistance"
+			],
+			[
+				"came",
+				"cameraData"
+			],
+			[
+				"curr",
+				"currData"
+			],
+			[
+				"camP",
+				"camPitchYawRoll"
+			],
+			[
+				"C",
+				"CameraData"
+			],
+			[
+				"th",
+				"threadDrawTriangle"
+			],
+			[
+				"frameC",
+				"frameCurr"
+			],
+			[
+				"in",
+				"interpCamera"
+			],
+			[
+				"inte",
+				"interpCamera"
+			],
+			[
+				"mesh",
+				"mesh_id"
+			],
+			[
+				"Tr",
+				"TriangleMesh__Destructor"
+			],
+			[
+				"ray",
+				"rayPrev"
+			],
+			[
+				"get",
+				"getSeconds"
+			],
+			[
+				"dra",
+				"drawSize"
+			],
+			[
+				"bl",
+				"blacka"
+			],
+			[
+				"si",
+				"sizeLevel"
+			],
+			[
+				"currCa",
+				"currCameraAngle"
+			],
+			[
+				"tmpC",
+				"tmpCameraAngle"
+			],
+			[
+				"cam",
+				"cameraAngle"
+			],
+			[
+				"camera",
+				"cameraPos"
+			],
+			[
+				"Vector",
+				"Vector2f"
+			],
+			[
+				"tmp",
+				"tmpCameraAngle"
+			],
+			[
+				"cur",
+				"currCamera"
+			],
+			[
+				"prevS",
+				"prevSubNum"
+			],
+			[
+				"is",
+				"isModified"
+			],
+			[
+				"fram",
+				"frameInterp"
+			],
+			[
+				"interp",
+				"interpSize"
+			],
+			[
+				"to",
+				"toPixel"
+			],
+			[
+				"cS",
+				"cScreenI"
+			],
+			[
+				"Camer",
+				"Camera_toScreen"
+			],
+			[
+				"plane",
+				"plane_p"
+			],
+			[
+				"neg",
+				"negV"
+			],
+			[
+				"pl",
+				"plane_n"
+			],
+			[
+				"ba",
+				"badV"
+			],
+			[
+				"pre",
+				"prevColor"
+			],
+			[
+				"ne",
+				"negZ"
+			],
+			[
+				"po",
+				"posLocal"
+			],
+			[
+				"Clear",
+				"ClearGlobalObjects"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/base/vk/texture.hpp",
+			"settings":
+			{
+				"buffer_size": 367,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/assets/quad/main.frag",
+			"settings":
+			{
+				"buffer_size": 195,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "examples/quad/main.cpp",
+			"settings":
+			{
+				"buffer_size": 4510,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/assets/quad/main.vert",
+			"settings":
+			{
+				"buffer_size": 419,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/assets/quad/main_frag.spv",
+			"settings":
+			{
+				"buffer_size": 1560,
+				"encoding": "Hexadecimal",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/texture.cpp",
+			"settings":
+			{
+				"buffer_size": 619,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "r267 (Linux)",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"r267 (Linux)",
+					""
+				],
+				[
+					"r267 (Linux)",
+					"clean"
+				],
+				[
+					"r267 (Linux)",
+					"rebuild_cache"
+				],
+				[
+					"r267 (Linux)",
+					"r267"
+				],
+				[
+					"r267 (Linux)",
+					"shader_quad_main_frag"
+				],
+				[
+					"r267 (Linux)",
+					"triangle"
+				],
+				[
+					"r267 (Linux)",
+					"shader_triangle_main_vert"
+				],
+				[
+					"r267 (Linux)",
+					"shader_triangle_main_frag"
+				],
+				[
+					"r267 (Linux)",
+					"quad"
+				],
+				[
+					"r267 (Linux)",
+					"shader_quad_main_vert"
+				]
+			],
+			[
+				"r267 (Linux)",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 142.0,
+		"last_filter": "Configur",
+		"selected_items":
+		[
+			[
+				"Configur",
+				"CMakeBuilder: Configure"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"git add",
+				"Git: Quick Add"
+			],
+			[
+				"git c",
+				"Git: Commit"
+			],
+			[
+				"git q",
+				"Git: Quick Add"
+			],
+			[
+				"git co",
+				"Git: Commit"
+			],
+			[
+				"git ",
+				"Git: Quick Add"
+			],
+			[
+				"gdb",
+				"SublimeGDB: Start Debugging"
+			],
+			[
+				"git qa",
+				"Git: Quick Add"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"git a",
+				"Git: Quick Add"
+			],
+			[
+				"men",
+				"View: Toggle Menu"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			],
+			[
+				"In",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Git",
+				"Git: Diff"
+			],
+			[
+				"Inst",
+				"Package Control: Install Package"
+			],
+			[
+				"togle m",
+				"View: Toggle Menu"
+			],
+			[
+				"Git Add",
+				"Git: Quick Add"
+			],
+			[
+				"Add",
+				"Git: Quick Add"
+			],
+			[
+				"Git:",
+				"Git: Commit"
+			],
+			[
+				"Git: Add",
+				"Git: Quick Add"
+			],
+			[
+				"Gdb",
+				"Preferences: SublimeGDB Settings – User"
+			],
+			[
+				"Git: C",
+				"Git: Commit"
+			],
+			[
+				"Git: Commit",
+				"Git: Commit"
+			],
+			[
+				"com",
+				"Git: Commit"
+			],
+			[
+				"Git co",
+				"Git: Commit"
+			],
+			[
+				"Git: Co",
+				"Git: Commit"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			],
+			[
+				"GLSL",
+				"Set Syntax: GLSL"
+			],
+			[
+				"Remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: I",
+				"Package Control: Install Package"
+			],
+			[
+				"Pak",
+				"Preferences: Browse Packages"
+			],
+			[
+				"",
+				"About"
+			]
+		],
+		"width": 349.0
+	},
+	"console":
+	{
+		"height": 118.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/kurono267/workspace/r267",
+		"/home/kurono267/workspace/r267/bin",
+		"/home/kurono267/workspace/r267/bin/assets",
+		"/home/kurono267/workspace/r267/bin/assets/quad",
+		"/home/kurono267/workspace/r267/examples",
+		"/home/kurono267/workspace/r267/examples/quad",
+		"/home/kurono267/workspace/r267/src",
+		"/home/kurono267/workspace/r267/src/base",
+		"/home/kurono267/workspace/lgl"
+	],
+	"file_history":
+	[
+		"/home/kurono267/workspace/r267/src/base/vk/texture.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/texture.cpp",
+		"/home/kurono267/workspace/r267/r267.sublime-project",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/quad.ispc",
+		"/home/kurono267/workspace/r267/examples/quad/main.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/shape.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/shape.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/swapchain.cpp",
+		"/home/kurono267/workspace/r267/bin/assets/triangle/main.vert",
+		"/home/kurono267/workspace/r267/src/base/vk/buffer.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/uniform.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/buffer.cpp",
+		"/home/kurono267/workspace/r267/src/base/wnd/BaseApp.hpp",
+		"/home/kurono267/workspace/r267/src/base/wnd/MainApp.cpp",
+		"/home/kurono267/workspace/vrt/src/basic/BasicApp.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/pipeline.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/pipeline.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/additional.hpp",
+		"/home/kurono267/workspace/r267/src/CMakeLists.txt",
+		"/home/kurono267/workspace/r267/src/base/vk/additional.cpp",
+		"/home/kurono267/workspace/r267/examples/CMakeLists.txt",
+		"/home/kurono267/workspace/r267/CMakeLists.txt",
+		"/home/kurono267/workspace/r267/src/base/vk/instance.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/instance.cpp",
+		"/usr/include/vulkan/vulkan.hpp",
+		"/home/kurono267/workspace/r267/examples/triangle/main.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/utils.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/uniform.hpp",
+		"/home/kurono267/workspace/r267/src/base/wnd/MainApp.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/swapchain.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/device.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/device.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/Instance.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/Instance.cpp",
+		"/home/kurono267/workspace/r267/src/base/Instance.hpp",
+		"/home/kurono267/workspace/r267/src/base/BaseApp.hpp",
+		"/home/kurono267/workspace/r267/src/base/MainApp.cpp",
+		"/home/kurono267/workspace/r267/src/base/MainApp.hpp",
+		"/home/kurono267/workspace/r267/.gitignore",
+		"/home/kurono267/workspace/r267/include/base/MainApp.cpp",
+		"/home/kurono267/workspace/r267/include/base/MainApp.hpp",
+		"/home/kurono267/workspace/r267/README",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/mlt.isph",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/mlt.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/quadrender.isph",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/textures/image3fa.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/textures/image3f.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/pathtracer.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/textures/image3ca.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/textures/image3c.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/textures/image.isph",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/quadrender.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/frameinterp.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/whitted.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/quad.isph",
+		"/home/kurono267/workspace/lgl/src/examples/CMakeLists.txt",
+		"/home/kurono267/workspace/lgl/src/lgl/App/MainApp.cpp",
+		"/home/kurono267/workspace/lgl/src/lgl/ogl/Texture.cpp",
+		"/home/kurono267/workspace/lgl/src/lgl/ogl/Import.cpp",
+		"/home/kurono267/workspace/lgl/src/examples/cpu/CPUApp.hpp",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/photonmapping.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/api/ispc_device.cpp",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/textures/trilinear.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/triangle.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/raytracing.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/renderer/RenderPlugin.cpp",
+		"/mnt/instance/code/embree-plugin-git/devices/renderer/IRenderPlugin.h",
+		"/mnt/instance/code/embree-plugin-git/common/math/quaternion.h",
+		"/mnt/instance/code/embree-plugin-git/common/math/vec3.h",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/renderer.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/renderer.isph",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/api/ispc_device.h",
+		"/mnt/instance/code/embree-plugin-git/devices/device/device.h",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/tonemappers/defaulttonemapper.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/scene/scene.isph",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/shapes/trianglemesh.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/shapes/shape.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/shapes/shape.isph",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/scene/scene.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/api/data.h",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/cameras/camera.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/cameras/camera.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/quadrender.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/CMakeLists.txt",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/raytracing.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/pathtracer.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/materials/obj.h",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/api/ispc_device.cpp",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/triangle.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/cameras/perspectivecamera.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/frameinterp.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/postprocess.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/shapes/shape.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/shapes/trianglemesh.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/quadrender.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/photonmapping.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/quad.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/quad.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/cameras/camera.isph",
+		"/home/kurono267/workspace/lgl/src/lgl/utils/Camera.hpp",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/renderers/quad/postprocess.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/CMakeLists.txt",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/cameras/camera.ispc",
+		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/materials/obj.h",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/triangulate.isph",
+		"/home/kurono267/work-embree/embree-plugin-git/devices/device_ispc/renderers/quad/quadrender.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/materials/sss.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/materials/material.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/materials/material.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/renderer/glutdisplay.cpp",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/renderer.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device/loaders/obj_loader.cpp",
+		"/home/kurono267/workspace/embree-BDPT/devices/device/device.h",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/api/ispc_device.h",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/api/ref.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/api/handle.h",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/default.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/renderer/renderer.cpp",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/scene/scene.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/scene/scene.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/shapes/shape.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/textures/trilinear.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/math/veci.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/whitted.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/renderer.isph",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/lights/hdrilight.ispc",
+		"/home/kurono267/workspace/embree-BDPT/devices/device/device.cpp",
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/bdpt.ispc"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 82.0,
+		"where_history":
+		[
+			"/mnt/instance/code/embree-plugin-git/common/math",
+			"/home/kurono267/workspace/embree-BDPT/devices/device_ispc",
+			"/home/kurono267/workspace/embree-BDPT/devices",
+			"/home/kurono267/workspace/embree-BDPT",
+			"/mnt/instance/code/embree-plugin-git/devices",
+			"/home/kurono267/builds/Phoenix",
+			"/home/kurono267/builds/Phoenix_FirestormOS-private-pathtracer1_x86_64_4.7.6.0",
+			"/mnt/instance/code/phoenix-firestorm-release",
+			"/mnt/instance/code/embree-plugin-0812",
+			"/mnt/instance/code/phoenix-firestorm-release",
+			"/home/kurono267/workspace/embree-plugin",
+			"/home/kurono267/workspace/embree-BDPT",
+			"/home/kurono267/workspace/embree-plugin-161124/embree-plugin",
+			"/home/kurono267/workspace/embree-plugin-161124/embree-plugin/devices",
+			"/home/kurono267/workspace/embree-plugin-161124/embree-plugin",
+			"/home/kurono267/workspace/embree-BDPT",
+			"/home/kurono267/workspace/embree-plugin-161124/embree-plugin/devices/device_ispc",
+			"/home/kurono267/workspace/embree-BDPT",
+			"/home/kurono267/workspace/2811/phoenix-firestorm-release/indra",
+			"/home/kurono267/workspace/2811/phoenix-firestorm-release",
+			"/home/kurono267/workspace/2811/phoenix-firestorm-release/indra",
+			"/home/kurono267/workspace/embree-BDPT/devices",
+			"/home/kurono267/Загрузки/Goblin-master/Source",
+			"/home/kurono267/workspace/embree-27SR",
+			"/home/kurono267/builds/glfw",
+			"/mnt/3BE8E03719E494B4/EmbreeWork/0412/embree-27/embree-2.7.0",
+			"/home/kurono267/workspace/embree-27SR",
+			"/mnt/3BE8E03719E494B4/EmbreeWork/0412/embree-27/embree-2.7.0",
+			"/home/kurono267/workspace/embree-27SR",
+			"/mnt/3BE8E03719E494B4/EmbreeWork/0412/embree-27/embree-2.7.0",
+			"/home/kurono267/workspace/embree-27SR",
+			"/home/kurono267/workspace/embree-27SR/devices/device_singleray",
+			"/home/kurono267/workspace/embree-27SR",
+			"/mnt/3BE8E03719E494B4/EmbreeWork/0412/embree-27/embree-2.7.0",
+			"/home/kurono267/workspace/embree-27SR",
+			"/home/kurono267/workspace/embree-27SR/devices",
+			"/home/kurono267/workspace/embree-27SR/devices/device_ispc",
+			"/home/kurono267/workspace/embree-27SR/devices/device_singleray",
+			"/home/kurono267/workspace/embree-27SR",
+			"/mnt/3BE8E03719E494B4/EmbreeWork/0412/embree-27/embree-2.7.0",
+			"/home/kurono267/workspace/embree-27SR/devices/device_ispc",
+			"/home/kurono267/workspace/embree-27SR",
+			"/home/kurono267/workspace/embree-27/embree-renderer-2.3.2",
+			"/home/kurono267/workspace/embree-whitted",
+			"/mnt/3BE8E03719E494B4/Downloads2109/blender-2.73a",
+			"/home/kurono267/workspace/embree-whitted",
+			"/mnt/3BE8E03719E494B4/Downloads2109/blender-2.73a",
+			"/home/kurono267/workspace/embree-whitted",
+			"/home/kurono267/workspace/Vander-fixes/embree-hybrid-1008",
+			"/home/kurono267/Загрузки/blender-2.73a",
+			"/home/kurono267/workspace/embree-whitted",
+			"/home/kurono267/workspace/embree-whitted/examples/renderer",
+			"",
+			"embree_vd"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"ImageCreateInfo",
+			"ogl::",
+			"threadTileDrawTriangle",
+			"rtc",
+			"reflect",
+			"this->frame",
+			"Quad",
+			"quad",
+			"PipelineLayoutCreateInfo",
+			"pipelineLayoutInfo",
+			"PipelineBindPoint",
+			"_device",
+			"frameCurrLevel",
+			"_uniform",
+			"getRequiredExtensions",
+			"_surface",
+			"image",
+			"threadTileDrawTriangle",
+			"clearFrameStatus",
+			"backplate",
+			"4",
+			"drawSize",
+			"toneMapperSize",
+			"drawSize",
+			"EMBREE_WIDTH",
+			"numRays",
+			"cStep",
+			"Blend",
+			"HDRI",
+			"rtSetInt1",
+			"EMBREE_SPP",
+			"prevCamera",
+			"g_camera",
+			"genTriangleList",
+			"QUAD__renderTile",
+			"g_prevRenderTime",
+			"lerp",
+			"CameraData",
+			"rframeID",
+			"EMBREE_BUFFERS",
+			"g_widths",
+			"storeImage",
+			"g_widths",
+			"g_wi",
+			"EMBREE_BUFFERS",
+			"g_width",
+			"g_widths",
+			"g_frameBuffer",
+			"g_frameBuffers",
+			"frame",
+			"Camera_toScreenU",
+			"getSeconds",
+			"avgFrames",
+			"g_t0",
+			"AddTe",
+			"rtNewImage",
+			"Shape__transform",
+			"set",
+			"transform",
+			"PrimitiveHandle",
+			"rtTransformPrimitive",
+			"CreateCamera",
+			"g_camera",
+			"lookAtPoint",
+			"lock",
+			"g_device",
+			"Plug_Vec3",
+			"g_t0",
+			"CreateCamera",
+			"lerp",
+			"NUM_CAMERAS",
+			"MAX_SUBFRAMES",
+			"p0",
+			"normCamSpace",
+			"inline",
+			"\t\t\t\n",
+			"displayMode",
+			"GLUTDisplay",
+			"g_render_scene",
+			"lookAt",
+			"Render",
+			"DeInit",
+			"g_renderer",
+			"dgs2",
+			"rays2",
+			"g_pause",
+			"g_scene",
+			"g_device->rtCommit\\(g_renderer\\);",
+			"g_device->rtCommit(g_renderer);",
+			");\n",
+			"QUAD_renderFrameInit",
+			"lightSampleID",
+			"Modif",
+			"SetSky",
+			"subNum",
+			"g_rt0",
+			"g_renderTime",
+			"g_showTime",
+			"g_prevRenderTime",
+			"prevSubNum",
+			"Light",
+			"set",
+			"bary",
+			"barycentric",
+			"rtcNewTriangleMesh",
+			"onFrames",
+			"];\n",
+			"currInterp",
+			"const",
+			"barycentric",
+			"drawTriangle",
+			"print",
+			"onFrames",
+			"color",
+			"rtLoadTexture",
+			"createRenderer",
+			"rtNewR",
+			"Transform",
+			"FlipRawTex",
+			"TextureStrides",
+			"RTTexture",
+			".ray",
+			"SetSky",
+			"id0",
+			"EMBREE_SPP",
+			"CommitScene",
+			"Render",
+			"rtCommit\\(g_scene\\)"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"",
+			"NCamera",
+			"vdata",
+			"sVertex",
+			"CubeApp",
+			"if(isRender)return;",
+			"render",
+			"SSS",
+			"",
+			"inline",
+			"wt",
+			"TestRenderer",
+			"NMRenderer",
+			"HMRenderer",
+			".ppm",
+			"",
+			"inline",
+			"z",
+			"y",
+			"x",
+			"WhittedRenderer",
+			"HybridRenderer",
+			"glm::vec2",
+			"glm::vec3",
+			"models",
+			"spMesh",
+			"glm::ivec2",
+			"glm::vec2",
+			"glm::vec3",
+			"models",
+			"glm::uint32",
+			"glm::vec3f",
+			"glm::vec2",
+			"glm::vec3",
+			"dy_pt",
+			"dx_pt",
+			"RTCIntersector1",
+			"triC",
+			"SSS",
+			"embree::ComputeBSSRDF:",
+			"embree::ComputeBSSRDF",
+			"_dgO",
+			"_dgo",
+			"_sigma",
+			"_dg",
+			"__refract",
+			"_radius",
+			"image->",
+			"mesh.verts[face->vertsIdx[v]]",
+			"face->verts[v]->",
+			"tri.verts[i]->",
+			"tri.verts[v]->",
+			"isfree",
+			"",
+			"std::vector<BoxPack>::iterator ",
+			"std::vector<BoxPack>::iterator",
+			"(vertarray[vertIdx])",
+			"std::multimap",
+			"multimap",
+			"",
+			"vert->",
+			"vert.",
+			"Triangle*",
+			"Triangle",
+			"::g_unwrap",
+			"lightmap::g_unwrap",
+			"Vec2f",
+			"",
+			"co",
+			"ico",
+			"glm::vec2",
+			"TextApp",
+			"ogl::Font::",
+			"ogl::Font",
+			"Font",
+			"0.0f, 1.0f,",
+			"1.0f, 0.0f,",
+			"CubeApp",
+			".w",
+			".z",
+			".y",
+			".x",
+			"x",
+			"",
+			"\\overline",
+			"\\over",
+			"\\sum \\limits",
+			"\\sum",
+			" \\to ",
+			"\\in",
+			"\\(\\mathcal{G}\\)",
+			"\\(\\mathcal{F}\\)",
+			"\\geq",
+			"\\xi",
+			"$\\ksi$",
+			"$\\mathcal{F}$",
+			"$\\mathcal{G}$",
+			"\\\\in",
+			"\\in",
+			" \\in",
+			"",
+			"addWeightedGPU",
+			"status",
+			"_backproj_gpu",
+			"object",
+			"status",
+			"object",
+			"",
+			"t2s",
+			")",
+			"(",
+			"window",
+			"select",
+			"std::vector",
+			"x",
+			"std::pow(k",
+			"_oheight*",
+			"_owidth*",
+			"NULL",
+			"*std::pow(2/3,l)",
+			"std::pow(2/3,l)",
+			"*",
+			"+",
+			"-",
+			"+",
+			"",
+			"int",
+			"Number*"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 5,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/base/vk/texture.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 367,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								159,
+								159
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "bin/assets/quad/main.frag",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 195,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								195,
+								195
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/OpenGL Shading Language (GLSL)/GLSL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "examples/quad/main.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4510,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3472,
+								3472
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1248.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "bin/assets/quad/main.vert",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 419,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								342,
+								342
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/OpenGL Shading Language (GLSL)/GLSL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "bin/assets/quad/main_frag.spv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1560,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/base/vk/texture.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 619,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								433,
+								433
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 29.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.clangcomplete":
+	{
+		"height": 90.0
+	},
+	"output.exec":
+	{
+		"height": 94.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git-commit":
+	{
+		"height": 96.0
+	},
+	"pinned_build_system": "r267 (Linux)",
+	"project": "r267.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"q",
+				"devices/device_ispc/renderers/quad/quadrender.ispc"
+			],
+			[
+				"quadre",
+				"devices/device_ispc/renderers/quad/quadrender.ispc"
+			],
+			[
+				"nmre",
+				"embree-27SR/devices/device_singleray/renderers/nmrenderer.cpp"
+			],
+			[
+				"decimate",
+				"decimate/sources/models/Decimate.cpp"
+			],
+			[
+				"gp.h",
+				"GPU/sources/GPUPanaram.h"
+			],
+			[
+				"",
+				"GPU/sources/GPUPanaram.cpp"
+			],
+			[
+				"b",
+				"GPU/sources/cuda/backproj.cu"
+			],
+			[
+				"gp",
+				"GPU/sources/GPUOTrac.cpp"
+			],
+			[
+				"cu",
+				"GPU/sources/cuda/cudaUtils.cpp"
+			],
+			[
+				"ba",
+				"gpu_mask/backproj.cu"
+			],
+			[
+				"g",
+				"GPU/sources/GPUOTrac.cpp"
+			],
+			[
+				"gpuo",
+				"GPU/sources/GPUOTrac.h"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 193.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 1
+	}
+}
