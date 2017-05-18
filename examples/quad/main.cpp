@@ -18,6 +18,7 @@ class QuadApp : public BaseApp {
 
 		bool init(){
 			vulkan = mainApp->vulkan();device = vulkan->device(); swapchain = device->getSwapchain();vk_device = device->getDevice();
+			_commandPool = device->getCommandPool();
 
 			auto baseRP = RenderPattern::basic(swapchain);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
@@ -25,21 +26,15 @@ class QuadApp : public BaseApp {
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/quad/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/quad/main_frag.spv");
 
-			vk::CommandPoolCreateInfo poolInfo(vk::CommandPoolCreateFlags(),device->queueFamiliesIndices().graphicsFamily);
-			_commandPool = vk_device.createCommandPool(poolInfo); 
-
 			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
-			_color.set(sizeof(UBO));
-			_color.create(device,device->getGraphicsQueue(),_commandPool);
-			_color.set(sizeof(UBO),&_colorData);
+			_color.create(device,sizeof(UBO),&_colorData);
 
 			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
 			_main->create();
 
 			_quad = std::make_shared<Quad>();
-			_quad->create(device,device->getGraphicsQueue(),_commandPool);
+			_quad->create(device);
 
-			auto extent = swapchain->getExtent();
 			_framebuffers = createFrameBuffers(device,_main);
 
 			vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, _framebuffers.size());
@@ -55,7 +50,7 @@ class QuadApp : public BaseApp {
 				vk::RenderPassBeginInfo renderPassInfo(
 					_main->getRenderPass(),
 					_framebuffers[i],
-					vk::Rect2D(vk::Offset2D(),extent),
+					vk::Rect2D(vk::Offset2D(),swapchain->getExtent()),
 					1, &clearColor
 				);
 
@@ -73,8 +68,8 @@ class QuadApp : public BaseApp {
 			}
 
 			// Create semaphores
-			_imageAvailable = vk_device.createSemaphore(vk::SemaphoreCreateInfo());
-			_renderFinish = vk_device.createSemaphore(vk::SemaphoreCreateInfo());
+			_imageAvailable = device->createSemaphore(vk::SemaphoreCreateInfo());
+			_renderFinish = device->createSemaphore(vk::SemaphoreCreateInfo());
 
 			prev = std::chrono::steady_clock::now();
 
@@ -120,7 +115,12 @@ class QuadApp : public BaseApp {
 		
 		bool onKey(const GLFWKey& key){}
 		bool onMouse(const GLFWMouse& mouse){}
-		bool onExit(){}
+		bool onExit(){
+			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
+			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
+			for(auto fb : _framebuffers)vk_device.destroyFramebuffer(fb);
+			_main->release();
+		}
 	protected:
 		spPipeline _main;
 		UBO        _colorData;

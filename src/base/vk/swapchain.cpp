@@ -92,18 +92,7 @@ void Swapchain::createImageViews(const vk::Device& device){
 	_imageViews.resize(_images.size());
 
 	for (uint i = 0; i < _images.size(); i++) {
-		vk::ImageViewCreateInfo createInfo(
-			vk::ImageViewCreateFlags(),
-			_images[i],
-			vk::ImageViewType::e2D,
-			_imageFormat,
-			vk::ComponentMapping(),
-			vk::ImageSubresourceRange(
-				vk::ImageAspectFlagBits::eColor,
-				0, 1, 0, 1)
-		);
-
-		_imageViews[i] = device.createImageView(createInfo);
+		_imageViews[i] = createImageView(device,_images[i],_imageFormat);
 	}
 }
 

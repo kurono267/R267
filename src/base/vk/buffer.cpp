@@ -30,6 +30,11 @@ void Buffer::create(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryP
     _device.bindBufferMemory(buffer,memory, 0);
 }
 
+void Buffer::release(spDevice device){
+	_device.freeMemory(memory);
+	_device.destroyBuffer(buffer);
+}
+
 void Buffer::createVB(const std::vector<sVertex>& vertices){
 	vk::DeviceSize bufferSize = sizeof(sVertex)*vertices.size();
 
@@ -46,6 +51,7 @@ void Buffer::createVB(const std::vector<sVertex>& vertices){
 		vk::MemoryPropertyFlagBits::eDeviceLocal);
 
 	copy(stagingBuffer.buffer,vertexBuffer.buffer,bufferSize);
+	stagingBuffer.release(_lvuDevice);
 
 	buffer = vertexBuffer.buffer;
 	memory = vertexBuffer.memory;
@@ -67,6 +73,7 @@ void Buffer::createIB(const std::vector<uint>& indices) {
 		vk::MemoryPropertyFlagBits::eDeviceLocal);
 
 	copy(stagingBuffer.buffer,indexBuffer.buffer,bufferSize);
+	stagingBuffer.release(_lvuDevice);
 
 	buffer = indexBuffer.buffer;
 	memory = indexBuffer.memory;

@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "buffer.hpp"
+
 namespace r267 {
 
 class Image {
@@ -12,7 +14,7 @@ class Image {
 		void create(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
 					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
-					const vk::MemoryProperyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
+					const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
 		void release();
 
 		vk::Image vk_image();

@@ -5,9 +5,9 @@ using namespace r267;
 Shape::Shape(){}
 Shape::~Shape(){}
 
-void Shape::create(spDevice device,vk::Queue queue,vk::CommandPool pool){
-	_vb = std::make_shared<Buffer>(device,device->getGraphicsQueue(),pool);
-	_ib = std::make_shared<Buffer>(device,device->getGraphicsQueue(),pool);
+void Shape::create(spDevice device){
+	_vb = device->create<Buffer>();
+	_ib = device->create<Buffer>();
 
 	createShape();
 }

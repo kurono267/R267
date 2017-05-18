@@ -10,8 +10,8 @@ class Uniform {
 		Uniform();
 		virtual ~Uniform();
 
-		void create(spDevice device,vk::Queue queue,vk::CommandPool pool);
-		void set(const size_t& size,const void* data = nullptr);
+		void create(spDevice device,const size_t& size,const void* data = nullptr);
+		void set(const size_t& size,const void* data);
 
 		vk::Buffer vk_buffer() const;
 		size_t     size() const ;

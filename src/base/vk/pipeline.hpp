@@ -78,9 +78,11 @@ class Pipeline {
 		~Pipeline(){}
 
 		void setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage);
+		void setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage);
 		void addShader(const vk::ShaderStageFlagBits& type,const std::string& filename);
 
 		void create();
+		void release();
 
 		vk::RenderPass getRenderPass();
 
@@ -94,13 +96,32 @@ class Pipeline {
 		vk::Device _device; 
 
 		std::vector<vk::PipelineShaderStageCreateInfo> _shaders;
-		vk::DescriptorSetLayout _uboLayout;
+		vk::DescriptorSetLayout _descLayout;
 		vk::DescriptorSet       _descSet;
+		vk::DescriptorPool      _descPool;
 		vk::PipelineViewportStateCreateInfo      _viewportState;
 
 		vk::RenderPass              _renderPass;
 		vk::Pipeline                _pipeline;
 		vk::PipelineLayout          _pLayout;
+
+		std::vector<vk::ShaderModule> _shaderModules;
+
+		struct UBOBinding {
+			Uniform buffer;
+			size_t    binding;
+			vk::ShaderStageFlags stage;
+		};
+		struct SamplerBinding {
+			vk::ImageView imageView;
+			vk::Sampler   sampler;
+			size_t    binding;
+			vk::ShaderStageFlags stage;
+		};
+		std::vector<UBOBinding>     _uboBinds;
+		std::vector<SamplerBinding> _samplerBinds;
+
+		void createDescSet();
 };
 
 typedef std::shared_ptr<Pipeline> spPipeline;

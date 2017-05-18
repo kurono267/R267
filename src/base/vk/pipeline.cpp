@@ -97,10 +97,12 @@ vk::ShaderModule createShaderModule(vk::Device device,const std::string& filenam
 }
 
 void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& filename){
+	auto SM = createShaderModule(_device,filename);
+	_shaderModules.push_back(SM);
 	vk::PipelineShaderStageCreateInfo shaderStageInfo(
 		vk::PipelineShaderStageCreateFlags(),
 		type,
-		createShaderModule(_device,filename),
+		SM,
 		"main"
 	);
 	_shaders.push_back(shaderStageInfo);
@@ -108,32 +110,58 @@ void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& 
 
 // TODO Move to Uniform
 void Pipeline::setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage){
-	// Create descriptor set
-	vk::DescriptorSetLayoutBinding layoutBind(binding,vk::DescriptorType::eUniformBuffer,1,stage);
-	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),1,&layoutBind);
-	_uboLayout = _device.createDescriptorSetLayout(layoutInfo);
+	_uboBinds.push_back({buffer,binding,stage});
+}
 
-	vk::DescriptorPoolSize poolSize(vk::DescriptorType::eUniformBuffer,1);
-	vk::DescriptorPoolCreateInfo poolInfo(vk::DescriptorPoolCreateFlags(),1,1,&poolSize);
+void Pipeline::setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage){
+	_samplerBinds.push_back({imageView,sampler,binding,stage});
+}
 
-	vk::DescriptorPool descPool = _device.createDescriptorPool(poolInfo);
+void Pipeline::createDescSet(){
+	// Create Decription Set Layout
+	std::vector<vk::DescriptorSetLayoutBinding> layoutBinds;
+	std::vector<vk::DescriptorPoolSize>         poolSizes;
 
-	vk::DescriptorSetAllocateInfo allocInfo(descPool,1,&_uboLayout);
+	// Add Layout binding for UBO
+	for(auto u : _uboBinds){
+		std::cout << "UBO at binding " << u.binding << std::endl;
+		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,vk::DescriptorType::eUniformBuffer,1,u.stage));
+		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer,1));
+	}
+	for(auto s : _samplerBinds){
+		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(s.binding,vk::DescriptorType::eCombinedImageSampler,1,s.stage));
+		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler,1));
+	}
+
+	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),layoutBinds.size(),layoutBinds.data());
+	_descLayout = _device.createDescriptorSetLayout(layoutInfo);
+
+	vk::DescriptorPoolCreateInfo poolInfo(vk::DescriptorPoolCreateFlags(),1,poolSizes.size(),poolSizes.data());
+	_descPool = _device.createDescriptorPool(poolInfo);
+
+	vk::DescriptorSetAllocateInfo allocInfo(_descPool,1,&_descLayout);
 	_descSet = _device.allocateDescriptorSets(allocInfo)[0];
 
-	vk::DescriptorBufferInfo bufferInfo(buffer.vk_buffer(),0,buffer.size());
-	vk::WriteDescriptorSet descriptorWrite(_descSet,0,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr);
-
-	_device.updateDescriptorSets({descriptorWrite},nullptr);
+	std::vector<vk::WriteDescriptorSet>         descWrites;
+	for(auto u : _uboBinds){
+		vk::DescriptorBufferInfo bufferInfo(u.buffer.vk_buffer(),0,u.buffer.size());
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,0,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr));
+	}
+	for(auto s : _samplerBinds){
+		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, vk::ImageLayout::eShaderReadOnlyOptimal);
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,0,0,1,vk::DescriptorType::eCombinedImageSampler,&imageInfo,nullptr,nullptr));
+	}
+	_device.updateDescriptorSets(descWrites,nullptr);
 }
 
 void Pipeline::create(){
+	createDescSet();
 	_viewportState = vk::PipelineViewportStateCreateInfo(vk::PipelineViewportStateCreateFlags(),1,&(_renderpattern._viewport),1,&(_renderpattern._scissor));
 	_renderPass    = _device.createRenderPass(_renderpattern._renderPassInfo);
 
 	vk::PipelineLayoutCreateInfo pipelineLayoutInfo(
 		vk::PipelineLayoutCreateFlags(),
-		1, &_uboLayout);
+		1, &_descLayout);
 
 	auto bindingDescription = sVertex::bindingDesc();
     auto attributeDescriptions = sVertex::attributes();
@@ -160,6 +188,17 @@ void Pipeline::create(){
 		_renderPass,0);
 
 	_pipeline = _device.createGraphicsPipelines(nullptr,pipelineInfo)[0];
+}
+
+void Pipeline::release(){
+	for(auto m : _shaderModules){
+		_device.destroyShaderModule(m);
+	}
+	_device.destroyRenderPass(_renderPass);
+	_device.destroyDescriptorSetLayout(_descLayout);
+	_device.destroyDescriptorPool(_descPool);
+	_device.destroyPipelineLayout(_pLayout);
+	_device.destroyPipeline(_pipeline);
 }
 
 vk::RenderPass Pipeline::getRenderPass(){

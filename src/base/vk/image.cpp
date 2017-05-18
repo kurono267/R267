@@ -1,12 +1,14 @@
 #include "image.hpp"
 
+using namespace r267;
+
 Image::Image(spDevice device,vk::Queue queue,vk::CommandPool pool) : _device(device),_queue(queue),_pool(pool) {}
 Image::~Image(){}
 
 void Image::create(const uint& width,const uint& height,
-					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
-					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
-					const vk::MemoryProperyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal){
+					const vk::Format& format,const uint& mipLevels,const vk::ImageTiling& tiling,
+					const vk::ImageUsageFlags& usage,
+					const vk::MemoryPropertyFlags& properties){
 	_width = width;
 	_height = height;
 	_format = format;
@@ -27,12 +29,12 @@ void Image::create(const uint& width,const uint& height,
 
 	// Create Image
 	_image = vk_device.createImage(imageInfo);
-	auto memoryReq = vk_device.getImageMemoryRequirements();
+	auto memoryReq = vk_device.getImageMemoryRequirements(_image);
 
-	MemoryAllocateInfo allocInfo(memoryReq.size,findMemoryType(memoryReq.memoryTypeBits, properties));
+	vk::MemoryAllocateInfo allocInfo(memoryReq.size,findMemoryType(_device->getPhysicalDevice(),memoryReq.memoryTypeBits, properties));
 	_memory = vk_device.allocateMemory(allocInfo);
 
-	vk_device.bindImageMemory(result.image,result.memory,0);
+	vk_device.bindImageMemory(_image,_memory,0);
 }
 
 void Image::set(const spBuffer& buffer){
@@ -51,7 +53,7 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 	vk::AccessFlags srcAccess;
 	vk::AccessFlags dstAccess;
 	if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eTransferDstOptimal) {
-		srcAccess = vk::AccessFlagBits::HostWrite;
+		srcAccess = vk::AccessFlagBits::eHostWrite;
 		dstAccess = vk::AccessFlagBits::eTransferWrite;
 	} else if (oldLayout == vk::ImageLayout::eTransferDstOptimal && newLayout == vk::ImageLayout::eShaderReadOnlyOptimal) {
 		srcAccess = vk::AccessFlagBits::eTransferWrite;
@@ -77,7 +79,7 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 
 	commandBuffer.pipelineBarrier(
 		vk::PipelineStageFlagBits::eTopOfPipe, vk::PipelineStageFlagBits::eTopOfPipe,
-		0,
+		vk::DependencyFlagBits::eByRegion,
 		0, nullptr,
 		0, nullptr,
 		1, &barrier
@@ -89,9 +91,9 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 void Image::setBuffer(const spBuffer& buffer){
 	vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
 
-	vk::ImageSubresourceRange subRes(
+	vk::ImageSubresourceLayers subRes(
 		vk::ImageAspectFlagBits::eColor,
-		0, 1, /* Mip levels current and count*/ 0, 1 /* Layers current and count */ );
+		0, /* Mip levels current*/ 0, 1 /* Layers current and count */ );
 
 	vk::BufferImageCopy region(
 		/* bufferOffset bufferRowLength bufferImageHeight */
@@ -102,7 +104,7 @@ void Image::setBuffer(const spBuffer& buffer){
 		{_width,_height,1}
 	);
 
-	commandBuffer.copyBufferToImage(buffer->buffer,image,vk::ImageLayout::eTransferDstOptimal, {region});
+	commandBuffer.copyBufferToImage(buffer->buffer,_image,vk::ImageLayout::eTransferDstOptimal, {region});
 
 	endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
 }

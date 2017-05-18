@@ -18,7 +18,9 @@ const std::vector<const char*> validationLayers = {
     "VK_LAYER_LUNARG_standard_validation"
 };
 
-class Device {
+class Device : public std::enable_shared_from_this<Device> {
+	typedef std::shared_ptr<Device> ptr;
+	typedef std::function<void(ptr)> releaseFunc;
 	public:
 		Device(){}
 		~Device(){}
@@ -33,6 +35,19 @@ class Device {
 		vk::Queue  getGraphicsQueue();
 		vk::Queue  getPresentQueue();
 		spSwapchain  getSwapchain();
+
+		vk::CommandPool getCommandPool();
+
+		vk::Semaphore createSemaphore(vk::SemaphoreCreateInfo info);
+
+		template<typename M>
+		std::shared_ptr<M> create(){
+			std::shared_ptr<M> result = std::make_shared<M>(shared_from_this(),_graphicsQueue,_pool);
+			_release.push_back([result](ptr device){
+				result->release(device);
+			});
+			return result;
+		}
 	protected:
 		void pickPhysicalDevice();
 		bool isDeviceSuitable(const vk::PhysicalDevice& device);
@@ -48,9 +63,14 @@ class Device {
 		vk::Queue          _graphicsQueue;
 		vk::SurfaceKHR     _surface;
 
+		vk::CommandPool    _pool;
+
 		spSwapchain          _swapchain;
 
 		glm::ivec2         _size;
+
+		std::vector<vk::Semaphore> _semaphores;
+		std::vector<releaseFunc>       _release;
 };
 
 typedef std::shared_ptr<r267::Device> spDevice;

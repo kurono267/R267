@@ -90,3 +90,43 @@ void r267::endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::
 
 	device.freeCommandBuffers(pool,{commands});
 }
+
+vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Format format){
+	vk::ImageViewCreateInfo createInfo(
+		vk::ImageViewCreateFlags(),
+		image,
+		vk::ImageViewType::e2D,
+		format,
+		vk::ComponentMapping(),
+		vk::ImageSubresourceRange(
+			vk::ImageAspectFlagBits::eColor,
+			0, 1, 0, 1)
+	);
+
+	return device.createImageView(createInfo);
+}
+
+vk::Sampler   createSampler(vk::Device device, vk::SamplerCreateInfo samplerInfo){
+	return device.createSampler(samplerInfo);
+}
+
+vk::SamplerCreateInfo linearSampler(){
+	return vk::SamplerCreateInfo(
+		vk::SamplerCreateFlags(),
+		vk::Filter::eLinear, // Mag Filter
+		vk::Filter::eLinear, // Min Filter
+		vk::SamplerMipmapMode::eLinear, // MipMap Mode
+		vk::SamplerAddressMode::eRepeat, // U Address mode
+		vk::SamplerAddressMode::eRepeat, // V Address mode
+		vk::SamplerAddressMode::eRepeat, // W Address mode
+		0, // Mip Lod bias
+		0, // Anisotropic enabled
+		1, // Max anisotropy
+		0, // Compare enabled
+		vk::CompareOp::eAlways, // Compare Operator
+		0, // Min lod
+		0, // Max lod
+		vk::BorderColor::eFloatTransparentBlack, // Border color
+		0 // Unnormalized coordiante
+	);
+}

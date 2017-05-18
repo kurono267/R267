@@ -8,7 +8,7 @@ class Shape {
 		Shape();
 		virtual ~Shape();
 
-		void create(spDevice device,vk::Queue queue,vk::CommandPool pool);
+		void create(spDevice device);
 		void draw(vk::CommandBuffer& commandBuffer);
 	protected:
 		virtual void createShape() = 0;

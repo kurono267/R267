@@ -51,8 +51,8 @@ void MainApp::run(){
 
 		if(glfwWindowShouldClose(_window))_isRun = false;
 	}
-	_app->onExit();
 	_vulkan->device()->getDevice().waitIdle();
+	_app->onExit();
 	_vulkan->release();
 	glfwDestroyWindow(_window);
 	glfwTerminate();

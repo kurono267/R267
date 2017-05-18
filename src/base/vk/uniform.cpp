@@ -6,13 +6,13 @@ Uniform::Uniform() : _is(false), _size(0), _data(nullptr) {}
 
 Uniform::~Uniform(){}
 
-void Uniform::create(spDevice device,vk::Queue queue,vk::CommandPool pool){
-	if(!_size)throw std::logic_error("Uniform failed: don't set size");
+void Uniform::create(spDevice device,const size_t& size,const void* data){
+	_size = size;
 
 	vk::DeviceSize bufferSize = _size;
 
-	_gpu = std::make_shared<Buffer>(device,queue,pool);
-	_cpu = std::make_shared<Buffer>(device,queue,pool);
+	_gpu = device->create<Buffer>();//std::make_shared<Buffer>(_device,queue,pool);
+	_cpu = device->create<Buffer>();//std::make_shared<Buffer>(_device,queue,pool);
 
 	_cpu->create(bufferSize,
 		vk::BufferUsageFlagBits::eTransferSrc,
@@ -25,14 +25,14 @@ void Uniform::create(spDevice device,vk::Queue queue,vk::CommandPool pool){
 		vk::MemoryPropertyFlagBits::eDeviceLocal);
 
 	_is = true;
+
+	if(data)set(size,data);
 }
 
 void Uniform::set(const size_t& size,const void* data){
-	if(!_size)_size = size;
-	if(!data)return;
-	if(_is){
-		if(_size != size)throw std::logic_error("Uniform failed: different size");
-		std::cout << "Uniform Set" << std::endl;
+	if(_size != size)throw std::logic_error("Uniform failed: different size");
+	else if(!data)throw std::logic_error("Data is nullptr");
+	else if(_is){
 		_cpu->set(data,size);
 		_cpu->copy(*_cpu,*_gpu,size);
 	} else throw std::logic_error("Uniform failed: wrong set data, buffer don't exist");

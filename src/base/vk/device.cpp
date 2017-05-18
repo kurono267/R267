@@ -103,10 +103,31 @@ void Device::create(const vk::Instance& instance,const vk::SurfaceKHR& surface,c
 	createLogicalDevice();
 	_swapchain = std::make_shared<Swapchain>();
 	_swapchain->create(_pDevice,_device,_surface,size);
+
+	vk::CommandPoolCreateInfo poolInfo(vk::CommandPoolCreateFlags(),queueFamiliesIndices().graphicsFamily);
+	_pool = _device.createCommandPool(poolInfo); 
+}
+
+vk::Semaphore Device::createSemaphore(vk::SemaphoreCreateInfo info){
+	auto result = _device.createSemaphore(vk::SemaphoreCreateInfo());
+	_semaphores.push_back(result);
+	return result;
+}
+
+vk::CommandPool Device::getCommandPool(){
+	return _pool;
 }
 
 void Device::release(){
 	_swapchain->release();
+	for(auto s : _semaphores){ // Release Semaphores
+		_device.destroySemaphore(s);
+	}
+	// Release Managed object
+	for(auto m : _release){
+		m(shared_from_this());
+	}
+	_device.destroyCommandPool(_pool);
 	_device.destroy();
 }
 

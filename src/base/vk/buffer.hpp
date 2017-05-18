@@ -43,6 +43,8 @@ class Buffer {
 
 		void set(const void* data,const size_t& size);
 		void copy(const Buffer& src,const Buffer& dst,const size_t& size);
+
+		void release(spDevice device);
 	protected:
 		Buffer createOther(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties);
 
