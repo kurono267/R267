@@ -14,7 +14,7 @@ add_shader("quad/main.frag" quad)
 
 # Texture Example
 add_executable(texture texture/main.cpp)
-target_link_libraries(texture ${GLFW_STATIC_LIBRARIES} ${Vulkan_LIBRARY} r267)
+target_link_libraries(texture ${GLFW_STATIC_LIBRARIES} ${Vulkan_LIBRARY} r267 OpenImageIO)
 
 add_shader("texture/main.vert" texture)
 add_shader("texture/main.frag" texture)

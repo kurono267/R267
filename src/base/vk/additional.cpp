@@ -56,3 +56,52 @@ spImage r267::checkboardTexture(spDevice device,const uint& width, const uint& h
 
 	return image;
 }
+
+// Simple loading image with usage OpenImageIO
+// Usage overheaded format
+#include <OpenImageIO/imageio.h>
+OIIO_NAMESPACE_USING
+spImage r267::loadImage(spDevice device,const std::string& filename){
+	ImageInput *in = ImageInput::open (filename);
+	if (! in){
+		throw std::runtime_error("Image don't found");
+	}
+	const ImageSpec &spec = in->spec();
+	int width = spec.width;
+	int height = spec.height;
+	int channels = spec.nchannels;
+	std::vector<float> pixels (width*height*channels);
+	in->read_image (TypeDesc::FLOAT, pixels.data());
+	in->close ();
+	ImageInput::destroy (in);
+
+	vk::Format format = vk::Format::eR32G32B32A32Sfloat;
+	size_t pixelSize = 4*sizeof(float);
+	if(channels == 3){
+		// Bad case emulate RGBA8
+		std::vector<float> pixels4(width*height*4);
+		for(int y = 0;y<height;++y){
+			for(int x = 0;x<width;++x){
+				pixels4[(y*width+x)*4+0] = pixels[(y*width+x)*3];
+				pixels4[(y*width+x)*4+1] = pixels[(y*width+x)*3+1];
+				pixels4[(y*width+x)*4+2] = pixels[(y*width+x)*3+2];
+				pixels4[(y*width+x)*4+3] = 1.0f;
+			}
+		}
+		pixels = pixels4;
+	} else if(channels != 4)throw std::runtime_error("Unsupported format");
+
+	vk::DeviceSize size = width*height*pixelSize;
+
+	spBuffer cpu = device->create<Buffer>();
+	cpu->create(size,vk::BufferUsageFlagBits::eTransferSrc,
+		vk::MemoryPropertyFlagBits::eHostVisible | 
+		vk::MemoryPropertyFlagBits::eHostCoherent);
+	cpu->set(pixels.data(),size);
+
+	spImage image = device->create<Image>();
+	image->create(width,height,format);
+	image->set(cpu);
+
+	return image;
+}

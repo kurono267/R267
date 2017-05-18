@@ -12,11 +12,8 @@ void Instance::init(const std::string& title, GLFWwindow* window, const glm::ive
 	setupDebugCallback();
 	createSurface(window);
 
-	std::cout << "t0" << std::endl;
 	_device = std::make_shared<r267::Device>();
-	std::cout << "t0" << std::endl;
 	_device->create(_instance,_surface,size);
-	std::cout << "t1" << std::endl;
 }
 
 spDevice Instance::device(){

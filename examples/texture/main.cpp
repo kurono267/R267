@@ -30,7 +30,7 @@ class TextureApp : public BaseApp {
 			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
 			_color.create(device,sizeof(UBO),&_colorData);
 
-			spImage image = checkboardTexture(device,512,512,64);
+			spImage image = loadImage(device,"assets/texture/hdr.hdr");//checkboardTexture(device,512,512,64);
 
 			_main->setTexture(image->createImageView(),createSampler(vk_device,linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
