@@ -2,7 +2,7 @@
 
 using namespace r267;
 
-Image::Image(spDevice device,vk::Queue queue,vk::CommandPool pool) : _device(device),_queue(queue),_pool(pool) {}
+Image::Image(spDevice device,vk::Queue queue,vk::CommandPool pool) : _device(device),_queue(queue),_pool(pool),_imageView(nullptr) {}
 Image::~Image(){}
 
 void Image::create(const uint& width,const uint& height,
@@ -107,4 +107,19 @@ void Image::setBuffer(const spBuffer& buffer){
 	commandBuffer.copyBufferToImage(buffer->buffer,_image,vk::ImageLayout::eTransferDstOptimal, {region});
 
 	endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
+}
+
+vk::ImageView Image::createImageView(){
+	if(_imageView)return _imageView;
+	else {
+		_imageView = r267::createImageView(_device->getDevice(),_image,_format);
+		return _imageView;
+	}
+}
+
+void Image::release(spDevice device){
+	auto vk_device = device->getDevice();
+	vk_device.destroyImageView(_imageView);
+	vk_device.freeMemory(_memory);
+	vk_device.destroyImage(_image);
 }

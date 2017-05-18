@@ -106,11 +106,11 @@ vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Form
 	return device.createImageView(createInfo);
 }
 
-vk::Sampler   createSampler(vk::Device device, vk::SamplerCreateInfo samplerInfo){
+vk::Sampler   r267::createSampler(vk::Device device, vk::SamplerCreateInfo samplerInfo){
 	return device.createSampler(samplerInfo);
 }
 
-vk::SamplerCreateInfo linearSampler(){
+vk::SamplerCreateInfo r267::linearSampler(){
 	return vk::SamplerCreateInfo(
 		vk::SamplerCreateFlags(),
 		vk::Filter::eLinear, // Mag Filter

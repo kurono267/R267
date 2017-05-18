@@ -145,11 +145,11 @@ void Pipeline::createDescSet(){
 	std::vector<vk::WriteDescriptorSet>         descWrites;
 	for(auto u : _uboBinds){
 		vk::DescriptorBufferInfo bufferInfo(u.buffer.vk_buffer(),0,u.buffer.size());
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,0,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr));
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr));
 	}
 	for(auto s : _samplerBinds){
 		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, vk::ImageLayout::eShaderReadOnlyOptimal);
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,0,0,1,vk::DescriptorType::eCombinedImageSampler,&imageInfo,nullptr,nullptr));
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,vk::DescriptorType::eCombinedImageSampler,&imageInfo,nullptr,nullptr));
 	}
 	_device.updateDescriptorSets(descWrites,nullptr);
 }
@@ -193,6 +193,9 @@ void Pipeline::create(){
 void Pipeline::release(){
 	for(auto m : _shaderModules){
 		_device.destroyShaderModule(m);
+	}
+	for(auto s : _samplerBinds){
+		_device.destroySampler(s.sampler);
 	}
 	_device.destroyRenderPass(_renderPass);
 	_device.destroyDescriptorSetLayout(_descLayout);

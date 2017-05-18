@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "buffer.hpp"
+#include "utils.hpp"
 
 namespace r267 {
 
@@ -15,7 +16,9 @@ class Image {
 					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
 					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
 					const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
-		void release();
+		void release(spDevice device);
+
+		vk::ImageView createImageView();
 
 		vk::Image vk_image();
 	protected:
@@ -25,6 +28,7 @@ class Image {
 
 		vk::Image        _image;
 		vk::DeviceMemory _memory;
+		vk::ImageView    _imageView;
 
 		uint             _width;
 		uint             _height;
@@ -33,5 +37,7 @@ class Image {
 		void transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout);
 		void setBuffer(const spBuffer& buffer);
 };
+
+typedef std::shared_ptr<Image> spImage;
 
 };
