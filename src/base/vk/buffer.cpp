@@ -57,8 +57,8 @@ void Buffer::createVB(const std::vector<sVertex>& vertices){
 	memory = vertexBuffer.memory;
 }
 
-void Buffer::createIB(const std::vector<uint>& indices) {
-    vk::DeviceSize bufferSize = sizeof(uint) * indices.size();
+void Buffer::createIB(const std::vector<uint32_t>& indices) {
+    vk::DeviceSize bufferSize = sizeof(uint32_t) * indices.size();
 
 	Buffer stagingBuffer = createOther(bufferSize,
 		vk::BufferUsageFlagBits::eTransferSrc,

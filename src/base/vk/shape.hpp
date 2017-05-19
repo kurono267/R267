@@ -36,6 +36,9 @@ class Cube : public Shape {
 		virtual void createShape();
 };
 
+std::vector<sVertex> createCubeVB();
+std::vector<uint32_t> createCubeIB();
+
 typedef std::shared_ptr<Shape> spShape;
 
-};
+}

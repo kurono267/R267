@@ -31,7 +31,7 @@ void Quad::createShape(){
 				sVertex(1.0, 1.0, 0.0f,  // Pos
 						1.0, 0.0f)};     // Texcoord
 
-	std::vector<uint> idata = {0,1,2,/*First*/2,3,0/*Second triangle*/};
+	std::vector<uint32_t> idata = {0,1,2,/*First*/2,3,0/*Second triangle*/};
 	_numIndex = idata.size();
 	_numVertex = vdata.size();
 
@@ -39,7 +39,7 @@ void Quad::createShape(){
 	_ib->createIB(idata);
 }
 
-void Cube::createShape(){
+std::vector<sVertex> r267::createCubeVB(){
 	std::vector<sVertex> vdata(24);
 
 	// front
@@ -73,7 +73,11 @@ void Cube::createShape(){
 	vdata[22] = sVertex(glm::vec3( 1.0,  1.0, -1.0),glm::vec2(1.0f, 0.0f));
 	vdata[23] = sVertex(glm::vec3( 1.0,  1.0,  1.0),glm::vec2(0.0f, 0.0f));
 
-	std::vector<uint> idata = {
+	return vdata;
+}
+
+std::vector<uint32_t> r267::createCubeIB(){
+	std::vector<uint32_t> idata = {
 		0,  1,  2,
 		2,  3,  0,
 		4,  5,  6,
@@ -87,6 +91,12 @@ void Cube::createShape(){
 		20, 21, 22,
 		22, 23, 20
 	};
+	return idata;
+}
+
+void Cube::createShape(){
+	std::vector<sVertex> vdata = createCubeVB();
+	std::vector<uint32_t> idata = createCubeIB();
 
 	_numIndex = idata.size();
 	_numVertex = vdata.size();

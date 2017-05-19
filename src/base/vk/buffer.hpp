@@ -39,7 +39,7 @@ class Buffer {
 		void create(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties);
 
 		void createVB(const std::vector<sVertex>& vertices);
-		void createIB(const std::vector<uint>& indices);
+		void createIB(const std::vector<uint32_t>& indices);
 
 		void set(const void* data,const size_t& size);
 		void copy(const Buffer& src,const Buffer& dst,const size_t& size);
