@@ -1,5 +1,4 @@
-set(R267_SRC 
-
+set ( R267_SRC 
 base/wnd/MainApp.cpp 
 base/vk/instance.cpp 
 base/vk/device.cpp 
@@ -14,7 +13,9 @@ base/vk/image.cpp
 
 base/scene/mesh.cpp
 base/scene/material.cpp
+base/scene/model.cpp
+base/scene/scene.cpp
 )
 
 add_library(r267 SHARED ${R267_SRC})
-target_link_libraries(r267 ${GLFW_STATIC_LIBRARIES} ${Vulkan_LIBRARY} OpenImageIO)
+target_link_libraries(r267 ${GLFW_STATIC_LIBRARIES} ${Vulkan_LIBRARY} OpenImageIO stdc++fs)

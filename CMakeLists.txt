@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.7.2)
 # r267 render library and examples
 project (R267)
 
-add_definitions(-std=c++14)
+add_definitions(-std=c++17)
 
 find_package(PkgConfig REQUIRED)
 find_package(glfw3 REQUIRED)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
 #include <boost/optional/optional.hpp>
 #include "base/vk/additional.hpp"
 
@@ -22,12 +21,24 @@ class Material {
 		Material();
 		virtual ~Material();
 		
-		void read(const std::string& filename,const std::string& object); // Read json material from filename
-		void read(const ptree& tree);           // Read material from ptree
+		void read(const ptree& root,const std::string& object); // Read json material from filename
+
+		void save(ptree& root,const std::string& object);
+
+		void setAlbedo(const float& albedo);
+		void setRoughness(const float& roughness);
+		void setDiffuseColor(const glm::vec3& color);
+		void setSpecularColor(const glm::vec3& color);
+
+		void setDiffuseTexture(const std::string& filename);
+
+		bool equal(const std::shared_ptr<Material>& material);
 
 		MaterialUBO data();
 		spImage     diffuseTexture(spDevice device);
 	protected:
+		void read(const ptree& tree);           // Read material from ptree
+		void save(ptree& tree);
 		// Material data
 		MaterialUBO _data;
 		// Material Texture

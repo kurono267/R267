@@ -7,9 +7,9 @@ Material::Material(){}
 Material::~Material(){}
 
 // Read json material from filename
-void Material::read(const std::string& filename,const std::string& object){
-	ptree root;
-	json_parser::read_json(filename,root);
+void Material::read(const ptree& root,const std::string& object){
+	//ptree root;
+	//json_parser::read_json(filename,root);
 	read(root.get_child(object));
 }
 
@@ -36,6 +36,33 @@ void Material::read(const ptree& tree){
 			++i;
 		}
 	}
+	_diffuseFilename = tree.get<std::string>("diffuseTexture","");
+}
+
+void Material::save(ptree& root,const std::string& object){
+	ptree material;
+	save(material);
+	root.add_child(object,material);
+}
+
+void Material::save(ptree& tree){
+	tree.put<float>("albedo",_data.albedo);
+	tree.put<float>("roughness",_data.roughness);
+	ptree diffColor;
+	for(int v = 0;v<3;++v){
+		ptree value;
+		value.put<float>("",_data.diffuseColor[v]);
+		diffColor.push_back(std::make_pair("",value));
+	}
+	tree.add_child("diffuseColor",diffColor);
+	ptree specularColor;
+	for(int v = 0;v<3;++v){
+		ptree value;
+		value.put<float>("",_data.specularColor[v]);
+		specularColor.push_back(std::make_pair("",value));
+	}
+	tree.add_child("specularColor",specularColor);
+	tree.put("diffuseTexture",_diffuseFilename);
 }
 
 MaterialUBO Material::data(){
@@ -45,5 +72,34 @@ MaterialUBO Material::data(){
 spImage Material::diffuseTexture(spDevice device){
 	if(_diffuseFilename.empty())throw std::logic_error("Material::diffuseTexture Filename is empty");
 	return loadImage(device,_diffuseFilename);
+}
+
+void Material::setAlbedo(const float& albedo){
+	_data.albedo = albedo;
+}
+
+void Material::setRoughness(const float& roughness){
+	_data.roughness = roughness;
+}
+
+void Material::setDiffuseColor(const glm::vec3& color){
+	_data.diffuseColor = color;
+}
+
+void Material::setSpecularColor(const glm::vec3& color){
+	_data.specularColor = color;
+}
+
+void Material::setDiffuseTexture(const std::string& filename){
+	_diffuseFilename = filename;
+}
+
+bool Material::equal(const std::shared_ptr<Material>& material){
+	if(_data.albedo != material->_data.albedo)return false;
+	if(_data.roughness != material->_data.roughness)return false;
+	if(_data.diffuseColor != material->_data.diffuseColor)return false;
+	if(_data.specularColor != material->_data.specularColor)return false;
+	if(_diffuseFilename != material->_diffuseFilename)return false;
+	return true;
 }
 
