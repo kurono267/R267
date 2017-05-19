@@ -6,7 +6,8 @@ namespace r267 {
 class Model {
 	public:
 		Model();
-		~Model();
+		virtual ~Model();
+		
 		
 };
 

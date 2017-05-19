@@ -124,7 +124,6 @@ void Pipeline::createDescSet(){
 
 	// Add Layout binding for UBO
 	for(auto u : _uboBinds){
-		std::cout << "UBO at binding " << u.binding << std::endl;
 		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,vk::DescriptorType::eUniformBuffer,1,u.stage));
 		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer,1));
 	}
@@ -163,6 +162,8 @@ void Pipeline::create(){
 		vk::PipelineLayoutCreateFlags(),
 		1, &_descLayout);
 
+	_pLayout = _device.createPipelineLayout(pipelineLayoutInfo);
+
 	auto bindingDescription = sVertex::bindingDesc();
     auto attributeDescriptions = sVertex::attributes();
 
@@ -171,8 +172,6 @@ void Pipeline::create(){
     	1,&bindingDescription,
     	attributeDescriptions.size(),attributeDescriptions.data()
     );
-
-	_pLayout = _device.createPipelineLayout(pipelineLayoutInfo);
 
 	vk::GraphicsPipelineCreateInfo pipelineInfo(vk::PipelineCreateFlags(),
 		_shaders.size(),_shaders.data(),

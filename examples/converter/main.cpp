@@ -2,6 +2,7 @@
 #include <base/vk/additional.hpp>
 #include <base/vk/shape.hpp>
 #include <base/scene/mesh.hpp>
+#include <base/scene/material.hpp>
 
 using namespace r267;
 
@@ -28,7 +29,22 @@ void testMeshPackUnpack(){
 	}
 }
 
+void testMaterialRead(){
+	try {
+		spMaterial material = std::make_shared<Material>();
+		material->read("assets/models/test.json","Cube");
+		auto ubo = material->data();
+		std::cout << "albedo " <<  ubo.albedo << std::endl;
+		std::cout << "roughness " << ubo.roughness << std::endl;
+		std::cout << "diffuseColor " << ubo.diffuseColor.x << "," << ubo.diffuseColor.y << "," << ubo.diffuseColor.z << std::endl; 
+		std::cout << "specularColor " << ubo.specularColor.x << "," << ubo.specularColor.y << "," << ubo.specularColor.z << std::endl; 
+	} catch(const std::exception& e){
+		std::cout << e.what() << std::endl;
+	}
+}
+
 int main(){
 	testMeshPackUnpack();
+	testMaterialRead();
 	return 0;
 }

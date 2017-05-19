@@ -13,6 +13,7 @@ base/vk/shape.cpp
 base/vk/image.cpp
 
 base/scene/mesh.cpp
+base/scene/material.cpp
 )
 
 add_library(r267 SHARED ${R267_SRC})
