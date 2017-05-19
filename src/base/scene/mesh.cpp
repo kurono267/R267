@@ -31,6 +31,7 @@ void Mesh::unpack(const uint8_t* data,const uint64_t& size){
 	char* name_str = new char[name_size];
 	std::memcpy(name_str,data+offset,name_size); offset += name_size;
 	_name = std::string(name_str);
+	_name.resize(name_size);
 
 	// Unpack Vertex buffer
 	uint32_t format;
@@ -121,4 +122,14 @@ bool Mesh::equal(const std::shared_ptr<r267::Mesh> other){
 		if(i0 != i1)return false;
 	}
 	return true;
+}
+
+std::string Mesh::name(){
+	return _name;
+}
+std::vector<sVertex>  Mesh::vertexes(){
+	return _vertexes;
+}
+std::vector<uint32_t> Mesh::indexes(){
+	return _indexes;
 }

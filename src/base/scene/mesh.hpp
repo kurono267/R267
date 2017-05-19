@@ -13,6 +13,10 @@ class Mesh : public Shape {
 		void setData(const uint8_t* data,const uint64_t& size); // Set Packed data
 		void setData(const std::vector<sVertex>& vertexes,const std::vector<uint32_t>& indexes,const std::string& name); // Set Unpacked data
 
+		std::string           name();
+		std::vector<sVertex>  vertexes();
+		std::vector<uint32_t> indexes();
+
 		bool equal(const std::shared_ptr<r267::Mesh> other);
 
 		uint8_t* packed(uint64_t& size);
