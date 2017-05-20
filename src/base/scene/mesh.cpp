@@ -20,6 +20,9 @@ void Mesh::setData(const std::vector<sVertex>& vertexes,const std::vector<uint32
 
 void Mesh::createShape(){
 	if(!_isData)throw std::logic_error("Mesh hasn't data");
+
+	_numIndex = _indexes.size();
+	_numVertex = _vertexes.size();
 	
 	_vb->createVB(_vertexes);
 	_ib->createIB(_indexes);

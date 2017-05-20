@@ -4,6 +4,10 @@
 #include <base/scene/scene.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+#include <assimp/Importer.hpp> // C++ importer interface
+#include <assimp/scene.h> // Output data structure
+#include <assimp/postprocess.h> // Post processing flags
+
 using namespace r267;
 
 void testMeshPackUnpack(){
@@ -55,6 +59,183 @@ void testMaterialRead(){
 	}
 }
 
+spScene assimp_import(const std::string& filename){
+	// Assimp import
+	Assimp::Importer importer;
+
+	const aiScene* scene = importer.ReadFile( filename,
+											aiProcess_Triangulate | 
+											aiProcess_GenSmoothNormals |
+											aiProcess_SortByPType);
+
+	if( !scene)
+		throw std::runtime_error("Assimp!: import failed");
+
+	if(!scene->HasMeshes())
+		throw std::runtime_error("Assimp!: imported scene hasn't mashes");
+
+	spScene result_scene = std::make_shared<Scene>();
+
+	for(int i = 0;i<scene->mNumMeshes;++i){
+		const aiMesh* i_mesh = scene->mMeshes[i];
+
+		if(!i_mesh)continue;
+
+		if(!i_mesh->HasPositions())continue;
+		if(!i_mesh->HasFaces())continue;
+
+		std::string name = i_mesh->mName.data;
+
+		spMaterial s_material = std::make_shared<Material>();
+
+		if(scene->HasMaterials()){
+			uint materialId = i_mesh->mMaterialIndex;
+			aiMaterial* aMat = scene->mMaterials[materialId];
+			if(aMat){
+				aiColor3D aKd;aiColor3D aKs;
+
+				aMat->Get(AI_MATKEY_COLOR_DIFFUSE,aKd);
+				aMat->Get(AI_MATKEY_COLOR_SPECULAR,aKs);
+
+				aiString map_Kd;
+				aMat->GetTexture(aiTextureType_DIFFUSE,0,&map_Kd);
+
+				s_material->setDiffuseColor(glm::vec3(aKd.r,aKd.g,aKd.b));
+				s_material->setSpecularColor(glm::vec3(aKs.r,aKs.g,aKs.b));
+				s_material->setDiffuseTexture(map_Kd.data);
+			}
+		}
+
+		std::vector<sVertex>  vertexes;
+		std::vector<uint32_t> indexes;
+
+		for(int f = 0;f<i_mesh->mNumFaces;++f){
+			const aiFace i_face = i_mesh->mFaces[f];
+
+			for(int v = 0;v<3;++v){
+				aiVector3D i_pos;
+				if(i_face.mIndices[v] >= i_mesh->mNumVertices){
+					break;
+				}
+				i_pos = i_mesh->mVertices[i_face.mIndices[v]];
+
+				sVertex vertex;
+				vertex.pos = glm::vec3(i_pos.x,i_pos.y,i_pos.z);
+				if(i_mesh->mNormals != nullptr){
+					const aiVector3D i_no = i_mesh->mNormals[i_face.mIndices[v]];
+					vertex.normal  = glm::vec3(i_no.x,i_no.y,i_no.z);
+				}
+				if(i_mesh->mTextureCoords[0] != nullptr){
+					const aiVector3D i_uv = i_mesh->mTextureCoords[0][i_face.mIndices[v]];
+					vertex.uv = glm::vec2(i_uv.x,i_uv.y);
+				}
+				vertexes.push_back(vertex);
+				indexes.push_back(vertexes.size()-1);
+			}
+		}
+
+		spMesh s_mesh = std::make_shared<Mesh>();
+		s_mesh->setData(vertexes,indexes,name);
+
+		spModel model = std::make_shared<Model>(name);
+		model->setMesh(s_mesh);
+		model->setMaterial(s_material);
+
+		result_scene->add(model);
+	}
+	importer.FreeScene();
+	return result_scene;
+}
+
+// TODO convert objects to const
+// TODO Add materials
+#if 0
+void assimp_export(spScene scene,const std::string& filename){
+	Assimp::Exporter exporter;
+	int formats = exporter.GetExportFormatCount();
+	
+	size_t pos = filename.find_first_of(".");
+	std::string res = filename.substr(pos+1,filename.size()-pos-1);
+	std::string fileId;
+	for(int i = 0;i<formats;++i){
+		if(res == exporter.GetExportFormatDescription(i)->fileExtension){
+			fileId = exporter.GetExportFormatDescription(i)->id;
+			break;
+		}
+	}
+
+	if(fileId.empty()){
+		std::stringstream error_message;
+		error_message << "This resolution " << res << "not supported for export";
+		throw std::runtime_error(error_message.str());
+	}
+
+	const auto models = scene->models();
+
+	aiScene* e_scene = new aiScene();
+
+	e_scene->mMaterials = new aiMaterial*[ 1 ];
+	e_scene->mNumMaterials = 1;
+
+	e_scene->mMaterials[ 0 ] = new aiMaterial(); 
+
+	e_scene->mRootNode = new aiNode();
+	e_scene->mRootNode->mMeshes = new unsigned int[models.size()];
+	e_scene->mRootNode->mNumMeshes = models.size();
+
+	e_scene->mMeshes = new aiMesh*[models.size()];
+	e_scene->mNumMeshes = models.size();
+	for(int i = 0;i<mesh.size();++i){
+		e_scene->mRootNode->mMeshes[i] = i;
+		aiMesh* e_mesh = new aiMesh();
+
+		const auto& vertexes = models[i]->mesh()->vertexes();
+		const auto& indexes = models[i]->mesh()->indexes();
+
+		// Compute size of model
+		Index e_size = vertexes.size();
+
+		e_mesh->mVertices = new aiVector3D[e_size];
+		e_mesh->mNormals  = new aiVector3D[e_size];
+		e_mesh->mTextureCoords[0] = new aiVector3D[e_size];
+		e_mesh->mNumUVComponents[0] = 2;
+
+		e_mesh->mNumVertices = e_size;
+
+		const size_t faces_num = indexes.size()/3;
+
+		e_mesh->mFaces = new aiFace[faces_num];
+		e_mesh->mNumFaces = faces_num;
+		for(int f = 0;f<faces_num;++f){
+			aiFace e_face;
+			e_face.mIndices = new unsigned int[3];
+			e_face.mNumIndices = 3;
+
+			for(int v = 0;v<3;++v){
+				size_t index_id = f*3+v;
+				if(index_id >= indexes.size())break;
+				uint32_t index = indexes[f*3+v];
+
+				e_face.mIndices[v] = index;
+
+				sVertex vertex = vertexes[index];
+
+				e_mesh->mVertices[index] = aiVector3D(vertex.pos.x,vertex.pos.y,vertex.pos.z);
+				e_mesh->mNormals[index] = aiVector3D(vertex.no.x,vertex.no.y,vertex.no.z);
+				e_mesh->mTextureCoords[0][index] = aiVector3D(vertex.uv.x,vertex.uv.y,0.0f);
+			}
+
+			e_mesh->mFaces[f] = aiFace(e_face);
+		}
+
+		e_scene->mMeshes[i] = e_mesh;
+	}
+
+	if(exporter.Export(e_scene,fileId,filename,aiProcess_JoinIdenticalVertices) == AI_SUCCESS)return true;
+	return false;
+}
+#endif
+
 void testSceneSaveLoad(){
 	try {
 		spScene scene = std::make_shared<Scene>();
@@ -87,9 +268,20 @@ void testSceneSaveLoad(){
 	}
 }
 
-int main(){
+
+int main(int argc, char const *argv[]) {
+	// Basic tests
 	testMeshPackUnpack();
 	testMaterialRead();
 	testSceneSaveLoad();
+	if(argc < 3){
+		std::cout << "Wrong arguments number" << std::endl;
+		std::cout << "converter input output" << std::endl;
+		return 0;
+	}
+	std::string input = argv[1];
+	std::string output = argv[2];
+	spScene scene = assimp_import(input);
+	scene->save(output);
 	return 0;
 }

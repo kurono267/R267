@@ -15,6 +15,7 @@ void Scene::load(const std::string& filename){
 	// Read binary meshes
 	// Check filesize
 	std::string binFilename = filename + "." + binExt;
+	std::cout << binFilename << std::endl;
 	fs::path path = fs::canonical(binFilename);
 
     uint64_t size = fs::file_size(path);

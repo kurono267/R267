@@ -21,4 +21,11 @@ add_shader("texture/main.frag" texture)
 
 # Converter for Models
 add_executable(converter converter/main.cpp)
-target_link_libraries(converter r267)
+target_link_libraries(converter r267 assimp)
+
+# Scene loader example
+add_executable(mesh mesh/main.cpp)
+target_link_libraries(mesh r267)
+
+add_shader("mesh/main.vert" mesh)
+add_shader("mesh/main.frag" mesh)

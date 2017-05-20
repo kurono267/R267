@@ -3,7 +3,12 @@
 using namespace boost::property_tree;
 using namespace r267;
 
-Material::Material(){}
+Material::Material(){
+	_data.albedo = 1.0f; 
+	_data.roughness = 0.0f;
+	_data.diffuseColor = glm::vec3(1.0f);
+	_data.specularColor = glm::vec3(1.0f);
+}
 Material::~Material(){}
 
 // Read json material from filename

@@ -15,6 +15,7 @@ base/scene/mesh.cpp
 base/scene/material.cpp
 base/scene/model.cpp
 base/scene/scene.cpp
+base/scene/camera.cpp
 )
 
 add_library(r267 SHARED ${R267_SRC})
