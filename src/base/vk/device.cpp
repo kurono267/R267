@@ -55,7 +55,9 @@ bool Device::isDeviceSuitable(const vk::PhysicalDevice& device){
 		swapChainAdequate = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
 	}
 
-	return indices.isComplete() && extensionsSupported && swapChainAdequate;
+	vk::PhysicalDeviceFeatures supportedFeatures = device.getFeatures();
+
+	return indices.isComplete() && extensionsSupported && swapChainAdequate && supportedFeatures.samplerAnisotropy;
 }
 
 void Device::createLogicalDevice() {
@@ -74,6 +76,7 @@ void Device::createLogicalDevice() {
 	}
 
 	vk::PhysicalDeviceFeatures deviceFeatures;
+	deviceFeatures.samplerAnisotropy = VK_TRUE;
 
 	vk::DeviceCreateInfo createInfo;
 
