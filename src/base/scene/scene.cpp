@@ -61,6 +61,7 @@ void Scene::load(const std::string& filename){
 	// Read material
 	for(auto m : _models){
 		spMaterial material = std::make_shared<Material>();
+		material->setPath(fs::path(filename).remove_filename());
 		material->read(root,m->name());
 		m->setMaterial(material);
 	}

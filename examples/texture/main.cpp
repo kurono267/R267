@@ -23,6 +23,7 @@ class TextureApp : public BaseApp {
 
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
+			_texDesc = device->create<DescSet>();
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/texture/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/texture/main_frag.spv");
@@ -32,8 +33,11 @@ class TextureApp : public BaseApp {
 
 			spImage image = loadImage(device,"assets/texture/hdr.hdr");//checkboardTexture(device,512,512,64);
 
-			_main->setTexture(image->createImageView(),createSampler(vk_device,linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
-			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
+			_texDesc->setTexture(image->createImageView(),createSampler(vk_device,linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
+			_texDesc->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
+			_texDesc->create();
+
+			_main->descSet(_texDesc);
 			_main->create();
 
 			_quad = std::make_shared<Quad>();
@@ -64,7 +68,7 @@ class TextureApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-					vk::DescriptorSet descSets[] = {_main->getDescriptorSet()};
+					vk::DescriptorSet descSets[] = {_texDesc->getDescriptorSet()};
 
 					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
@@ -128,6 +132,7 @@ class TextureApp : public BaseApp {
 			_main->release();
 		}
 	protected:
+		spDescSet  _texDesc;
 		spPipeline _main;
 		UBO        _colorData;
 		Uniform    _color;

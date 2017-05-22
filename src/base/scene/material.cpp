@@ -74,9 +74,8 @@ MaterialUBO Material::data(){
 	return _data;
 }
 
-spImage Material::diffuseTexture(spDevice device){
-	if(_diffuseFilename.empty())throw std::logic_error("Material::diffuseTexture Filename is empty");
-	return loadImage(device,_diffuseFilename);
+void Material::setPath(const std::string& path){
+	_path = path;
 }
 
 void Material::setAlbedo(const float& albedo){
@@ -106,5 +105,30 @@ bool Material::equal(const std::shared_ptr<Material>& material){
 	if(_data.specularColor != material->_data.specularColor)return false;
 	if(_diffuseFilename != material->_diffuseFilename)return false;
 	return true;
+}
+
+void Material::create(spDevice device,std::unordered_map<std::string,spImage>& imagesBuffer){
+	_uniform.create(device,sizeof(MaterialUBO),&_data);
+	std::string filename = _path+_diffuseFilename;
+	auto tmp = imagesBuffer.find(filename);
+	if(tmp != imagesBuffer.end()){
+		_diffTexture = tmp->second;
+	} else {
+		if(!_diffuseFilename.empty())_diffTexture = loadImage(device,_path+_diffuseFilename);
+		else _diffTexture = whiteTexture(device,1,1); 
+		imagesBuffer.insert(std::pair<std::string,spImage>(filename,_diffTexture));
+	}
+
+	_diffView = _diffTexture->createImageView();
+	_sampler  = createSampler(device->getDevice(),linearSampler());
+
+	_descSet  = device->create<DescSet>();
+	_descSet->setUniformBuffer(_uniform,0,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(_diffView,_sampler,1,vk::ShaderStageFlagBits::eFragment);
+	_descSet->create();
+}
+
+spDescSet Material::getDescSet(){
+	return _descSet;
 }
 

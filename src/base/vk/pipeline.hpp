@@ -80,40 +80,26 @@ class RenderPattern {
 		std::vector<vk::AttachmentDescription> _attachments;
 };
 
-class Pipeline {
+class DescSet {
 	public:
-		Pipeline(const RenderPattern& rp,vk::Device device) : _device(device),_renderpattern(rp) {}
-		~Pipeline(){}
+		DescSet(spDevice device,vk::Queue queue,vk::CommandPool pool);
+		virtual ~DescSet();
+
+		void create();
 
 		void setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage);
 		void setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage);
-		void addShader(const vk::ShaderStageFlagBits& type,const std::string& filename);
 
-		void create();
-		void release();
-
-		vk::RenderPass getRenderPass();
+		void release(spDevice device);
 
 		vk::DescriptorSet getDescriptorSet(){return _descSet;}
-		vk::PipelineLayout      getPipelineLayout(){return _pLayout;}
-
-		operator vk::Pipeline(){return _pipeline;}
+		vk::DescriptorSetLayout getLayout(){return _descLayout;}
 	protected:
-		RenderPattern _renderpattern;
+		spDevice _device;
 
-		vk::Device _device; 
-
-		std::vector<vk::PipelineShaderStageCreateInfo> _shaders;
 		vk::DescriptorSetLayout _descLayout;
 		vk::DescriptorSet       _descSet;
 		vk::DescriptorPool      _descPool;
-		vk::PipelineViewportStateCreateInfo      _viewportState;
-
-		vk::RenderPass              _renderPass;
-		vk::Pipeline                _pipeline;
-		vk::PipelineLayout          _pLayout;
-
-		std::vector<vk::ShaderModule> _shaderModules;
 
 		struct UBOBinding {
 			Uniform buffer;
@@ -128,8 +114,43 @@ class Pipeline {
 		};
 		std::vector<UBOBinding>     _uboBinds;
 		std::vector<SamplerBinding> _samplerBinds;
+};
 
-		void createDescSet();
+typedef std::shared_ptr<DescSet> spDescSet;
+
+class Pipeline {
+	public:
+		Pipeline(const RenderPattern& rp,vk::Device device) : _device(device),_renderpattern(rp) {}
+		~Pipeline(){}
+
+		void addShader(const vk::ShaderStageFlagBits& type,const std::string& filename);
+
+		void create();
+		void release();
+
+		void descSets(const std::vector<spDescSet>& descSets);
+		void descSet(const spDescSet& descSet);
+
+		vk::RenderPass getRenderPass();
+
+		operator vk::Pipeline(){return _pipeline;}
+		vk::PipelineLayout      getPipelineLayout(){return _pLayout;}
+	protected:
+		RenderPattern _renderpattern;
+
+		vk::Device _device; 
+
+		std::vector<vk::PipelineShaderStageCreateInfo> _shaders;
+		vk::PipelineViewportStateCreateInfo      _viewportState;
+
+		std::vector<vk::DescriptorSetLayout> _descLayouts;
+		vk::PipelineLayoutCreateInfo _pipelineLayoutInfo;
+
+		vk::RenderPass              _renderPass;
+		vk::Pipeline                _pipeline;
+		vk::PipelineLayout          _pLayout;
+
+		std::vector<vk::ShaderModule> _shaderModules;
 };
 
 typedef std::shared_ptr<Pipeline> spPipeline;

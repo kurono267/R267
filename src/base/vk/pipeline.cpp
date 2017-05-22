@@ -150,62 +150,12 @@ void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& 
 	_shaders.push_back(shaderStageInfo);
 }
 
-// TODO Move to Uniform
-void Pipeline::setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage){
-	_uboBinds.push_back({buffer,binding,stage});
-}
-
-void Pipeline::setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage){
-	_samplerBinds.push_back({imageView,sampler,binding,stage});
-}
-
-void Pipeline::createDescSet(){
-	// Create Decription Set Layout
-	std::vector<vk::DescriptorSetLayoutBinding> layoutBinds;
-	std::vector<vk::DescriptorPoolSize>         poolSizes;
-
-	// Add Layout binding for UBO
-	for(auto u : _uboBinds){
-		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,vk::DescriptorType::eUniformBuffer,1,u.stage));
-		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer,1));
-	}
-	for(auto s : _samplerBinds){
-		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(s.binding,vk::DescriptorType::eCombinedImageSampler,1,s.stage));
-		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler,1));
-	}
-
-	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),layoutBinds.size(),layoutBinds.data());
-	_descLayout = _device.createDescriptorSetLayout(layoutInfo);
-
-	vk::DescriptorPoolCreateInfo poolInfo(vk::DescriptorPoolCreateFlags(),1,poolSizes.size(),poolSizes.data());
-	_descPool = _device.createDescriptorPool(poolInfo);
-
-	vk::DescriptorSetAllocateInfo allocInfo(_descPool,1,&_descLayout);
-	_descSet = _device.allocateDescriptorSets(allocInfo)[0];
-
-	std::vector<vk::WriteDescriptorSet>         descWrites;
-	for(auto u : _uboBinds){
-		vk::DescriptorBufferInfo bufferInfo(u.buffer.vk_buffer(),0,u.buffer.size());
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr));
-	}
-	for(auto s : _samplerBinds){
-		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, vk::ImageLayout::eShaderReadOnlyOptimal);
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,vk::DescriptorType::eCombinedImageSampler,&imageInfo,nullptr,nullptr));
-	}
-	_device.updateDescriptorSets(descWrites,nullptr);
-}
-
 void Pipeline::create(){
-	createDescSet();
 	_viewportState = vk::PipelineViewportStateCreateInfo(vk::PipelineViewportStateCreateFlags(),1,&(_renderpattern._viewport),1,&(_renderpattern._scissor));
 
 	_renderPass    = _device.createRenderPass(_renderpattern._renderPassInfo);
 
-	vk::PipelineLayoutCreateInfo pipelineLayoutInfo(
-		vk::PipelineLayoutCreateFlags(),
-		1, &_descLayout);
-
-	_pLayout = _device.createPipelineLayout(pipelineLayoutInfo);
+	_pLayout = _device.createPipelineLayout(_pipelineLayoutInfo);
 
 	auto bindingDescription = sVertex::bindingDesc();
     auto attributeDescriptions = sVertex::attributes();
@@ -232,20 +182,91 @@ void Pipeline::create(){
 	_pipeline = _device.createGraphicsPipelines(nullptr,pipelineInfo)[0];
 }
 
+void Pipeline::descSets(const std::vector<spDescSet>& descSets){
+	for(auto d : descSets){
+		_descLayouts.push_back(d->getLayout());
+	}
+	_pipelineLayoutInfo = vk::PipelineLayoutCreateInfo(
+		vk::PipelineLayoutCreateFlags(),
+		_descLayouts.size(), _descLayouts.data());
+}
+
+void Pipeline::descSet(const spDescSet& d){
+	_descLayouts.push_back(d->getLayout());
+
+	_pipelineLayoutInfo = vk::PipelineLayoutCreateInfo(
+		vk::PipelineLayoutCreateFlags(),
+		_descLayouts.size(), _descLayouts.data());
+}
+
 void Pipeline::release(){
 	for(auto m : _shaderModules){
 		_device.destroyShaderModule(m);
 	}
-	for(auto s : _samplerBinds){
-		_device.destroySampler(s.sampler);
-	}
 	_device.destroyRenderPass(_renderPass);
-	_device.destroyDescriptorSetLayout(_descLayout);
-	_device.destroyDescriptorPool(_descPool);
 	_device.destroyPipelineLayout(_pLayout);
 	_device.destroyPipeline(_pipeline);
 }
 
 vk::RenderPass Pipeline::getRenderPass(){
 	return _renderPass;
+}
+
+DescSet::DescSet(spDevice device,vk::Queue queue,vk::CommandPool pool) : _device(device) {}
+DescSet::~DescSet(){}
+
+void DescSet::create(){
+	// Create Decription Set Layout
+	std::vector<vk::DescriptorSetLayoutBinding> layoutBinds;
+	std::vector<vk::DescriptorPoolSize>         poolSizes;
+
+	auto vk_device = _device->getDevice();
+
+	// Add Layout binding for UBO
+	for(auto u : _uboBinds){
+		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,vk::DescriptorType::eUniformBuffer,1,u.stage));
+		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer,1));
+	}
+	for(auto s : _samplerBinds){
+		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(s.binding,vk::DescriptorType::eCombinedImageSampler,1,s.stage));
+		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler,1));
+	}
+
+	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),layoutBinds.size(),layoutBinds.data());
+	_descLayout = vk_device.createDescriptorSetLayout(layoutInfo);
+
+	vk::DescriptorPoolCreateInfo poolInfo(vk::DescriptorPoolCreateFlags(),1,poolSizes.size(),poolSizes.data());
+	_descPool = vk_device.createDescriptorPool(poolInfo);
+
+	vk::DescriptorSetAllocateInfo allocInfo(_descPool,1,&_descLayout);
+	_descSet = vk_device.allocateDescriptorSets(allocInfo)[0];
+
+	std::vector<vk::WriteDescriptorSet>         descWrites;
+	for(auto u : _uboBinds){
+		vk::DescriptorBufferInfo bufferInfo(u.buffer.vk_buffer(),0,u.buffer.size());
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr));
+	}
+	for(auto s : _samplerBinds){
+		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, vk::ImageLayout::eShaderReadOnlyOptimal);
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,vk::DescriptorType::eCombinedImageSampler,&imageInfo,nullptr,nullptr));
+	}
+	vk_device.updateDescriptorSets(descWrites,nullptr);
+}
+
+void DescSet::setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage){
+	_uboBinds.push_back({buffer,binding,stage});
+}
+
+void DescSet::setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage){
+	_samplerBinds.push_back({imageView,sampler,binding,stage});
+}
+void DescSet::release(spDevice device){
+	auto vk_device = device->getDevice();
+
+	for(auto s : _samplerBinds){
+		vk_device.destroySampler(s.sampler);
+	}
+
+	vk_device.destroyDescriptorSetLayout(_descLayout);
+	vk_device.destroyDescriptorPool(_descPool);
 }

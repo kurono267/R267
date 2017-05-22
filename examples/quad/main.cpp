@@ -26,10 +26,6 @@ class QuadApp : public BaseApp {
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/quad/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/quad/main_frag.spv");
 
-			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
-			_color.create(device,sizeof(UBO),&_colorData);
-
-			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
 			_main->create();
 
 			_quad = std::make_shared<Quad>();
@@ -59,10 +55,6 @@ class QuadApp : public BaseApp {
 
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
-
-					vk::DescriptorSet descSets[] = {_main->getDescriptorSet()};
-
-					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
 					_quad->draw(_commandBuffers[i]);
 

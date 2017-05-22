@@ -25,10 +25,6 @@ class TriangleApp : public BaseApp {
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/triangle/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/triangle/main_frag.spv");
 
-			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
-			_color.create(device,sizeof(UBO),&_colorData);
-
-			_main->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
 			_main->create();
 
 			_vb = device->create<Buffer>();
@@ -66,10 +62,6 @@ class TriangleApp : public BaseApp {
 				vk::DeviceSize offsets[] = {0};
 					_commandBuffers[i].bindVertexBuffers(0,1,&_vb->buffer,offsets);
 					_commandBuffers[i].bindIndexBuffer(_ib->buffer,0,vk::IndexType::eUint32);
-
-					vk::DescriptorSet descSets[] = {_main->getDescriptorSet()};
-
-					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
 					_commandBuffers[i].drawIndexed(3, 1, 0, 0 , 0);
 
@@ -132,8 +124,6 @@ class TriangleApp : public BaseApp {
 		}
 	protected:
 		spPipeline _main;
-		UBO        _colorData;
-		Uniform    _color;
 
 		// Framebuffers
 		std::vector<spFramebuffer> _framebuffers;

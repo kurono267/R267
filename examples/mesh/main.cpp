@@ -29,9 +29,12 @@ class MeshApp : public BaseApp {
 			// Load scene 
 			_scene = std::make_shared<Scene>();
 			_scene->load(scene_filename);
+			spDescSet matDesc;
 			// Create Vulkan meshes
 			for(auto& m : _scene->models()){
 				m->mesh()->create(device);
+				m->material()->create(device,_imagesBuffer);
+				if(!matDesc)matDesc = m->material()->getDescSet();
 			}
 
 			_cube = std::make_shared<Cube>();
@@ -39,6 +42,8 @@ class MeshApp : public BaseApp {
 
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
+
+			_sceneDesc = device->create<DescSet>();
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/mesh/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/mesh/main_frag.spv");
@@ -49,7 +54,10 @@ class MeshApp : public BaseApp {
 			_mvpData.mvp = _camera->getVP();
 			_mvp.create(device,sizeof(UBO),&_mvpData);
 
-			_main->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
+			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
+			_sceneDesc->create();
+
+			_main->descSets({_sceneDesc,matDesc});
 			_main->create();
 
 			_framebuffers = createFrameBuffers(device,_main);
@@ -77,20 +85,14 @@ class MeshApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-				vk::DescriptorSet descSets[] = {_main->getDescriptorSet()};
-
-				_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
-
-					/*for(int m = 0;m<1;++m){
-						auto model = _scene->models()[m];
-
-						model->mesh()->draw(_commandBuffers[i]);
-					}*/
 					// Draw scene
 					for(auto& model : _scene->models()){
-					model->mesh()->draw(_commandBuffers[i]);
+						vk::DescriptorSet descSets[] = {_sceneDesc->getDescriptorSet(),model->material()->getDescSet()->getDescriptorSet()};
+
+						_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 2, descSets, 0, nullptr);
+
+						model->mesh()->draw(_commandBuffers[i]);
 					}
-					//_cube->draw(_commandBuffers[i]);
 
 				_commandBuffers[i].endRenderPass();
 				_commandBuffers[i].end();
@@ -175,6 +177,7 @@ class MeshApp : public BaseApp {
 			_main->release();
 		}
 	protected:
+		spDescSet  _sceneDesc;
 		spPipeline _main;
 		UBO        _mvpData;
 		Uniform    _mvp;
@@ -187,6 +190,8 @@ class MeshApp : public BaseApp {
 		// Semaphores
 		vk::Semaphore _imageAvailable;
 		vk::Semaphore _renderFinish;
+
+		std::unordered_map<std::string,spImage> _imagesBuffer;
 
 		spScene  _scene;
 		spShape  _cube;

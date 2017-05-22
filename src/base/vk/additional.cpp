@@ -12,7 +12,7 @@ std::vector<spFramebuffer> r267::createFrameBuffers(spDevice device,spPipeline p
 
 	for(int i = 0;i<imageViews.size();++i){
 		spFramebuffer framebuffer = device->create<Framebuffer>();
-		
+
 		framebuffer->attachment(imageViews[i]);
 		framebuffer->depth(extent.width,extent.height);
 		framebuffer->create(extent.width,extent.height,pipeline->getRenderPass());
@@ -53,6 +53,31 @@ spImage r267::checkboardTexture(spDevice device,const uint& width, const uint& h
 	return image;
 }
 
+spImage r267::whiteTexture(spDevice device,const uint& width, const uint& height){
+	// Create data
+	glm::vec4* pixels = new glm::vec4[width*height];
+	for(uint y = 0;y<height;++y){
+		for(uint x = 0;x<width;++x){
+			pixels[y*width+x] = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+		}
+	}
+
+	size_t pixelSize = sizeof(glm::vec4);
+	vk::DeviceSize size = width*height*pixelSize;
+
+	spBuffer cpu = device->create<Buffer>();
+	cpu->create(size,vk::BufferUsageFlagBits::eTransferSrc,
+		vk::MemoryPropertyFlagBits::eHostVisible | 
+		vk::MemoryPropertyFlagBits::eHostCoherent);
+	cpu->set(pixels,size);
+
+	spImage image = device->create<Image>();
+	image->create(width,height,vk::Format::eR32G32B32A32Sfloat);
+	image->set(cpu);
+
+	return image;
+}
+
 // Simple loading image with usage OpenImageIO
 // Usage overheaded format
 #include <OpenImageIO/imageio.h>
@@ -60,7 +85,9 @@ OIIO_NAMESPACE_USING
 spImage r267::loadImage(spDevice device,const std::string& filename){
 	ImageInput *in = ImageInput::open (filename);
 	if (! in){
-		throw std::runtime_error("Image don't found");
+		std::stringstream str;
+		str << "Image " << filename << " don't found";
+		throw std::runtime_error(str.str());
 	}
 	const ImageSpec &spec = in->spec();
 	int width = spec.width;

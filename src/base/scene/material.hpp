@@ -4,6 +4,8 @@
 #include <boost/optional/optional.hpp>
 #include "base/vk/additional.hpp"
 
+#include <unordered_map>
+
 using namespace boost::property_tree;
 // Our simple material
 namespace r267 {
@@ -20,6 +22,8 @@ class Material {
 	public:
 		Material();
 		virtual ~Material();
+
+		void setPath(const std::string& path);
 		
 		void read(const ptree& root,const std::string& object); // Read json material from filename
 
@@ -35,7 +39,10 @@ class Material {
 		bool equal(const std::shared_ptr<Material>& material);
 
 		MaterialUBO data();
-		spImage     diffuseTexture(spDevice device);
+
+		void        create(spDevice device,std::unordered_map<std::string,spImage>& imagesBuffer);
+
+		spDescSet   getDescSet();
 	protected:
 		void read(const ptree& tree);           // Read material from ptree
 		void save(ptree& tree);
@@ -43,6 +50,14 @@ class Material {
 		MaterialUBO _data;
 		// Material Texture
 		std::string _diffuseFilename;
+
+		Uniform       _uniform;
+		spImage       _diffTexture;
+		vk::ImageView _diffView;
+		vk::Sampler   _sampler;
+		spDescSet     _descSet;
+
+		std::string   _path;
 };
 
 typedef std::shared_ptr<Material> spMaterial;

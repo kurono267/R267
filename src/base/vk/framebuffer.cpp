@@ -37,6 +37,7 @@ vk::Framebuffer Framebuffer::vk_framebuffer(){
 }
 
 void Framebuffer::release(spDevice device){
+	device->getDevice().destroyImageView(_depthView);
 	device->getDevice().destroyFramebuffer(_framebuffer);
 }
 
