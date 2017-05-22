@@ -37,7 +37,7 @@ class MeshApp : public BaseApp {
 			_cube = std::make_shared<Cube>();
 			_cube->create(device);
 
-			auto baseRP = RenderPattern::basic(swapchain);
+			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/mesh/main_vert.spv");
@@ -63,12 +63,15 @@ class MeshApp : public BaseApp {
 
 				_commandBuffers[i].begin(&beginInfo);
 
-				vk::ClearValue clearColor = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 1.0f});
+				std::array<vk::ClearValue, 2> clearValues = {};
+				clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 1.0f});
+				clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
+
 				vk::RenderPassBeginInfo renderPassInfo(
 					_main->getRenderPass(),
-					_framebuffers[i],
+					_framebuffers[i]->vk_framebuffer(),
 					vk::Rect2D(vk::Offset2D(),swapchain->getExtent()),
-					1, &clearColor
+					clearValues.size(), clearValues.data()
 				);
 
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
@@ -163,12 +166,12 @@ class MeshApp : public BaseApp {
 		}
 		bool onScroll(const glm::vec2& offset){
 			_camera->scale(offset.y,_dt);
+			_mvpData.mvp = _camera->getVP();
 			return true;
 		}
 		bool onExit(){
 			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
 			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
-			for(auto fb : _framebuffers)vk_device.destroyFramebuffer(fb);
 			_main->release();
 		}
 	protected:
@@ -177,7 +180,7 @@ class MeshApp : public BaseApp {
 		Uniform    _mvp;
 
 		// Framebuffers
-		std::vector<vk::Framebuffer> _framebuffers;
+		std::vector<spFramebuffer> _framebuffers;
 		// Command Buffers
 		vk::CommandPool _commandPool;
 		std::vector<vk::CommandBuffer> _commandBuffers;

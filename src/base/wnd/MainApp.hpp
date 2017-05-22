@@ -60,6 +60,7 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 		void vsync(bool on);
 
 		void run();
+		void resize(const int width,const int height);
 		bool is();
 
 		spInstance vulkan();
@@ -99,10 +100,17 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 			app->_app->onScroll(offset);
 		}
 
+		static void __glfwOnResize(GLFWwindow* window, int width, int height){
+			ptr& app = instance();
+			app->resize(width,height);
+		}
+
 		spBaseApp _app;
 		// Current statements
 		GLFWKey   _lastKey;
 		GLFWMouse _lastMouse;
+
+		std::string _title;
 
 		GLFWwindow* _window;
 

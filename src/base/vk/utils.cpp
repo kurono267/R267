@@ -91,7 +91,7 @@ void r267::endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::
 	device.freeCommandBuffers(pool,{commands});
 }
 
-vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Format format){
+vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags){
 	vk::ImageViewCreateInfo createInfo(
 		vk::ImageViewCreateFlags(),
 		image,
@@ -99,7 +99,7 @@ vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Form
 		format,
 		vk::ComponentMapping(),
 		vk::ImageSubresourceRange(
-			vk::ImageAspectFlagBits::eColor,
+			aspectFlags,
 			0, 1, 0, 1)
 	);
 

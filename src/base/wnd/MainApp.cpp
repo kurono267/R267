@@ -39,6 +39,17 @@ bool MainApp::is(){
 spInstance MainApp::vulkan(){
 	return _vulkan;
 }
+
+void MainApp::resize(const int width,const int height){
+	// Relase
+	_vulkan->device()->getDevice().waitIdle();
+	_app->onExit();
+	_vulkan->release();
+	// Reinit with new resolution
+	_vulkan = std::make_shared<Instance>();
+	_vulkan->init(_title,_window,glm::ivec2(width,height));
+	_app->init();
+}
 			
 void MainApp::run(){
 	_app->mainApp = shared_from_this();
@@ -82,8 +93,10 @@ void MainApp::create(const std::string& title,const int width,const int height){
 		glfwSetCursorPosCallback(_window, &MainApp::__glfwOnMousePos);
 		glfwSetMouseButtonCallback(_window, &MainApp::__glfwOnMouseBtn);
 		glfwSetScrollCallback(_window, &MainApp::__glfwOnScroll);
+		glfwSetWindowSizeCallback(_window, &MainApp::__glfwOnResize);
 
 		_vulkan = std::make_shared<Instance>();
+		_title = title;
 		_vulkan->init(title,_window,wndSize());
 	} catch(std::exception& e){
 		std::cout << e.what() << std::endl;

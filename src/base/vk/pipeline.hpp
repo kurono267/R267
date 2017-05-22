@@ -40,22 +40,24 @@ class RenderPattern {
 					const vk::BlendOp& colorBlendOp = vk::BlendOp::eAdd,
 					const vk::BlendFactor& srcAlphaBlendFactor = vk::BlendFactor::eOne,const vk::BlendFactor& dstAlphaBlendFactor = vk::BlendFactor::eZero,
 					const vk::BlendOp& alphaBlendOp = vk::BlendOp::eAdd);
+		void depth(const bool& enable = true, const bool& write = true,const vk::CompareOp& comp = vk::CompareOp::eLess);
 
-		void createRenderPass(const vk::Format& swapchainFormat);
+		void createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat);
 
-		static RenderPattern&& basic(const spSwapchain& swapchain){
+		static RenderPattern basic(const spDevice& device){
 			// Create Basic Render Pattern
 			RenderPattern pattern;
 			pattern.inputAssembly(vk::PrimitiveTopology::eTriangleList);
-			auto extent = swapchain->getExtent();
+			auto extent = device->getSwapchain()->getExtent();
 			pattern.viewport(0,0,extent.width,extent.height);
 			pattern.scissor(vk::Offset2D(),extent);
 			pattern.rasterizer();
 			pattern.multisampling();
 			pattern.blend();
+			pattern.depth();
 
-			pattern.createRenderPass(swapchain->getFormat());
-			return std::move(pattern);
+			pattern.createRenderPass(device->getSwapchain()->getFormat(),device->depthFormat());
+			return pattern;
 		}
 	private:
 		vk::PipelineInputAssemblyStateCreateInfo _assembly;
@@ -65,11 +67,17 @@ class RenderPattern {
 		vk::PipelineMultisampleStateCreateInfo   _multisampling;
 		vk::PipelineColorBlendAttachmentState    _blendAttacment;
 		vk::PipelineColorBlendStateCreateInfo    _blend;
+		vk::PipelineDepthStencilStateCreateInfo  _depthStencil;
 		
 		vk::AttachmentDescription _colorAttachment;
+		vk::AttachmentDescription _depthAttachment;
 		vk::AttachmentReference   _colorAttachmentRef;
+		vk::AttachmentReference   _depthAttachmentRef;
 		vk::SubpassDescription    _subPass;
+		vk::SubpassDependency     _subPassDep;
 		vk::RenderPassCreateInfo  _renderPassInfo;
+
+		std::vector<vk::AttachmentDescription> _attachments;
 };
 
 class Pipeline {

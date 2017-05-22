@@ -2,8 +2,8 @@
 
 using namespace r267;
 
-std::vector<vk::Framebuffer> r267::createFrameBuffers(spDevice device,spPipeline pipeline){
-	std::vector<vk::Framebuffer> framebuffers;
+std::vector<spFramebuffer> r267::createFrameBuffers(spDevice device,spPipeline pipeline){
+	std::vector<spFramebuffer> framebuffers;
 
 	auto swapchain = device->getSwapchain();
 	auto imageViews = swapchain->getImageViews();
@@ -11,17 +11,13 @@ std::vector<vk::Framebuffer> r267::createFrameBuffers(spDevice device,spPipeline
 	auto vk_device = device->getDevice();
 
 	for(int i = 0;i<imageViews.size();++i){
-		vk::ImageView attachments[] = {imageViews[i]};
+		spFramebuffer framebuffer = device->create<Framebuffer>();
+		
+		framebuffer->attachment(imageViews[i]);
+		framebuffer->depth(extent.width,extent.height);
+		framebuffer->create(extent.width,extent.height,pipeline->getRenderPass());
 
-		vk::FramebufferCreateInfo framebufferInfo(
-			vk::FramebufferCreateFlags(), // Default
-			pipeline->getRenderPass(), // Current render pass
-			1, attachments, // Attachments
-			extent.width, // Width
-			extent.height, // Height
-			1 // Layers
-		);
-		framebuffers.push_back(vk_device.createFramebuffer(framebufferInfo));
+		framebuffers.push_back(framebuffer);
 	}
 	return framebuffers;
 }

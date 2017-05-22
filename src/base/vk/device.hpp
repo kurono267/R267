@@ -36,6 +36,9 @@ class Device : public std::enable_shared_from_this<Device> {
 		vk::Queue  getPresentQueue();
 		spSwapchain  getSwapchain();
 
+		vk::Format supportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features);
+		vk::Format depthFormat();
+
 		vk::CommandPool getCommandPool();
 
 		vk::Semaphore createSemaphore(vk::SemaphoreCreateInfo info);

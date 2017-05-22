@@ -50,25 +50,37 @@ vk::Image Image::vk_image(){
 void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout) {
 	vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
 
-	vk::AccessFlags srcAccess;
-	vk::AccessFlags dstAccess;
+	vk::ImageAspectFlags aspectMask = vk::ImageAspectFlagBits::eColor;
+	if (newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
+		aspectMask = vk::ImageAspectFlagBits::eDepth;
+
+		if (hasStencilComponent(format)) {
+			aspectMask |= vk::ImageAspectFlagBits::eStencil;
+		}
+	}
+
+	uint srcAccess;
+	uint dstAccess;
 	if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eTransferDstOptimal) {
-		srcAccess = vk::AccessFlagBits::eHostWrite;
-		dstAccess = vk::AccessFlagBits::eTransferWrite;
+		srcAccess = (uint)vk::AccessFlagBits::eHostWrite;
+		dstAccess = (uint)vk::AccessFlagBits::eTransferWrite;
 	} else if (oldLayout == vk::ImageLayout::eTransferDstOptimal && newLayout == vk::ImageLayout::eShaderReadOnlyOptimal) {
-		srcAccess = vk::AccessFlagBits::eTransferWrite;
-		dstAccess = vk::AccessFlagBits::eShaderRead;
-	} else {
+		srcAccess = (uint)vk::AccessFlagBits::eTransferWrite;
+		dstAccess = (uint)vk::AccessFlagBits::eShaderRead;
+	} else if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
+            srcAccess = 0;
+            dstAccess = (uint)(vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite);
+    } else {
 		throw std::invalid_argument("Unsupported layout transition!");
 	}
 
 	vk::ImageSubresourceRange subRes(
-		vk::ImageAspectFlagBits::eColor,
+		aspectMask,
 		0, 1, /* Mip levels current and count*/ 0, 1 /* Layers current and count */ );
 
 	vk::ImageMemoryBarrier barrier(
-		srcAccess,
-		dstAccess,
+		(vk::AccessFlagBits)srcAccess,
+		(vk::AccessFlagBits)dstAccess,
 		oldLayout,
 		newLayout,
 		VK_QUEUE_FAMILY_IGNORED,

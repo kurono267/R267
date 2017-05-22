@@ -10,6 +10,7 @@ base/vk/uniform.cpp
 base/vk/additional.cpp 
 base/vk/shape.cpp 
 base/vk/image.cpp
+base/vk/framebuffer.cpp
 
 base/scene/mesh.cpp
 base/scene/material.cpp

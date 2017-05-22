@@ -20,7 +20,7 @@ class QuadApp : public BaseApp {
 			vulkan = mainApp->vulkan();device = vulkan->device(); swapchain = device->getSwapchain();vk_device = device->getDevice();
 			_commandPool = device->getCommandPool();
 
-			auto baseRP = RenderPattern::basic(swapchain);
+			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/quad/main_vert.spv");
@@ -46,12 +46,15 @@ class QuadApp : public BaseApp {
 
 				_commandBuffers[i].begin(&beginInfo);
 
-				vk::ClearValue clearColor = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 1.0f});
+				std::array<vk::ClearValue, 2> clearValues = {};
+				clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 1.0f});
+				clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
+
 				vk::RenderPassBeginInfo renderPassInfo(
 					_main->getRenderPass(),
-					_framebuffers[i],
+					_framebuffers[i]->vk_framebuffer(),
 					vk::Rect2D(vk::Offset2D(),swapchain->getExtent()),
-					1, &clearColor
+					clearValues.size(), clearValues.data()
 				);
 
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
@@ -118,7 +121,6 @@ class QuadApp : public BaseApp {
 		bool onExit(){
 			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
 			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
-			for(auto fb : _framebuffers)vk_device.destroyFramebuffer(fb);
 			_main->release();
 		}
 	protected:
@@ -127,7 +129,7 @@ class QuadApp : public BaseApp {
 		Uniform    _color;
 
 		// Framebuffers
-		std::vector<vk::Framebuffer> _framebuffers;
+		std::vector<spFramebuffer> _framebuffers;
 		// Command Buffers
 		vk::CommandPool _commandPool;
 		std::vector<vk::CommandBuffer> _commandBuffers;

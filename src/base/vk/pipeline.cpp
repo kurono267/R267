@@ -16,6 +16,12 @@ RenderPattern::RenderPattern(const RenderPattern& r){
 	_colorAttachmentRef = r._colorAttachmentRef;
 	_subPass            = r._subPass;
 	_renderPassInfo     = r._renderPassInfo;
+	_depthStencil       = r._depthStencil;
+	_depthAttachment    = r._depthAttachment;
+	_depthAttachmentRef = r._depthAttachmentRef;
+	for(auto a : r._attachments){
+		_attachments.push_back(a);
+	}
 }
 RenderPattern::~RenderPattern(){
 
@@ -65,8 +71,18 @@ void RenderPattern::blend(const bool& enable,const vk::ColorComponentFlags& writ
 
 	_blend = vk::PipelineColorBlendStateCreateInfo(vk::PipelineColorBlendStateCreateFlags(),0,vk::LogicOp::eCopy,1,&_blendAttacment);
 }
+
+void RenderPattern::depth(const bool& enable, const bool& write,const vk::CompareOp& comp){
+	_depthStencil = vk::PipelineDepthStencilStateCreateInfo(
+		vk::PipelineDepthStencilStateCreateFlags(),
+		enable,
+		write,
+		comp
+	);
+}
+
 // TODO improve functional for create Render Pass
-void RenderPattern::createRenderPass(const vk::Format& swapchainFormat){
+void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat){
 	_colorAttachment.setFormat(swapchainFormat);
 	_colorAttachment.setSamples(vk::SampleCountFlagBits::e1);
 	_colorAttachment.setLoadOp(vk::AttachmentLoadOp::eClear);
@@ -75,18 +91,44 @@ void RenderPattern::createRenderPass(const vk::Format& swapchainFormat){
 	_colorAttachment.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare);
 	_colorAttachment.setInitialLayout(vk::ImageLayout::eUndefined);
 	_colorAttachment.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
+	// Depth Attachment
+	_depthAttachment.setFormat(depthFormat);
+	_depthAttachment.setSamples(vk::SampleCountFlagBits::e1);
+	_depthAttachment.setLoadOp(vk::AttachmentLoadOp::eClear);
+	_depthAttachment.setStoreOp(vk::AttachmentStoreOp::eDontCare);
+	_depthAttachment.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare);
+	_depthAttachment.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare);
+	_depthAttachment.setInitialLayout(vk::ImageLayout::eUndefined);
+	_depthAttachment.setFinalLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
 
 	_colorAttachmentRef.setAttachment(0);
 	_colorAttachmentRef.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
 
+	_depthAttachmentRef.setAttachment(1);
+	_depthAttachmentRef.setLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
+
 	_subPass.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics);
 	_subPass.setColorAttachmentCount(1);
 	_subPass.setPColorAttachments(&_colorAttachmentRef);
+	_subPass.setPDepthStencilAttachment(&_depthAttachmentRef);
 
-	_renderPassInfo.setAttachmentCount(1);
-	_renderPassInfo.setPAttachments(&_colorAttachment);
+	_subPassDep = vk::SubpassDependency(
+		VK_SUBPASS_EXTERNAL, 0,
+		vk::PipelineStageFlagBits::eColorAttachmentOutput,
+		vk::PipelineStageFlagBits::eColorAttachmentOutput,
+		vk::AccessFlags(),
+		vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite
+	);
+
+	_attachments.push_back(_colorAttachment);
+	_attachments.push_back(_depthAttachment);
+
+	_renderPassInfo.setAttachmentCount(_attachments.size());
+	_renderPassInfo.setPAttachments(_attachments.data());
 	_renderPassInfo.setSubpassCount(1);
 	_renderPassInfo.setPSubpasses(&_subPass);
+	_renderPassInfo.setDependencyCount(1);
+	_renderPassInfo.setPDependencies(&_subPassDep);
 }
 
 vk::ShaderModule createShaderModule(vk::Device device,const std::string& filename){
@@ -156,6 +198,7 @@ void Pipeline::createDescSet(){
 void Pipeline::create(){
 	createDescSet();
 	_viewportState = vk::PipelineViewportStateCreateInfo(vk::PipelineViewportStateCreateFlags(),1,&(_renderpattern._viewport),1,&(_renderpattern._scissor));
+
 	_renderPass    = _device.createRenderPass(_renderpattern._renderPassInfo);
 
 	vk::PipelineLayoutCreateInfo pipelineLayoutInfo(
@@ -180,7 +223,7 @@ void Pipeline::create(){
 		&_viewportState,
 		&_renderpattern._rasterizer,
 		&_renderpattern._multisampling,
-		nullptr, // Depth and stencil
+		&_renderpattern._depthStencil, // Depth and stencil
 		&_renderpattern._blend,
 		nullptr,
 		_pLayout,

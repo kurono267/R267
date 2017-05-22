@@ -20,6 +20,8 @@ class Image {
 
 		vk::ImageView createImageView();
 
+		void transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout);
+
 		vk::Image vk_image();
 	protected:
 		spDevice        _device;
@@ -34,7 +36,6 @@ class Image {
 		uint             _height;
 		vk::Format       _format;
 
-		void transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout);
 		void setBuffer(const spBuffer& buffer);
 };
 
