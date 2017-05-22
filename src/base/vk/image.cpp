@@ -12,6 +12,7 @@ void Image::create(const uint& width,const uint& height,
 	_width = width;
 	_height = height;
 	_format = format;
+	_mipLevels = mipLevels;
 	vk::ImageCreateInfo imageInfo(
 		vk::ImageCreateFlags(), // Basic
 		vk::ImageType::e2D, // Type 1D,2D,3D
@@ -76,7 +77,7 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 
 	vk::ImageSubresourceRange subRes(
 		aspectMask,
-		0, 1, /* Mip levels current and count*/ 0, 1 /* Layers current and count */ );
+		0, _mipLevels, /* Mip levels current and count*/ 0, 1 /* Layers current and count */ );
 
 	vk::ImageMemoryBarrier barrier(
 		(vk::AccessFlagBits)srcAccess,
@@ -121,12 +122,43 @@ void Image::setBuffer(const spBuffer& buffer){
 	endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
 }
 
+void Image::set(const spBuffer& buffer, const std::vector<uint>& offsets, const std::vector<glm::ivec2>& sizes){
+	transition(_format,vk::ImageLayout::ePreinitialized,vk::ImageLayout::eTransferDstOptimal);
+
+	for(uint l = 0;l<offsets.size();++l){
+		vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
+
+		vk::ImageSubresourceLayers subRes(
+			vk::ImageAspectFlagBits::eColor,
+			l, /* Mip levels current*/ 0, 1 /* Layers current and count */ );
+
+		vk::BufferImageCopy region(
+			/* bufferOffset bufferRowLength bufferImageHeight */
+			offsets[l], 0, 0,
+			/* subRes imageOffest */ 
+			subRes, {0, 0, 0},
+			/* imageExtent */
+			{sizes[l].x,sizes[l].y,1}
+		);
+
+		commandBuffer.copyBufferToImage(buffer->buffer,_image,vk::ImageLayout::eTransferDstOptimal, {region});
+
+		endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
+	}
+
+	transition(_format,vk::ImageLayout::eTransferDstOptimal,vk::ImageLayout::eShaderReadOnlyOptimal);
+}
+
 vk::ImageView Image::createImageView(){
 	if(_imageView)return _imageView;
 	else {
-		_imageView = r267::createImageView(_device->getDevice(),_image,_format);
+		_imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels);
 		return _imageView;
 	}
+}
+
+uint Image::mipLevels(){
+	return _mipLevels;
 }
 
 void Image::release(spDevice device){

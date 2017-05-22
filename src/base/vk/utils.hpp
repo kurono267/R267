@@ -32,10 +32,10 @@ const vk::ColorComponentFlags RGBA = vk::ColorComponentFlagBits::eR | vk::ColorC
 vk::CommandBuffer beginSingle(vk::Device device,vk::CommandPool pool);
 void              endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::CommandBuffer commands);
 
-vk::ImageView createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags = vk::ImageAspectFlagBits::eColor);
+vk::ImageView createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags = vk::ImageAspectFlagBits::eColor, const uint& mipLevels = 1);
 vk::Sampler   createSampler(vk::Device device, vk::SamplerCreateInfo samplerInfo);
 
-vk::SamplerCreateInfo linearSampler();
+vk::SamplerCreateInfo linearSampler(const uint& mipLevels = 1);
 
 inline bool hasStencilComponent(vk::Format format) {
     return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;

@@ -120,7 +120,7 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 	}
 
 	_diffView = _diffTexture->createImageView();
-	_sampler  = createSampler(device->getDevice(),linearSampler());
+	_sampler  = createSampler(device->getDevice(),linearSampler(_diffTexture->mipLevels()));
 
 	_descSet  = device->create<DescSet>();
 	_descSet->setUniformBuffer(_uniform,0,vk::ShaderStageFlagBits::eFragment);
