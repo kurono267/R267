@@ -12,6 +12,7 @@ using namespace r267;
 
 struct UBO {
 	glm::mat4 mvp;
+	glm::vec4 view;
 };
 
 std::string scene_filename;
@@ -52,6 +53,7 @@ class MeshApp : public BaseApp {
 			_camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
 
 			_mvpData.mvp = _camera->getVP();
+			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
 			_mvp.create(device,sizeof(UBO),&_mvpData);
 
 			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
@@ -164,10 +166,12 @@ class MeshApp : public BaseApp {
 					_isFirst = false;
 				}
 			}
+			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
 			_mvpData.mvp = _camera->getVP();
 		}
 		bool onScroll(const glm::vec2& offset){
 			_camera->scale(offset.y,_dt);
+			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
 			_mvpData.mvp = _camera->getVP();
 			return true;
 		}

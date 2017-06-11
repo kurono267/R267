@@ -27,7 +27,7 @@ class TextureApp : public BaseApp {
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/texture/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/texture/main_frag.spv");
-
+			
 			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
 			_color.create(device,sizeof(UBO),&_colorData);
 

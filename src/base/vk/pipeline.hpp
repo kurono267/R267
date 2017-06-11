@@ -125,7 +125,7 @@ class Pipeline {
 
 		void addShader(const vk::ShaderStageFlagBits& type,const std::string& filename);
 
-		void create();
+		void create(const vk::VertexInputBindingDescription& vertexBinding = sVertex::bindingDesc(), const std::vector<vk::VertexInputAttributeDescription>& vertexAttrib = sVertex::attributes());
 		void release();
 
 		void descSets(const std::vector<spDescSet>& descSets);

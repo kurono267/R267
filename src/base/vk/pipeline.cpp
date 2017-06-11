@@ -150,15 +150,15 @@ void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& 
 	_shaders.push_back(shaderStageInfo);
 }
 
-void Pipeline::create(){
+void Pipeline::create(const vk::VertexInputBindingDescription& vertexBinding, const std::vector<vk::VertexInputAttributeDescription>& vertexAttrib){
 	_viewportState = vk::PipelineViewportStateCreateInfo(vk::PipelineViewportStateCreateFlags(),1,&(_renderpattern._viewport),1,&(_renderpattern._scissor));
 
 	_renderPass    = _device.createRenderPass(_renderpattern._renderPassInfo);
 
 	_pLayout = _device.createPipelineLayout(_pipelineLayoutInfo);
 
-	auto bindingDescription = sVertex::bindingDesc();
-    auto attributeDescriptions = sVertex::attributes();
+	auto bindingDescription = vertexBinding;
+    auto attributeDescriptions = vertexAttrib;
 
     vk::PipelineVertexInputStateCreateInfo vertexInputInfo(
     	vk::PipelineVertexInputStateCreateFlags(),

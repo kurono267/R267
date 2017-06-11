@@ -4,10 +4,8 @@ using namespace boost::property_tree;
 using namespace r267;
 
 Material::Material(){
-	_data.albedo = 1.0f; 
-	_data.roughness = 0.0f;
-	_data.diffuseColor = glm::vec3(1.0f);
-	_data.specularColor = glm::vec3(1.0f);
+	_data.diffuseColor = glm::vec4(1.0f);
+	_data.specularColor = glm::vec4(1.0f,1.0f,1.0f,0.0f);
 }
 Material::~Material(){}
 
@@ -19,12 +17,13 @@ void Material::read(const ptree& root,const std::string& object){
 }
 
 void Material::read(const ptree& tree){
-	_data.albedo = tree.get<float>("albedo",1.0f);
-	_data.roughness = tree.get<float>("roughness",0.0f);
+	float albedo = tree.get<float>("albedo",1.0f);
+	float roughness = tree.get<float>("roughness",0.0f);
 	auto diffColor = tree.get_child_optional("diffuseColor");
 	auto specularColor = tree.get_child_optional("specularColor");
-	_data.diffuseColor = glm::vec3(1.0f);
-	_data.specularColor = glm::vec3(1.0f);
+	_data.diffuseColor = glm::vec4(1.0f,1.0f,1.0f,albedo);
+	_data.specularColor = glm::vec4(1.0f,1.0f,1.0f,roughness);
+
 	uint i = 0;
 	if(diffColor){
 		for(auto& c : *diffColor){
@@ -41,6 +40,10 @@ void Material::read(const ptree& tree){
 			++i;
 		}
 	}
+
+	std::cout << _data.diffuseColor.x << ", " << _data.diffuseColor.y << ", " << _data.diffuseColor.z << std::endl;
+	std::cout << _data.specularColor.x << ", " << _data.specularColor.y << ", " << _data.specularColor.z << std::endl;
+
 	_diffuseFilename = tree.get<std::string>("diffuseTexture","");
 }
 
@@ -51,8 +54,8 @@ void Material::save(ptree& root,const std::string& object){
 }
 
 void Material::save(ptree& tree){
-	tree.put<float>("albedo",_data.albedo);
-	tree.put<float>("roughness",_data.roughness);
+	tree.put<float>("albedo",_data.diffuseColor.w);
+	tree.put<float>("roughness",_data.specularColor.w);
 	ptree diffColor;
 	for(int v = 0;v<3;++v){
 		ptree value;
@@ -79,19 +82,21 @@ void Material::setPath(const std::string& path){
 }
 
 void Material::setAlbedo(const float& albedo){
-	_data.albedo = albedo;
+	_data.diffuseColor.w = albedo;
 }
 
 void Material::setRoughness(const float& roughness){
-	_data.roughness = roughness;
+	_data.specularColor.w = roughness;
 }
 
 void Material::setDiffuseColor(const glm::vec3& color){
-	_data.diffuseColor = color;
+	float a = _data.diffuseColor.w;
+	_data.diffuseColor = glm::vec4(color,a);
 }
 
 void Material::setSpecularColor(const glm::vec3& color){
-	_data.specularColor = color;
+	float r = _data.specularColor.w;
+	_data.specularColor = glm::vec4(color,r);
 }
 
 void Material::setDiffuseTexture(const std::string& filename){
@@ -99,8 +104,6 @@ void Material::setDiffuseTexture(const std::string& filename){
 }
 
 bool Material::equal(const std::shared_ptr<Material>& material){
-	if(_data.albedo != material->_data.albedo)return false;
-	if(_data.roughness != material->_data.roughness)return false;
 	if(_data.diffuseColor != material->_data.diffuseColor)return false;
 	if(_data.specularColor != material->_data.specularColor)return false;
 	if(_diffuseFilename != material->_diffuseFilename)return false;
@@ -108,6 +111,7 @@ bool Material::equal(const std::shared_ptr<Material>& material){
 }
 
 void Material::create(spDevice device,std::unordered_map<std::string,spImage>& imagesBuffer){
+	std::cout << sizeof(MaterialUBO) << std::endl;
 	_uniform.create(device,sizeof(MaterialUBO),&_data);
 	std::string filename = _path+_diffuseFilename;
 	auto tmp = imagesBuffer.find(filename);

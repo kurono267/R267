@@ -12,10 +12,8 @@ namespace r267 {
 
 struct MaterialUBO {
 	// Material data
-	float       albedo;
-	float       roughness;
-	glm::vec3   diffuseColor;
-	glm::vec3   specularColor;
+	glm::vec4   diffuseColor;  // Diffuse Color and Albedo
+	glm::vec4   specularColor; // Specular Color and Roughness 
 };
 
 class Material {

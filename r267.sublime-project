@@ -21,8 +21,36 @@
 					"shell_cmd": "make -j8 r267"
 				},
 				{
+					"name": "shader_mesh_main_frag",
+					"shell_cmd": "make -j8 shader_mesh_main_frag"
+				},
+				{
+					"name": "shader_mesh_main_vert",
+					"shell_cmd": "make -j8 shader_mesh_main_vert"
+				},
+				{
+					"name": "converter",
+					"shell_cmd": "make -j8 converter"
+				},
+				{
+					"name": "shader_texture_main_frag",
+					"shell_cmd": "make -j8 shader_texture_main_frag"
+				},
+				{
+					"name": "shader_texture_main_vert",
+					"shell_cmd": "make -j8 shader_texture_main_vert"
+				},
+				{
+					"name": "texture",
+					"shell_cmd": "make -j8 texture"
+				},
+				{
 					"name": "shader_quad_main_frag",
 					"shell_cmd": "make -j8 shader_quad_main_frag"
+				},
+				{
+					"name": "mesh",
+					"shell_cmd": "make -j8 mesh"
 				},
 				{
 					"name": "triangle",
@@ -48,10 +76,6 @@
 			"working_dir": "${project_path}/build"
 		}
 	],
-	"cmake":
-	{
-		"build_folder": "${project_path}/build"
-	},
 	"folders":
 	[
 		{
@@ -60,5 +84,12 @@
 		{
 			"path": "/home/kurono267/workspace/lgl"
 		}
-	]
+	],
+	"settings":
+	{
+		"cmake":
+		{
+			"build_folder": "${project_path}/build"
+		}
+	}
 }

@@ -20,8 +20,8 @@ struct sVertex {
 		return vk::VertexInputBindingDescription(0,sizeof(sVertex));
 	}
 
-	static std::array<vk::VertexInputAttributeDescription,3> attributes(){
-		std::array<vk::VertexInputAttributeDescription,3> attrs;
+	static std::vector<vk::VertexInputAttributeDescription> attributes(){
+		std::vector<vk::VertexInputAttributeDescription> attrs(3);
 		attrs[0] = vk::VertexInputAttributeDescription(0,0,vk::Format::eR32G32B32Sfloat,offsetof(sVertex,pos));
 		attrs[1] = vk::VertexInputAttributeDescription(1,0,vk::Format::eR32G32B32Sfloat,offsetof(sVertex,normal));
 		attrs[2] = vk::VertexInputAttributeDescription(2,0,vk::Format::eR32G32Sfloat,offsetof(sVertex,uv));
@@ -43,6 +43,9 @@ class Buffer {
 
 		void set(const void* data,const size_t& size);
 		void copy(const Buffer& src,const Buffer& dst,const size_t& size);
+
+		void* map(const size_t& size);
+		void  unmap();
 
 		void release(spDevice device);
 	protected:

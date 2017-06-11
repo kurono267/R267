@@ -91,6 +91,14 @@ void Buffer::set(const void* data,const size_t& size){
 	_device.unmapMemory(memory);
 }
 
+void* Buffer::map(const size_t& size){
+	return _device.mapMemory(memory,0,(vk::DeviceSize)size);
+}
+
+void  Buffer::unmap(){
+	_device.unmapMemory(memory);
+}
+
 void Buffer::copy(const Buffer& src,const Buffer& dst,const size_t& size){
 	copy(src.buffer,dst.buffer,(vk::DeviceSize)size);
 }
