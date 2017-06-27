@@ -131,13 +131,6 @@ void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk:
 	_renderPassInfo.setPDependencies(&_subPassDep);
 }
 
-vk::ShaderModule createShaderModule(vk::Device device,const std::string& filename){
-	auto shaderCode = readFile(filename);
-	vk::ShaderModuleCreateInfo createInfo(vk::ShaderModuleCreateFlags(),shaderCode.size(),(uint32_t*) shaderCode.data());
-
-	return device.createShaderModule(createInfo);
-}
-
 void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& filename){
 	auto SM = createShaderModule(_device,filename);
 	_shaderModules.push_back(SM);

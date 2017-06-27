@@ -19,7 +19,7 @@ QueueFamilyIndices r267::queueFamilies(const vk::PhysicalDevice& device,const vk
 
 	int i = 0;
 	for (const auto& queueFamily : queueFamilies) {
-		if (queueFamily.queueCount > 0 && queueFamily.queueFlags & vk::QueueFlagBits::eGraphics) {
+		if (indices.graphicsFamily == -1 && queueFamily.queueCount > 0 && queueFamily.queueFlags & vk::QueueFlagBits::eGraphics) {
 			indices.graphicsFamily = i;
 		}
 
@@ -29,12 +29,22 @@ QueueFamilyIndices r267::queueFamilies(const vk::PhysicalDevice& device,const vk
 			indices.presentFamily = i;
 		}
 
-		if (indices.isComplete()) {
-			break;
+		if(queueFamily.queueCount > 0 && queueFamily.queueFlags & vk::QueueFlagBits::eCompute){
+			indices.computeFamily = i;
 		}
+
+		std::cout << "Queue " << i << vk::to_string(queueFamily.queueFlags) << std::endl;
+
+		/*if (indices.isComplete()) {
+			break;
+		}*/
 
 		i++;
 	}
+	std::cout << "Selected Queues:" << std::endl;
+	std::cout << "Graphics " << indices.graphicsFamily << std::endl;
+	std::cout << "Present "  << indices.presentFamily << std::endl;
+	std::cout << "Compute "  << indices.computeFamily << std::endl;
 
 	return indices;
 }
@@ -129,4 +139,11 @@ vk::SamplerCreateInfo r267::linearSampler(const uint& mipLevels){
 		vk::BorderColor::eFloatTransparentBlack, // Border color
 		0 // Unnormalized coordiante
 	);
+}
+
+vk::ShaderModule r267::createShaderModule(vk::Device device,const std::string& filename){
+	auto shaderCode = readFile(filename);
+	vk::ShaderModuleCreateInfo createInfo(vk::ShaderModuleCreateFlags(),shaderCode.size(),(uint32_t*) shaderCode.data());
+
+	return device.createShaderModule(createInfo);
 }

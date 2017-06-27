@@ -98,6 +98,7 @@ void Device::createLogicalDevice() {
 	_device = _pDevice.createDevice(createInfo);
 	_presentQueue  = _device.getQueue(indices.presentFamily,0);
 	_graphicsQueue  = _device.getQueue(indices.graphicsFamily,0);
+	_computeQueue  = _device.getQueue(indices.computeFamily,0);
 }
 
 void Device::create(const vk::Instance& instance,const vk::SurfaceKHR& surface,const glm::ivec2& size){
@@ -109,6 +110,8 @@ void Device::create(const vk::Instance& instance,const vk::SurfaceKHR& surface,c
 
 	vk::CommandPoolCreateInfo poolInfo(vk::CommandPoolCreateFlags(),queueFamiliesIndices().graphicsFamily);
 	_pool = _device.createCommandPool(poolInfo); 
+	vk::CommandPoolCreateInfo poolComputeInfo(vk::CommandPoolCreateFlags(),queueFamiliesIndices().computeFamily);
+	_poolCompute = _device.createCommandPool(poolComputeInfo); 
 }
 
 vk::Semaphore Device::createSemaphore(vk::SemaphoreCreateInfo info){
@@ -117,8 +120,9 @@ vk::Semaphore Device::createSemaphore(vk::SemaphoreCreateInfo info){
 	return result;
 }
 
-vk::CommandPool Device::getCommandPool(){
-	return _pool;
+vk::CommandPool Device::getCommandPool(const bool isCompute){
+	if(!isCompute)return _pool;
+	else return _poolCompute;
 }
 
 void Device::release(){
@@ -131,6 +135,7 @@ void Device::release(){
 		m(shared_from_this());
 	}
 	_device.destroyCommandPool(_pool);
+	_device.destroyCommandPool(_poolCompute);
 	_device.destroy();
 }
 
@@ -152,6 +157,10 @@ vk::Queue  Device::getGraphicsQueue(){
 
 vk::Queue  Device::getPresentQueue(){
 	return _presentQueue;
+}
+
+vk::Queue  Device::getComputeQueue(){
+	return _computeQueue;
 }
 
 void Device::print(){

@@ -4,6 +4,110 @@
 		"selected_items":
 		[
 			[
+				"qu",
+				"queueFlags"
+			],
+			[
+				"que",
+				"queueFamily"
+			],
+			[
+				"Qu",
+				"QueueFlagBits"
+			],
+			[
+				"Shader",
+				"ShaderStageFlagBits"
+			],
+			[
+				"_com",
+				"_compute"
+			],
+			[
+				"_co",
+				"_commandBuffer"
+			],
+			[
+				"add",
+				"addShader"
+			],
+			[
+				"base",
+				"baseRP\tauto baseRP"
+			],
+			[
+				"setSc",
+				"setScissor\tvoid setScissor(uint32_t firstScissor, ArrayProxy<const vk::Rect2D> scissors) const"
+			],
+			[
+				"e",
+				"eMax\tvk::BlendOp eMax"
+			],
+			[
+				"eR8G8B8A8",
+				"eR8G8B8A8Unorm\tvk::Format eR8G8B8A8Unorm"
+			],
+			[
+				"eR8G",
+				"eR8G8B8Unorm\tvk::Format eR8G8B8Unorm"
+			],
+			[
+				"eUint",
+				"eUint16\tvk::IndexType eUint16"
+			],
+			[
+				"gui",
+				"guiVertex\tguiVertex"
+			],
+			[
+				"uint",
+				"uint32_t\tuint32_t"
+			],
+			[
+				"el",
+				"elem_count\tunsigned int elem_count"
+			],
+			[
+				"_fb",
+				"_fbView\tvk::ImageView _fbView"
+			],
+			[
+				"_de",
+				"_descSet"
+			],
+			[
+				"or",
+				"orthoUniform\tr267::Uniform orthoUniform"
+			],
+			[
+				"_gpb",
+				"_gpuVB"
+			],
+			[
+				"Com",
+				"CommandBuffer\tCommandBuffer"
+			],
+			[
+				"MAX",
+				"MAX_ELEMENT_BUFFER_GUI"
+			],
+			[
+				"Ext",
+				"Extent2D\tExtent2D"
+			],
+			[
+				"create",
+				"createImageView\tvk::ImageView createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags)"
+			],
+			[
+				"eR32G32S",
+				"eR32G32Sfloat\tvk::Format eR32G32Sfloat"
+			],
+			[
+				"eR8G8B8",
+				"eR8G8B8Uint\tvk::Format eR8G8B8Uint"
+			],
+			[
 				"mi",
 				"mipmapLevel"
 			],
@@ -100,16 +204,8 @@
 				"depthFormat"
 			],
 			[
-				"_de",
-				"_depthBuffer"
-			],
-			[
 				"mo",
 				"models"
-			],
-			[
-				"_co",
-				"_commandBuffers"
 			],
 			[
 				"in",
@@ -170,10 +266,6 @@
 			[
 				"ver",
 				"vertexes"
-			],
-			[
-				"uint",
-				"uint32_t"
 			],
 			[
 				"spM",
@@ -372,10 +464,6 @@
 				"isMotionCamera"
 			],
 			[
-				"_com",
-				"_commandBuffers"
-			],
-			[
 				"_comm",
 				"_commandPool"
 			],
@@ -426,148 +514,158 @@
 			[
 				"TILE",
 				"TILE_SIZE_DRAW"
-			],
-			[
-				"mPr",
-				"mPrevVX"
-			],
-			[
-				"PathS",
-				"PathSamples"
-			],
-			[
-				"Path",
-				"PathSample"
-			],
-			[
-				"Pa",
-				"PathVertex"
-			],
-			[
-				"back",
-				"backplate"
-			],
-			[
-				"F",
-				"FI_TX"
-			],
-			[
-				"FI",
-				"FI_TY"
-			],
-			[
-				"til",
-				"tileNumTriangles"
-			],
-			[
-				"task",
-				"taskIndex"
-			],
-			[
-				"ma",
-				"make_vec2f"
-			],
-			[
-				"com",
-				"computeSize"
-			],
-			[
-				"numT",
-				"numTiles"
-			],
-			[
-				"lo",
-				"local2world"
-			],
-			[
-				"_fr",
-				"_framebufferCPU"
-			],
-			[
-				"_fra",
-				"_framebufferGPU"
-			],
-			[
-				"foreach",
-				"foreach_unique"
-			],
-			[
-				"currC",
-				"currCamera"
-			],
-			[
-				"leve",
-				"levelSize"
-			],
-			[
-				"con",
-				"continue"
-			],
-			[
-				"comp",
-				"computeFrameData"
-			],
-			[
-				"sub",
-				"subpixels"
-			],
-			[
-				"make_ve",
-				"make_vec2i"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"file": "src/base/wnd/BaseApp.hpp",
+			"settings":
+			{
+				"buffer_size": 751,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "examples/compute/main.cpp",
+			"settings":
+			{
+				"buffer_size": 5301,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/image.cpp",
+			"settings":
+			{
+				"buffer_size": 5783,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "examples/CMakeLists.txt",
+			"settings":
+			{
+				"buffer_size": 1258,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/assets/compute/main.frag",
+			"settings":
+			{
+				"buffer_size": 246,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/assets/compute/main.comp",
+			"settings":
+			{
+				"buffer_size": 207,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/mnt/3BE8E03719E494B4/linuxBackUP/staff/workspace/wtracer/bin/shaders/raytracing/boxes.cs",
+			"settings":
+			{
+				"buffer_size": 4502,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "examples/compute/compute.hpp",
+			"settings":
+			{
+				"buffer_size": 918,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "examples/compute/compute.cpp",
+			"settings":
+			{
+				"buffer_size": 2024,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/device.hpp",
+			"settings":
+			{
+				"buffer_size": 2087,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/device.cpp",
+			"settings":
+			{
+				"buffer_size": 5718,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/pipeline.cpp",
+			"settings":
+			{
+				"buffer_size": 10571,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/pipeline.hpp",
+			"settings":
+			{
+				"buffer_size": 5749,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "/usr/include/vulkan/vulkan.hpp",
 			"settings":
 			{
 				"buffer_size": 908602,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/image.hpp",
+			"settings":
+			{
+				"buffer_size": 1371,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/base/vk/utils.hpp",
+			"settings":
+			{
+				"buffer_size": 1755,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/base/gui/gui.cpp",
+			"file": "src/base/vk/utils.cpp",
 			"settings":
 			{
-				"buffer_size": 1618,
+				"buffer_size": 4612,
 				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "examples/texture/main.cpp",
-			"settings":
-			{
-				"buffer_size": 4979,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/base/gui/gui.hpp",
-			"settings":
-			{
-				"buffer_size": 492,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/kurono267/builds/nuklear/demo/glfw_opengl3/main.c",
-			"settings":
-			{
-				"buffer_size": 6622,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/home/kurono267/builds/nuklear/demo/glfw_opengl3/nuklear_glfw_gl3.h",
-			"settings":
-			{
-				"buffer_size": 17881,
 				"line_ending": "Unix"
 			}
 		}
@@ -627,10 +725,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 299.0,
-		"last_filter": "Ea",
+		"height": 96.0,
+		"last_filter": "Remove",
 		"selected_items":
 		[
+			[
+				"Remove",
+				"Package Control: Remove Package"
+			],
 			[
 				"Ea",
 				"EasyClangComplete: Clean current CMake cache"
@@ -796,7 +898,7 @@
 	},
 	"console":
 	{
-		"height": 447.0,
+		"height": 297.0,
 		"history":
 		[
 			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
@@ -815,38 +917,52 @@
 	[
 		"/home/kurono267/workspace/r267",
 		"/home/kurono267/workspace/r267/bin",
+		"/home/kurono267/workspace/r267/bin/assets",
+		"/home/kurono267/workspace/r267/bin/assets/compute",
 		"/home/kurono267/workspace/r267/examples",
-		"/home/kurono267/workspace/r267/examples/converter",
-		"/home/kurono267/workspace/r267/examples/gui",
+		"/home/kurono267/workspace/r267/examples/compute",
 		"/home/kurono267/workspace/r267/examples/mesh",
-		"/home/kurono267/workspace/r267/examples/texture",
 		"/home/kurono267/workspace/r267/src",
 		"/home/kurono267/workspace/r267/src/base",
-		"/home/kurono267/workspace/r267/src/base/gui",
+		"/home/kurono267/workspace/r267/src/base/wnd",
 		"/home/kurono267/workspace/lgl"
 	],
 	"file_history":
 	[
+		"/home/kurono267/workspace/r267/examples/bvh/main.cpp",
+		"/home/kurono267/workspace/r267/examples/gui/main.cpp",
 		"/home/kurono267/workspace/r267/src/base/gui/gui.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/pipeline.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/image.hpp",
+		"/home/kurono267/workspace/r267/bin/assets/gui/main.vert",
+		"/home/kurono267/workspace/r267/bin/assets/gui/main.frag",
+		"/home/kurono267/workspace/r267/bin/assets/gui/render.frag",
+		"/home/kurono267/workspace/r267/examples/CMakeLists.txt",
+		"/home/kurono267/workspace/r267/examples/quad/main.cpp",
+		"/home/kurono267/workspace/r267/bin/assets/gui/render_frag.spv",
+		"/home/kurono267/workspace/r267/src/base/scene/mesh.cpp",
+		"/home/kurono267/workspace/r267/src/base/vk/buffer.hpp",
+		"/home/kurono267/workspace/r267/src/base/vk/buffer.cpp",
+		"/usr/include/vulkan/vulkan.hpp",
+		"/home/kurono267/workspace/r267/examples/texture/main.cpp",
+		"/home/kurono267/workspace/r267/src/base/gui/gui.hpp",
+		"/home/kurono267/workspace/r267/src/CMakeLists.txt",
+		"/home/kurono267/workspace/r267/CMakeLists.txt",
+		"/home/kurono267/builds/nuklear/demo/glfw_opengl3/main.c",
+		"/home/kurono267/builds/nuklear/demo/glfw_opengl3/nuklear_glfw_gl3.h",
+		"/home/kurono267/workspace/r267/external/include/nuklear.h",
 		"/home/kurono267/workspace/r267/r267.sublime-project",
 		"/home/kurono267/workspace/r267/bin/assets/mesh/main.frag",
-		"/home/kurono267/workspace/r267/examples/gui/main.cpp",
-		"/home/kurono267/workspace/r267/src/base/gui/gui.hpp",
-		"/home/kurono267/workspace/r267/src/base/vk/pipeline.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/pipeline.cpp",
-		"/home/kurono267/workspace/r267/src/base/vk/buffer.hpp",
 		"/home/kurono267/workspace/r267/bin/assets/mesh/main.vert",
 		"/home/kurono267/workspace/r267/examples/mesh/main.cpp",
 		"/home/kurono267/workspace/r267/src/base/scene/material.hpp",
 		"/home/kurono267/workspace/r267/src/base/scene/material.cpp",
 		"/home/kurono267/workspace/r267/src/base/scene/scene.cpp",
-		"/home/kurono267/workspace/r267/src/base/scene/mesh.cpp",
 		"/home/kurono267/workspace/r267/examples/converter/main.cpp",
 		"/home/kurono267/workspace/r267/src/base/scene/model.hpp",
 		"/home/kurono267/workspace/r267/src/base/scene/model.cpp",
 		"/home/kurono267/workspace/r267/src/base/scene/scene.hpp",
-		"/home/kurono267/workspace/r267/src/CMakeLists.txt",
-		"/home/kurono267/workspace/r267/examples/CMakeLists.txt",
 		"/home/kurono267/workspace/r267/bin/assets/triangle/main.vert",
 		"/home/kurono267/workspace/r267/bin/assets/quad/main_frag.spv",
 		"/home/kurono267/workspace/r267/bin/assets/triangle/main.frag",
@@ -860,17 +976,13 @@
 		"/home/kurono267/workspace/r267/src/base/wnd/MainApp.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/framebuffer.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/framebuffer.cpp",
-		"/home/kurono267/workspace/r267/examples/quad/main.cpp",
-		"/home/kurono267/workspace/r267/examples/texture/main.cpp",
 		"/home/kurono267/workspace/r267/examples/triangle/main.cpp",
 		"/home/kurono267/VulkanSDK/Vulkan-master/scenerendering/scenerendering.cpp",
-		"/home/kurono267/workspace/r267/src/base/vk/image.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/image.cpp",
 		"/home/kurono267/workspace/lgl/src/examples/viewer/ViewerApp.cpp",
 		"/home/kurono267/workspace/lgl/src/examples/viewer/ViewerApp.hpp",
 		"/home/kurono267/workspace/r267/src/base/scene/camera.hpp",
 		"/home/kurono267/workspace/r267/src/base/scene/camera.cpp",
-		"/home/kurono267/workspace/r267/CMakeLists.txt",
 		"/home/kurono267/workspace/r267/README",
 		"/home/kurono267/workspace/r267/bin/assets/texture/main.frag",
 		"/home/kurono267/workspace/r267/bin/assets/quad/main.vert",
@@ -882,7 +994,6 @@
 		"/home/kurono267/workspace/r267/src/base/scene/mesh.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/shape.hpp",
 		"/home/kurono267/workspace/r267/src/base/scene/format.hpp",
-		"/home/kurono267/workspace/r267/src/base/vk/buffer.cpp",
 		"/home/kurono267/workspace/r267/bin/assets/models/test_out.json",
 		"/home/kurono267/workspace/r267/bin/assets/models/test.json",
 		"/home/kurono267/workspace/r267/src/base/scene/Model.hpp",
@@ -896,7 +1007,6 @@
 		"/home/kurono267/workspace/r267/src/base/wnd/BaseApp.hpp",
 		"/home/kurono267/workspace/vrt/src/basic/BasicApp.cpp",
 		"/home/kurono267/workspace/r267/src/base/vk/instance.hpp",
-		"/usr/include/vulkan/vulkan.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/Instance.hpp",
 		"/home/kurono267/workspace/r267/src/base/vk/Instance.cpp",
 		"/home/kurono267/workspace/r267/src/base/Instance.hpp",
@@ -946,15 +1056,7 @@
 		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/api/data.h",
 		"/mnt/instance/code/embree-plugin-git/devices/device_ispc/cameras/camera.isph",
 		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/cameras/camera.ispc",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/quadrender.ispc",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/CMakeLists.txt",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/raytracing.ispc",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/pathtracer.ispc",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/materials/obj.h",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/api/ispc_device.cpp",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/triangle.ispc",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/cameras/perspectivecamera.ispc",
-		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/frameinterp.ispc"
+		"/home/kurono267/workspace/embree-BDPT/devices/device_ispc/renderers/quad/quadrender.ispc"
 	],
 	"find":
 	{
@@ -1027,6 +1129,33 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"QueueFlagBits",
+			"AccessFlagBits",
+			"ImageLayout",
+			"ShaderStageFlags",
+			"PipelineStageFlagBits",
+			"ComputePipelineCreateInfo",
+			"eComputeShader",
+			"ComputePipelineCreateInfo",
+			"graphicsFamily",
+			"DynamicState",
+			"fb_scale",
+			"nk_begin",
+			"BufferUsageFlagBits",
+			"ebo",
+			"_ctx",
+			"uniform_proj",
+			"ProjMtx",
+			"dev->null",
+			"null",
+			"dev",
+			"cmd",
+			"cmds",
+			"offset",
+			"nk_font_atlas",
+			"MAX_VERTEX_BUFFER",
+			"max_element_buffer",
+			"max_vertex_buffer",
 			"],\n",
 			"Format",
 			"nk_glfw3_font_stash_begin",
@@ -1127,34 +1256,7 @@
 			"lookAt",
 			"Render",
 			"DeInit",
-			"g_renderer",
-			"dgs2",
-			"rays2",
-			"g_pause",
-			"g_scene",
-			"g_device->rtCommit\\(g_renderer\\);",
-			"g_device->rtCommit(g_renderer);",
-			");\n",
-			"QUAD_renderFrameInit",
-			"lightSampleID",
-			"Modif",
-			"SetSky",
-			"subNum",
-			"g_rt0",
-			"g_renderTime",
-			"g_showTime",
-			"g_prevRenderTime",
-			"prevSubNum",
-			"Light",
-			"set",
-			"bary",
-			"barycentric",
-			"rtcNewTriangleMesh",
-			"onFrames",
-			"];\n",
-			"currInterp",
-			"const",
-			"barycentric"
+			"g_renderer"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1162,6 +1264,7 @@
 		"regex": true,
 		"replace_history":
 		[
+			"&_ctx",
 			"Camera",
 			"",
 			"NCamera",
@@ -1288,8 +1391,7 @@
 			"+",
 			"-",
 			"+",
-			"",
-			"int"
+			""
 		],
 		"reverse": false,
 		"show_context": true,
@@ -1300,24 +1402,219 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 16,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/usr/include/vulkan/vulkan.hpp",
+					"file": "src/base/wnd/BaseApp.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 908602,
+						"buffer_size": 751,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1630,
-								1630
+								143,
+								143
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "examples/compute/main.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5301,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1379,
+								1379
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 235.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/base/vk/image.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5783,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2800,
+								2800
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 672.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "examples/CMakeLists.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1258,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1257,
+								1257
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/CMake/CMake.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 144.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "bin/assets/compute/main.frag",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 246,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								141,
+								141
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/OpenGL Shading Language (GLSL)/GLSL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "bin/assets/compute/main.comp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 207,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								205,
+								205
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/OpenGL Shading Language (GLSL)/GLSL.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/mnt/3BE8E03719E494B4/linuxBackUP/staff/workspace/wtracer/bin/shaders/raytracing/boxes.cs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4502,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								388,
+								388
 							]
 						],
 						"settings":
@@ -1325,32 +1622,31 @@
 							"glsv_configured": true,
 							"glsv_enabled": 1,
 							"glsv_spec": 0,
-							"syntax": "Packages/C++11/C++11.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/C#/C#.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 408.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "src/base/gui/gui.cpp",
+					"buffer": 7,
+					"file": "examples/compute/compute.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1618,
+						"buffer_size": 918,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								794,
-								794
+								500,
+								500
 							]
 						],
 						"settings":
@@ -1365,24 +1661,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "examples/texture/main.cpp",
+					"buffer": 8,
+					"file": "examples/compute/compute.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4979,
+						"buffer_size": 2024,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								681,
-								681
+								1665,
+								1665
 							]
 						],
 						"settings":
@@ -1391,31 +1687,30 @@
 							"glsv_configured": true,
 							"glsv_enabled": 1,
 							"glsv_spec": 0,
-							"syntax": "Packages/C++11/C++11.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/C++11/C++11.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "src/base/gui/gui.hpp",
+					"buffer": 9,
+					"file": "src/base/vk/device.hpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 492,
+						"buffer_size": 2087,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								452,
-								452
+								1088,
+								1088
 							]
 						],
 						"settings":
@@ -1428,27 +1723,60 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/base/vk/device.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5718,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4362,
+								4362
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 912.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "/home/kurono267/builds/nuklear/demo/glfw_opengl3/main.c",
+					"buffer": 11,
+					"file": "src/base/vk/pipeline.cpp",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6622,
+						"buffer_size": 10571,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2822,
-								2822
+								9840,
+								9840
 							]
 						],
 						"settings":
@@ -1457,32 +1785,98 @@
 							"glsv_configured": true,
 							"glsv_enabled": 1,
 							"glsv_spec": 0,
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1249.0,
+						"translation.y": 3472.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/base/vk/pipeline.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5749,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3638,
+								3638
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1296.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/usr/include/vulkan/vulkan.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 908602,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								860672,
+								860672
+							]
+						],
+						"settings":
+						{
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 381592.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "/home/kurono267/builds/nuklear/demo/glfw_opengl3/nuklear_glfw_gl3.h",
-					"semi_transient": false,
+					"buffer": 14,
+					"file": "src/base/vk/image.hpp",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 17881,
+						"buffer_size": 1371,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2336,
-								2336
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1491,15 +1885,79 @@
 							"glsv_configured": true,
 							"glsv_enabled": 1,
 							"glsv_spec": 0,
-							"syntax": "Packages/C++/C++.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2081.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "src/base/vk/utils.hpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1755,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1396,
+								1396
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 288.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "src/base/vk/utils.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4612,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1225,
+								1225
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"glsv_configured": true,
+							"glsv_enabled": 1,
+							"glsv_spec": 0,
+							"syntax": "Packages/C++11/C++11.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 336.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -1542,7 +2000,7 @@
 	},
 	"output.exec":
 	{
-		"height": 257.0
+		"height": 309.0
 	},
 	"output.find_results":
 	{
@@ -1556,7 +2014,7 @@
 	"project": "r267.sublime-project",
 	"replace":
 	{
-		"height": 84.0
+		"height": 52.0
 	},
 	"save_all_on_build": true,
 	"select_file":

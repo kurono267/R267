@@ -34,12 +34,13 @@ class Device : public std::enable_shared_from_this<Device> {
 		vk::PhysicalDevice getPhysicalDevice();
 		vk::Queue  getGraphicsQueue();
 		vk::Queue  getPresentQueue();
+		vk::Queue  getComputeQueue();
 		spSwapchain  getSwapchain();
 
 		vk::Format supportedFormat(const std::vector<vk::Format>& candidates, vk::ImageTiling tiling, vk::FormatFeatureFlags features);
 		vk::Format depthFormat();
 
-		vk::CommandPool getCommandPool();
+		vk::CommandPool getCommandPool(const bool isCompute = false);
 
 		vk::Semaphore createSemaphore(vk::SemaphoreCreateInfo info);
 
@@ -64,9 +65,11 @@ class Device : public std::enable_shared_from_this<Device> {
 		vk::Instance       _instance;
 		vk::Queue          _presentQueue;
 		vk::Queue          _graphicsQueue;
+		vk::Queue          _computeQueue;
 		vk::SurfaceKHR     _surface;
 
 		vk::CommandPool    _pool;
+		vk::CommandPool    _poolCompute;
 
 		spSwapchain          _swapchain;
 

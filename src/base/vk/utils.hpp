@@ -2,15 +2,17 @@
 
 #include <base/default.hpp>
 #include <fstream>
+#include <iostream>
 
 namespace r267 {
 
 struct QueueFamilyIndices {
 	int graphicsFamily = -1;
 	int presentFamily = -1;
+	int computeFamily = -1;
 
 	bool isComplete() {
-		return graphicsFamily >= 0 && presentFamily >= 0;
+		return graphicsFamily >= 0 && presentFamily >= 0 && computeFamily >= 0;
 	}
 };
 
@@ -40,6 +42,8 @@ vk::SamplerCreateInfo linearSampler(const uint& mipLevels = 1);
 inline bool hasStencilComponent(vk::Format format) {
     return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
 }
+
+vk::ShaderModule createShaderModule(vk::Device device,const std::string& filename);
 
 };
 

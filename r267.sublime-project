@@ -21,56 +21,92 @@
 					"shell_cmd": "make -j8 r267"
 				},
 				{
-					"name": "shader_mesh_main_frag",
-					"shell_cmd": "make -j8 shader_mesh_main_frag"
+					"name": "shader_compute_main_vert",
+					"shell_cmd": "make -j8 shader_compute_main_vert"
 				},
 				{
-					"name": "shader_mesh_main_vert",
-					"shell_cmd": "make -j8 shader_mesh_main_vert"
+					"name": "shader_gui_render_frag",
+					"shell_cmd": "make -j8 shader_gui_render_frag"
 				},
 				{
-					"name": "converter",
-					"shell_cmd": "make -j8 converter"
+					"name": "shader_gui_render_vert",
+					"shell_cmd": "make -j8 shader_gui_render_vert"
 				},
 				{
-					"name": "shader_texture_main_frag",
-					"shell_cmd": "make -j8 shader_texture_main_frag"
+					"name": "shader_compute_main_comp",
+					"shell_cmd": "make -j8 shader_compute_main_comp"
 				},
 				{
-					"name": "shader_texture_main_vert",
-					"shell_cmd": "make -j8 shader_texture_main_vert"
-				},
-				{
-					"name": "texture",
-					"shell_cmd": "make -j8 texture"
-				},
-				{
-					"name": "shader_quad_main_frag",
-					"shell_cmd": "make -j8 shader_quad_main_frag"
-				},
-				{
-					"name": "mesh",
-					"shell_cmd": "make -j8 mesh"
-				},
-				{
-					"name": "triangle",
-					"shell_cmd": "make -j8 triangle"
-				},
-				{
-					"name": "shader_triangle_main_vert",
-					"shell_cmd": "make -j8 shader_triangle_main_vert"
-				},
-				{
-					"name": "shader_triangle_main_frag",
-					"shell_cmd": "make -j8 shader_triangle_main_frag"
+					"name": "shader_quad_main_vert",
+					"shell_cmd": "make -j8 shader_quad_main_vert"
 				},
 				{
 					"name": "quad",
 					"shell_cmd": "make -j8 quad"
 				},
 				{
-					"name": "shader_quad_main_vert",
-					"shell_cmd": "make -j8 shader_quad_main_vert"
+					"name": "shader_triangle_main_frag",
+					"shell_cmd": "make -j8 shader_triangle_main_frag"
+				},
+				{
+					"name": "shader_triangle_main_vert",
+					"shell_cmd": "make -j8 shader_triangle_main_vert"
+				},
+				{
+					"name": "compute",
+					"shell_cmd": "make -j8 compute"
+				},
+				{
+					"name": "triangle",
+					"shell_cmd": "make -j8 triangle"
+				},
+				{
+					"name": "shader_gui_main_frag",
+					"shell_cmd": "make -j8 shader_gui_main_frag"
+				},
+				{
+					"name": "texture",
+					"shell_cmd": "make -j8 texture"
+				},
+				{
+					"name": "shader_texture_main_vert",
+					"shell_cmd": "make -j8 shader_texture_main_vert"
+				},
+				{
+					"name": "shader_gui_main_vert",
+					"shell_cmd": "make -j8 shader_gui_main_vert"
+				},
+				{
+					"name": "shader_compute_main_frag",
+					"shell_cmd": "make -j8 shader_compute_main_frag"
+				},
+				{
+					"name": "shader_texture_main_frag",
+					"shell_cmd": "make -j8 shader_texture_main_frag"
+				},
+				{
+					"name": "converter",
+					"shell_cmd": "make -j8 converter"
+				},
+				{
+					"name": "shader_quad_main_frag",
+					"shell_cmd": "make -j8 shader_quad_main_frag"
+				},
+				{
+					"name": "shader_mesh_main_vert",
+					"shell_cmd": "make -j8 shader_mesh_main_vert"
+				},
+				{
+					"name": "shader_mesh_main_frag",
+					"shell_cmd": "make -j8 shader_mesh_main_frag"
+				},
+				{
+					"name": "mesh",
+					"shell_cmd": "make -j8 mesh"
+				},
+				{
+					"name": "gui",
+					"shell_cmd": "make -j8 gui"
 				}
 			],
 			"working_dir": "${project_path}/build"

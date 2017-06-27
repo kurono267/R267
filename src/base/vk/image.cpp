@@ -71,7 +71,10 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 	} else if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
             srcAccess = 0;
             dstAccess = (uint)(vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite);
-    } else {
+    } else if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eGeneral) {
+		srcAccess = (uint)vk::AccessFlagBits::eHostWrite;
+		dstAccess = (uint)(vk::AccessFlagBits::eShaderRead|vk::AccessFlagBits::eShaderWrite);
+	} else {
 		throw std::invalid_argument("Unsupported layout transition!");
 	}
 

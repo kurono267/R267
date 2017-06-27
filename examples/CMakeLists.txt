@@ -29,3 +29,20 @@ target_link_libraries(mesh r267)
 
 add_shader("mesh/main.vert" mesh)
 add_shader("mesh/main.frag" mesh)
+
+# GUI example
+add_executable(gui gui/main.cpp)
+target_link_libraries(gui r267)
+
+add_shader("gui/main.vert" gui)
+add_shader("gui/main.frag" gui)
+add_shader("gui/render.vert" gui)
+add_shader("gui/render.frag" gui)
+
+# Compute Shader example
+add_executable(compute compute/main.cpp compute/compute.cpp)
+target_link_libraries(compute r267)
+
+add_shader("compute/main.vert" compute)
+add_shader("compute/main.frag" compute)
+add_shader("compute/main.comp" compute)
