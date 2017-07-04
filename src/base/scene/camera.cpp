@@ -68,3 +68,17 @@ mat4 Camera::getVP(){
 vec3 Camera::getPos() const{
 	return _pos;
 }
+
+vec3 Camera::getUp() const {
+	return _up;
+}
+
+vec3 Camera::getRight() const {
+	vec3 look(normalize(_lookAt-_pos));
+	return normalize(cross(look,_up));
+}
+
+vec3 Camera::getLook() const {
+	return normalize(_lookAt-_pos);
+}
+

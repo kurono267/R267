@@ -6,7 +6,7 @@ Uniform::Uniform() : _is(false), _size(0), _data(nullptr) {}
 
 Uniform::~Uniform(){}
 
-void Uniform::create(spDevice device,const size_t& size,const void* data){
+void Uniform::create(spDevice device,const size_t& size,const void* data, const vk::BufferUsageFlags& bufferUsage){
 	_size = size;
 
 	vk::DeviceSize bufferSize = _size;
@@ -20,8 +20,7 @@ void Uniform::create(spDevice device,const size_t& size,const void* data){
 		vk::MemoryPropertyFlagBits::eHostCoherent);
 
 	_gpu->create(bufferSize,
-		vk::BufferUsageFlagBits::eTransferDst |
-		vk::BufferUsageFlagBits::eUniformBuffer,
+		vk::BufferUsageFlagBits::eTransferDst | bufferUsage,
 		vk::MemoryPropertyFlagBits::eDeviceLocal);
 
 	_is = true;

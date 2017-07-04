@@ -16,7 +16,7 @@ class Compute {
 		void dispatch(const glm::ivec2& size);
 		void dispatch(const int&        size);
 
-		void create(const std::string& filename,const spDescSet& descSet);  // Create Compute shader
+		void create(const std::string& filename,const std::vector<spDescSet>& descSets);  // Create Compute shader
 		vk::Semaphore run(const vk::Semaphore& wait); // Run compute shader
 
 		vk::Pipeline pipeline(){return _pipeline;}
@@ -25,7 +25,7 @@ class Compute {
 
 		spDevice _device;
 
-		spDescSet    _descSet;
+		std::vector<spDescSet>    _descSets;
 		vk::Pipeline _pipeline;
 		vk::PipelineLayout _pipelineLayout;
 

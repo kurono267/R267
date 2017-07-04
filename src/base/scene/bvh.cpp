@@ -35,7 +35,7 @@ glm::vec3 max(const glm::vec3& a,const glm::vec3& b){
 
 inline float SurfaceArea(const BVHNode& n){
 	glm::vec3 sides(n.max-n.min);
-	return 2*(sides.x*sides.y+sides.y*sides.z+sides.x*sides.z);
+	return 6*2*(sides.x*sides.y+sides.y*sides.z+sides.x*sides.z);
 }
 
 void BVH::run(const spMesh& mesh){
@@ -58,7 +58,7 @@ void BVH::run(const spMesh& mesh){
 		primitives[i].id = i;
 		for(int v = 1;v<3;++v){
 			primitives[i].minBox = min(primitives[i].minBox,vertexes[indexes[startTriangle+v]].pos);
-			primitives[i].maxBox = max(primitives[i].minBox,vertexes[indexes[startTriangle+v]].pos);
+			primitives[i].maxBox = max(primitives[i].maxBox,vertexes[indexes[startTriangle+v]].pos);
 		}
         minBox = min(minBox,primitives[i].minBox);
         maxBox = max(maxBox,primitives[i].maxBox);
@@ -68,11 +68,12 @@ void BVH::run(const spMesh& mesh){
     root.min = glm::vec4(minBox.x,minBox.y,minBox.z,0.0f);
     root.max = glm::vec4(maxBox.x,maxBox.y,maxBox.z,0.0f);
     root.data = glm::ivec4(0);
+	_nodes.push_back(root);
+	rootId = _nodes.size()-1;
     _maxDepth = 0;
 
 	recursive(root,primitives,0);
-	_nodes.push_back(root);
-	rootId = _nodes.size()-1;
+	_nodes[rootId] = root;
 	std::cout << "BVH finish with " << _nodes.size() << " nodes" << std::endl;
 	std::cout << "Max depth " << _maxDepth << std::endl;
 }
@@ -113,7 +114,7 @@ struct CompareMax {
 	}
 };
 
-#define EMPTY_COST 10.0f
+#define EMPTY_COST 10000.0f
 
 BVH::SAH BVH::sah(BVHNode& root,std::vector<Prim>& primitives){
 	SAH msah;
@@ -180,7 +181,8 @@ void BVH::recursive(BVHNode& root,
 						std::vector<Prim>& primitives,
 						const int depth){
 	if(depth != 0 && primitives.size() <= NODE_MAX_TRIANGLE){
-        root.max.w = 1.0f;
+        if(primitives.size() != 0)root.max.w = 1.0f;
+        else root.max.w = 0.0f;
 		for(size_t t = 0;t<primitives.size();++t){
 			size_t tIdx = primitives[t].id;
 			root.data[t] = tIdx;
@@ -196,7 +198,9 @@ void BVH::recursive(BVHNode& root,
 
 	// Init leafs
 	BVHNode left = root;
+    left.max.w = 0.0f;
 	BVHNode right = root;
+    right.max.w = 0.0f;
 	left.max[rsah.axis] = rsah.split;
 	right.min[rsah.axis] = rsah.split;
 
@@ -216,7 +220,7 @@ void BVH::recursive(BVHNode& root,
 	int right_size = primitives.size()-left_size;
 
 	if(right_size == 0){
-        right.max.w = 1.0f;
+        right.max.w = 0.0f;
 		for(size_t t = 0;t<NODE_MAX_TRIANGLE;++t){
 			right.data[t] = -1;
 		}

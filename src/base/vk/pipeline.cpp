@@ -217,6 +217,7 @@ void DescSet::create(){
 
 	// Add Layout binding for UBO
 	for(auto u : _uboBinds){
+		std::cout << "Biniding " << u.binding << std::endl;
 		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,u.descType,1,u.stage));
 		poolSizes.push_back(vk::DescriptorPoolSize(u.descType,1));
 	}

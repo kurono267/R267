@@ -32,6 +32,9 @@ class Camera {
 		mat4 getVP();
 
 		vec3 getPos() const;
+		vec3 getUp() const;
+		vec3 getRight() const;
+		vec3 getLook() const;
 	protected:
 		float _angle;
 		float _aspect;

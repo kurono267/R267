@@ -2,15 +2,16 @@
 
 using namespace r267;
 
-void Compute::create(const std::string& filename,const spDescSet& descSet){
+void Compute::create(const std::string& filename,const std::vector<spDescSet>& descSets){
 	auto vk_device = _device->getDevice();
 
-	_descSet = descSet;
-	auto descLayouts = descSet->getLayout();
+	_descSets = descSets;
+	std::vector<vk::DescriptorSetLayout> descLayouts;
+	for(auto d : _descSets)descLayouts.push_back(d->getLayout());
 
 	auto layoutInfo = vk::PipelineLayoutCreateInfo(
 		vk::PipelineLayoutCreateFlags(),
-		1, &descLayouts);
+		descLayouts.size(), descLayouts.data());
 
 	_pipelineLayout = vk_device.createPipelineLayout(layoutInfo);
 
@@ -55,10 +56,11 @@ void Compute::initCommandBuffer(){
 
 	_commandBuffer.begin(&beginInfo);
 
-    vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet()};
+	std::vector<vk::DescriptorSet> descSets;
+	for(auto d : _descSets)descSets.push_back(d->getDescriptorSet());
 
 	_commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, _pipeline);
-    _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eCompute, _pipelineLayout, 0, 1, descSets, 0, nullptr);
+    _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eCompute, _pipelineLayout, 0, descSets.size(), descSets.data(), 0, nullptr);
 	_commandBuffer.dispatch(_size.x,_size.y,_size.z);
 
 	_commandBuffer.end();
