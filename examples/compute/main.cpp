@@ -2,7 +2,7 @@
 #include <base/vk/pipeline.hpp>
 #include <base/vk/additional.hpp>
 #include <base/vk/shape.hpp>
-#include "compute.hpp"
+#include <base/vk/compute.hpp>
 
 #include <chrono>
 

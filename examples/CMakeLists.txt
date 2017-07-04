@@ -40,7 +40,7 @@ add_shader("gui/render.vert" gui)
 add_shader("gui/render.frag" gui)
 
 # Compute Shader example
-add_executable(compute compute/main.cpp compute/compute.cpp)
+add_executable(compute compute/main.cpp)
 target_link_libraries(compute r267)
 
 add_shader("compute/main.vert" compute)
