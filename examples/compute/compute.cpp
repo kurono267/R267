@@ -12,7 +12,7 @@ void Compute::create(const std::string& filename,const spDescSet& descSet){
 		vk::PipelineLayoutCreateFlags(),
 		1, &descLayouts);
 
-	auto layout = vk_device.createPipelineLayout(layoutInfo);
+	_pipelineLayout = vk_device.createPipelineLayout(layoutInfo);
 
 	auto SM = createShaderModule(vk_device,filename);
 	vk::PipelineShaderStageCreateInfo shaderStageInfo(
@@ -25,7 +25,7 @@ void Compute::create(const std::string& filename,const spDescSet& descSet){
 	vk::ComputePipelineCreateInfo info(
 		vk::PipelineCreateFlags(),
 		shaderStageInfo,
-		layout
+        _pipelineLayout
 	);
 
 	_pipeline = vk_device.createComputePipeline(nullptr,info);
@@ -55,7 +55,10 @@ void Compute::initCommandBuffer(){
 
 	_commandBuffer.begin(&beginInfo);
 
+    vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet()};
+
 	_commandBuffer.bindPipeline(vk::PipelineBindPoint::eCompute, _pipeline);
+    _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eCompute, _pipelineLayout, 0, 1, descSets, 0, nullptr);
 	_commandBuffer.dispatch(_size.x,_size.y,_size.z);
 
 	_commandBuffer.end();
@@ -75,4 +78,5 @@ vk::Semaphore Compute::run(const vk::Semaphore& wait){
 	);
 
 	_device->getComputeQueue().submit(submitInfo, nullptr);
+    return _finish;
 }

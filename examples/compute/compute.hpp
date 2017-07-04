@@ -27,6 +27,7 @@ class Compute {
 
 		spDescSet    _descSet;
 		vk::Pipeline _pipeline;
+		vk::PipelineLayout _pipelineLayout;
 
 		glm::ivec3        _size;
 		bool              _isCmd;

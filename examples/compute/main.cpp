@@ -28,12 +28,18 @@ class ComputeApp : public BaseApp {
 
 			// Create Compute Shader
 			_surface = device->create<Image>();
-			_surface->create(wndSize.x,wndSize.y,vk::Format::eR8G8B8A8Unorm);
+			_surface->create(wndSize.x,wndSize.y,vk::Format::eR8G8B8A8Unorm,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eStorage | vk::ImageUsageFlagBits::eSampled);
+
+            _defaultSampler = createSampler(vk_device,linearSampler());
 
 			_computeDescSet = device->create<DescSet>();
-			vk::Sampler defaultSampler = createSampler(vk_device,linearSampler());
-			_computeDescSet->setTexture(_surface->createImageView(),defaultSampler,0,vk::ShaderStageFlags(vk::ShaderStageFlagBits::eCompute)|vk::ShaderStageFlags(vk::ShaderStageFlagBits::eFragment));
-			_computeDescSet->create();
+            _computeDescSet->setTexture(_surface->createImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eCompute,
+                                        vk::DescriptorType::eStorageImage, vk::ImageLayout::eGeneral);
+            _computeDescSet->create();
+
+            _quadDescSet = device->create<DescSet>();
+            _quadDescSet->setTexture(_surface->createImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eFragment);
+            _quadDescSet->create();
 
 			_compute = std::make_shared<Compute>(device);
 			_compute->create("assets/compute/main_comp.spv",_computeDescSet);
@@ -45,7 +51,7 @@ class ComputeApp : public BaseApp {
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/compute/main_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/compute/main_frag.spv");
 
-			_main->descSet(_computeDescSet);
+			_main->descSet(_quadDescSet);
 			_main->create();
 
 			_quad = std::make_shared<Quad>();
@@ -76,7 +82,7 @@ class ComputeApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-					vk::DescriptorSet descSets[] = {_computeDescSet->getDescriptorSet()};
+					vk::DescriptorSet descSets[] = {_quadDescSet->getDescriptorSet()};
 					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
 					_quad->draw(_commandBuffers[i]);
@@ -143,6 +149,8 @@ class ComputeApp : public BaseApp {
 	protected:
 		spPipeline _main;
 
+		vk::Sampler _defaultSampler;
+
 		// Framebuffers
 		std::vector<spFramebuffer> _framebuffers;
 		// Command Buffers
@@ -156,6 +164,7 @@ class ComputeApp : public BaseApp {
 
 		spCompute _compute;
 		spDescSet _computeDescSet;
+        spDescSet _quadDescSet;
 		spImage   _surface;
 
 		std::chrono::time_point<std::chrono::steady_clock> prev;

@@ -217,12 +217,13 @@ void DescSet::create(){
 
 	// Add Layout binding for UBO
 	for(auto u : _uboBinds){
-		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,vk::DescriptorType::eUniformBuffer,1,u.stage));
-		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eUniformBuffer,1));
+		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,u.descType,1,u.stage));
+		poolSizes.push_back(vk::DescriptorPoolSize(u.descType,1));
 	}
-	for(auto s : _samplerBinds){
-		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(s.binding,vk::DescriptorType::eCombinedImageSampler,1,s.stage));
-		poolSizes.push_back(vk::DescriptorPoolSize(vk::DescriptorType::eCombinedImageSampler,1));
+	for(auto s : _samplerBinds) {
+		layoutBinds.push_back(
+				vk::DescriptorSetLayoutBinding(s.binding, s.descType, 1, s.stage));
+		poolSizes.push_back(vk::DescriptorPoolSize(s.descType, 1));
 	}
 
 	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),layoutBinds.size(),layoutBinds.data());
@@ -237,22 +238,26 @@ void DescSet::create(){
 	std::vector<vk::WriteDescriptorSet>         descWrites;
 	for(auto u : _uboBinds){
 		vk::DescriptorBufferInfo bufferInfo(u.buffer.vk_buffer(),0,u.buffer.size());
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,vk::DescriptorType::eUniformBuffer,nullptr,&bufferInfo,nullptr));
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,u.descType,nullptr,&bufferInfo,nullptr));
 	}
 	for(auto s : _samplerBinds){
-		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, vk::ImageLayout::eShaderReadOnlyOptimal);
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,vk::DescriptorType::eCombinedImageSampler,&imageInfo,nullptr,nullptr));
+		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, s.layout);
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,s.descType,&imageInfo,nullptr,nullptr));
 	}
 	vk_device.updateDescriptorSets(descWrites,nullptr);
 }
 
-void DescSet::setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage){
-	_uboBinds.push_back({buffer,binding,stage});
+void DescSet::setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage,
+							   const vk::DescriptorType& descType){
+	_uboBinds.push_back({buffer,binding,stage,descType});
 }
 
-void DescSet::setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage){
-	_samplerBinds.push_back({imageView,sampler,binding,stage});
+void DescSet::setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage,
+						 const vk::DescriptorType& descType,
+						 const vk::ImageLayout& imageLayout){
+	_samplerBinds.push_back({imageView,sampler,binding,stage,descType,imageLayout});
 }
+
 void DescSet::release(spDevice device){
 	auto vk_device = device->getDevice();
 

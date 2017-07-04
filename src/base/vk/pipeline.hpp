@@ -87,8 +87,11 @@ class DescSet {
 
 		void create();
 
-		void setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage);
-		void setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage);
+		void setUniformBuffer(const Uniform& buffer,const size_t& binding,const vk::ShaderStageFlags& stage,
+							  const vk::DescriptorType& descType = vk::DescriptorType::eUniformBuffer);
+		void setTexture(const vk::ImageView& imageView,const vk::Sampler& sampler, const size_t& binding, const vk::ShaderStageFlags& stage,
+						const vk::DescriptorType& descType = vk::DescriptorType::eCombinedImageSampler,
+						const vk::ImageLayout& imageLayout = vk::ImageLayout::eShaderReadOnlyOptimal);
 
 		void release(spDevice device);
 
@@ -105,12 +108,15 @@ class DescSet {
 			Uniform buffer;
 			size_t    binding;
 			vk::ShaderStageFlags stage;
+			vk::DescriptorType   descType;
 		};
 		struct SamplerBinding {
 			vk::ImageView imageView;
 			vk::Sampler   sampler;
 			size_t    binding;
 			vk::ShaderStageFlags stage;
+			vk::DescriptorType   descType;
+			vk::ImageLayout      layout;
 		};
 		std::vector<UBOBinding>     _uboBinds;
 		std::vector<SamplerBinding> _samplerBinds;
