@@ -18,6 +18,7 @@ base/scene/material.cpp
 base/scene/model.cpp
 base/scene/scene.cpp
 base/scene/camera.cpp
+base/scene/bvh.cpp
 
 base/gui/gui.cpp
 )

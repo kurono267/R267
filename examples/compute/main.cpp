@@ -3,8 +3,10 @@
 #include <base/vk/additional.hpp>
 #include <base/vk/shape.hpp>
 #include <base/vk/compute.hpp>
+#include <base/scene/bvh.hpp>
 
 #include <chrono>
+#include <base/scene/scene.hpp>
 
 using namespace r267;
 
@@ -25,6 +27,12 @@ class ComputeApp : public BaseApp {
 			_commandPool = device->getCommandPool();
 
 			glm::ivec2 wndSize = mainApp->wndSize();
+
+            _scene = std::make_shared<Scene>();
+            _scene->load("assets/models/monkey/monkey");
+
+            spModel monkey = _scene->models()[0];
+            _bvh.run(monkey->mesh());
 
 			// Create Compute Shader
 			_surface = device->create<Image>();
@@ -166,6 +174,10 @@ class ComputeApp : public BaseApp {
 		spDescSet _computeDescSet;
         spDescSet _quadDescSet;
 		spImage   _surface;
+
+        spScene  _scene;
+
+        BVH      _bvh; // BVH for monkey
 
 		std::chrono::time_point<std::chrono::steady_clock> prev;
 };

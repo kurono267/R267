@@ -274,7 +274,7 @@ int main(int argc, char const *argv[]) {
 	testMeshPackUnpack();
 	testMaterialRead();
 	testSceneSaveLoad();
-	/*if(argc < 3){
+	if(argc < 3){
 		std::cout << "Wrong arguments number" << std::endl;
 		std::cout << "converter input output" << std::endl;
 		return 0;
@@ -282,6 +282,6 @@ int main(int argc, char const *argv[]) {
 	std::string input = argv[1];
 	std::string output = argv[2];
 	spScene scene = assimp_import(input);
-	scene->save(output);*/
+	scene->save(output);
 	return 0;
 }
