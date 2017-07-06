@@ -8,7 +8,7 @@
 namespace r267 {
 
 struct BVHNode {
-	BVHNode(){}
+	BVHNode() : data(-1){}
 	BVHNode(const BVHNode& n) : min(n.min),max(n.max),data(n.data) {}
 
 	// Alligned BVH Node
@@ -36,8 +36,9 @@ class BVH {
 		struct Prim {
 			glm::vec3 minBox;
 			glm::vec3 maxBox;
+            glm::vec3 center;
 
-			size_t id;
+			int id;
 		};
 
 		BVH();
@@ -49,8 +50,7 @@ class BVH {
 		std::vector<BVHNode>& nodes();
 		size_t rootID();
 	protected:
-		void recursive(BVHNode& root, std::vector<Prim>& primitives, const int depth);
-		SAH  sah(BVHNode& root, std::vector<Prim>& primitives);
+		void recursive(BVHNode& root, std::vector<Prim>& primitives,const uint32_t start, const uint32_t end, const int depth);
 
 		size_t rootId;
 		std::vector<BVHNode> _nodes;

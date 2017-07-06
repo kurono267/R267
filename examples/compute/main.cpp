@@ -55,7 +55,8 @@ class ComputeApp : public BaseApp {
             _scene->load("assets/models/monkey/monkey");
 
             spModel monkey = _scene->models()[0];
-            _bvh.run(monkey->mesh());
+            spMesh  mesh = monkey->mesh();
+            _bvh.run(mesh);
 
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
 			_camera->setProj(glm::radians(45.0f),(float)(wndSize.x)/(float)(wndSize.y),0.1f,10000.0f);
@@ -70,6 +71,8 @@ class ComputeApp : public BaseApp {
 
 			_cameraUniform.create(device,sizeof(ComputeCamera),&_cameraCompute,vk::BufferUsageFlagBits::eStorageBuffer);
 			_bvhUniform.create(device,sizeof(BVHNode)*nodes.size(),nodes.data(),vk::BufferUsageFlagBits::eStorageBuffer);
+            _vb.create(device,sizeof(sVertex)*mesh->vertexes().size(),mesh->vertexes().data(),vk::BufferUsageFlagBits::eStorageBuffer);
+            _ib.create(device,sizeof(uint32_t)*mesh->indexes().size(),mesh->indexes().data(),vk::BufferUsageFlagBits::eStorageBuffer);
 
 			// Create Compute Shader
 			_surface = device->create<Image>();
@@ -77,13 +80,17 @@ class ComputeApp : public BaseApp {
 
             _defaultSampler = createSampler(vk_device,linearSampler());
 
-            _computeDescSets.resize(2);
+            _computeDescSets.resize(4);
             _computeDescSets[0] = device->create<DescSet>(); // Descriptor set for result image and camera settings
             _computeDescSets[0]->setTexture(_surface->createImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eCompute,
                                         vk::DescriptorType::eStorageImage, vk::ImageLayout::eGeneral);
             _computeDescSets[0]->setUniformBuffer(_cameraUniform,1,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eStorageBuffer);
             _computeDescSets[1] = device->create<DescSet>();
             _computeDescSets[1]->setUniformBuffer(_bvhUniform,0,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eStorageBuffer);
+            _computeDescSets[2] = device->create<DescSet>();
+            _computeDescSets[2]->setUniformBuffer(_vb,0,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eStorageBuffer);
+            _computeDescSets[3] = device->create<DescSet>();
+            _computeDescSets[3]->setUniformBuffer(_ib,0,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eStorageBuffer);
 
             for(auto c : _computeDescSets)c->create();
 
@@ -253,6 +260,8 @@ class ComputeApp : public BaseApp {
         BVH      _bvh; // BVH for monkey
 		Uniform  _bvhUniform;
 		Uniform  _cameraUniform;
+        Uniform  _vb;
+        Uniform  _ib;
 		ComputeCamera _cameraCompute;
 
 		std::chrono::time_point<std::chrono::steady_clock> prev;
