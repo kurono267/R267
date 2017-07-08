@@ -26,6 +26,9 @@ class Image {
 		void transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout);
 
 		vk::Image vk_image();
+
+		uint width();
+		uint height();
 	protected:
 		spDevice        _device;
 		vk::CommandPool _pool;

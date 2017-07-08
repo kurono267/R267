@@ -17,7 +17,7 @@ class Compute {
 		void dispatch(const int&        size);
 
 		void create(const std::string& filename,const std::vector<spDescSet>& descSets);  // Create Compute shader
-		vk::Semaphore run(const vk::Semaphore& wait); // Run compute shader
+		void run(); // Run compute shader
 
 		vk::Pipeline pipeline(){return _pipeline;}
 	protected:
@@ -34,6 +34,7 @@ class Compute {
 		vk::CommandBuffer _commandBuffer; 
 
 		vk::Semaphore     _finish;
+		vk::Fence         _fence;
 };
 
 typedef std::shared_ptr<Compute> spCompute;

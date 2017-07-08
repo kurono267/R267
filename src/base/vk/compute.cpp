@@ -29,8 +29,10 @@ void Compute::create(const std::string& filename,const std::vector<spDescSet>& d
         _pipelineLayout
 	);
 
+    vk::FenceCreateInfo fenceInfo(vk::FenceCreateFlagBits::eSignaled);
+    _fence = vk_device.createFence(fenceInfo);
+
 	_pipeline = vk_device.createComputePipeline(nullptr,info);
-	_finish = _device->createSemaphore(vk::SemaphoreCreateInfo());
 }
 
 void Compute::dispatch(const glm::ivec3& size){
@@ -67,18 +69,17 @@ void Compute::initCommandBuffer(){
 	_isCmd = true;
 }
 
-vk::Semaphore Compute::run(const vk::Semaphore& wait){
+void Compute::run(){
 	if(!_isCmd)initCommandBuffer(); // Init command buffer if that still don't made
 
-	vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
+    auto vk_device = _device->getDevice();
 
-	vk::SubmitInfo submitInfo(
-		1, &wait,
-		waitStages, 
-		1, &_commandBuffer,
-		1, &_finish
-	);
+    vk_device.waitForFences(1,&_fence,true,UINT64_MAX);
+    vk_device.resetFences(_fence);
 
-	_device->getComputeQueue().submit(submitInfo, nullptr);
-    return _finish;
+    vk::SubmitInfo submitInfo;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &_commandBuffer;
+
+	_device->getComputeQueue().submit(submitInfo, _fence);
 }

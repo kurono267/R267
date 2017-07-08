@@ -192,3 +192,14 @@ spImage r267::loadImage(spDevice device,const std::string& filename){
 
 	return image;
 }
+
+vk::ImageMemoryBarrier r267::imageBarrier(spImage image, AccessTransfer access, ImageLayoutTransfer layout){
+	vk::ImageMemoryBarrier memoryBarrier(
+			access.src,access.dst,
+			layout.src,layout.dst,
+			0,0, // Queue src,dst zero by default
+			image->vk_image(),
+			vk::ImageSubresourceRange(vk::ImageAspectFlagBits::eColor,0,image->mipLevels(),0,1)
+	);
+	return memoryBarrier;
+}

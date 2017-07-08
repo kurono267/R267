@@ -13,4 +13,27 @@ spImage checkboardTexture(spDevice device,const uint& width, const uint& height,
 spImage whiteTexture(spDevice device,const uint& width, const uint& height);
 spImage loadImage(spDevice device,const std::string& filename);
 
+struct AccessTransfer {
+    AccessTransfer(){}
+    AccessTransfer(const AccessTransfer& a) : src(a.src),dst(a.dst) {}
+    AccessTransfer(const vk::AccessFlags& _src) : src(_src),dst(_src){}
+    AccessTransfer(const vk::AccessFlags& _src,const vk::AccessFlags& _dst) : src(_src),dst(_dst){}
+
+    vk::AccessFlags src;
+    vk::AccessFlags dst;
+};
+
+struct ImageLayoutTransfer {
+    ImageLayoutTransfer(){}
+    ImageLayoutTransfer(const ImageLayoutTransfer& t) : src(t.src),dst(t.dst) {}
+    ImageLayoutTransfer(const vk::ImageLayout& _src) : src(_src), dst(_src) {}
+    ImageLayoutTransfer(const vk::ImageLayout& _src, const vk::ImageLayout& _dst) : src(_src), dst(_dst) {}
+
+    vk::ImageLayout src;
+    vk::ImageLayout dst;
+};
+
+// Image memory barrier, full size
+vk::ImageMemoryBarrier imageBarrier(spImage image, AccessTransfer access, ImageLayoutTransfer layout);
+
 };

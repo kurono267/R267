@@ -127,11 +127,22 @@ class ComputeApp : public BaseApp {
 			vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, _framebuffers.size());
 			_commandBuffers = vk_device.allocateCommandBuffers(allocInfo);
 
+			auto surfaceBarrier = imageBarrier(_surface,AccessTransfer(vk::AccessFlagBits::eShaderWrite,vk::AccessFlagBits::eShaderRead),ImageLayoutTransfer(vk::ImageLayout::eGeneral));
+
 			for(int i = 0;i<_commandBuffers.size();++i){
 				// Fill Render passes
 				vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
 
 				_commandBuffers[i].begin(&beginInfo);
+
+				_commandBuffers[i].pipelineBarrier(
+						vk::PipelineStageFlagBits::eComputeShader,
+						vk::PipelineStageFlagBits::eFragmentShader,
+						vk::DependencyFlagBits::eByRegion,
+						0, nullptr,
+						0, nullptr,
+						1, &surfaceBarrier
+				);
 
 				std::array<vk::ClearValue, 2> clearValues = {};
 				clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 1.0f});
@@ -173,10 +184,10 @@ class ComputeApp : public BaseApp {
 			std::cout << "FPS " << 1.0f/_dt << std::endl;
 			prev = next;
 
-			auto computeFinish = _compute->run(_imageAvailable);
+			_compute->run();
 
-			vk::Semaphore waitSemaphores[] = {computeFinish};
-			vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eComputeShader};
+			vk::Semaphore waitSemaphores[] = {_imageAvailable};
+			vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
 			vk::Semaphore signalSemaphores[] = {_renderFinish};
 

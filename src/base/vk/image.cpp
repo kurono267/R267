@@ -164,6 +164,14 @@ uint Image::mipLevels(){
 	return _mipLevels;
 }
 
+uint Image::width(){
+	return _width;
+}
+
+uint Image::height(){
+	return _height;
+}
+
 void Image::release(spDevice device){
 	auto vk_device = device->getDevice();
 	vk_device.destroyImageView(_imageView);
