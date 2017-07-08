@@ -71,8 +71,16 @@ class ComputeApp : public BaseApp {
 
 			_cameraUniform.create(device,sizeof(ComputeCamera),&_cameraCompute,vk::BufferUsageFlagBits::eStorageBuffer);
 			_bvhUniform.create(device,sizeof(BVHNode)*nodes.size(),nodes.data(),vk::BufferUsageFlagBits::eStorageBuffer);
+#if 1
             _vb.create(device,sizeof(sVertex)*mesh->vertexes().size(),mesh->vertexes().data(),vk::BufferUsageFlagBits::eStorageBuffer);
             _ib.create(device,sizeof(uint32_t)*mesh->indexes().size(),mesh->indexes().data(),vk::BufferUsageFlagBits::eStorageBuffer);
+#else
+            auto cube_v = createCubeVB();
+            auto cube_i = createCubeIB();
+
+            _vb.create(device,sizeof(sVertex)*cube_v.size(),cube_v.data(),vk::BufferUsageFlagBits::eStorageBuffer);
+            _ib.create(device,sizeof(uint32_t)*cube_i.size(),cube_i.data(),vk::BufferUsageFlagBits::eStorageBuffer);
+#endif
 
 			// Create Compute Shader
 			_surface = device->create<Image>();

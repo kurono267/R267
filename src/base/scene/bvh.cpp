@@ -64,8 +64,8 @@ void BVH::run(const spMesh& mesh){
         prim.id = i;
 		for(int v = 1;v<3;++v){
             glm::vec3 pos = vertexes[indexes[startTriangle+v]].pos;
-            prim.minBox = min(primitives[i].minBox,pos);
-            prim.maxBox = max(primitives[i].maxBox,pos);
+            prim.minBox = min(prim.minBox,pos);
+            prim.maxBox = max(prim.maxBox,pos);
             prim.center += pos;
 		}
         prim.center /= 3.0f;
@@ -86,7 +86,7 @@ void BVH::run(const spMesh& mesh){
 }
 
 struct AABB {
-    AABB() : min(std::numeric_limits<float>::infinity()), max(0.0f) {}
+    AABB() : min(std::numeric_limits<float>::infinity()), max(-std::numeric_limits<float>::infinity()) {}
     AABB(const BVHNode& node) : min(node.min.x,node.min.y,node.min.z), max(node.max.x,node.max.y,node.max.z) {}
     AABB(const AABB& a) : min(a.min), max(a.max) {}
 
@@ -130,8 +130,12 @@ void BVH::recursive(BVHNode& root, std::vector<Prim>& primitives, const uint32_t
     uint32_t size = end-start;
     if(size <= NODE_MAX_TRIANGLE){
         root.max.w = 1.0f;
+        std::cout << "Start" << std::endl;
         for(uint32_t i = 0;i<NODE_MAX_TRIANGLE;++i){
-            if(i < size)root.data[i] = primitives[start+i].id;
+            if(i < size){
+                std::cout << primitives[start+i].id << std::endl;
+                root.data[i] = primitives[start+i].id;
+            }
             else root.data[i] = -1;
         }
         return;
