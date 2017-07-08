@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mesh.hpp"
+#include "scene.hpp"
 #include <algorithm> 
 
 #define NODE_MAX_TRIANGLE 4 // Max triangle in node
@@ -17,7 +18,7 @@ struct BVHNode {
 
     // Data changes by leaf or not current node
     // If Leaf x,y,z,w index of triangle
-    // If Not leaf x,y r leaf, l leaf, z - axis, w - depth
+    // If Not leaf x,y r leaf, l leaf, z - meshID, w - depth
     glm::ivec4 data;
 };
 
@@ -25,13 +26,6 @@ std::ostream& operator<<(std::ostream& os,const glm::vec3& v);
 std::ostream& operator<<(std::ostream& os, const BVHNode& n);
 
 class BVH {
-	struct SAH {
-		float split;
-		int axis;
-		float sah;
-
-		int left_size;
-	};
 	public:
 		struct Prim {
 			glm::vec3 minBox;
@@ -41,20 +35,30 @@ class BVH {
 			int id;
 		};
 
+		struct MeshID {
+			int vbOffset;     int ibOffset;
+			int numTriangles; int matID;
+		};
+
 		BVH();
 		virtual ~BVH();
 
 		void operator()(const spMesh& mesh);
-		void run(const spMesh& mesh);
+		void run(const spMesh& mesh, const uint& mesh_id = 0);
+
+		void run(const spScene& scene);
 
 		std::vector<BVHNode>& nodes();
 		size_t rootID();
 	protected:
-		void recursive(BVHNode& root, std::vector<Prim>& primitives,const uint32_t start, const uint32_t end, const int depth);
+		void recursive(BVHNode& root, std::vector<Prim>& primitives,const uint32_t start, const uint32_t end, const int depth, const uint& mesh_id);
+		void recursiveScene(BVHNode& root, std::vector<Prim>& primitives,const uint32_t start, const uint32_t end, const int depth);
 
 		size_t rootId;
 		std::vector<BVHNode> _nodes;
-		size_t			  _maxDepth;
+		std::vector<MeshID>  _meshIDs;
+		std::vector<BVH>     _meshes;
+		size_t			     _maxDepth;
 };
 
 }

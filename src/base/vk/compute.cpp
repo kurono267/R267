@@ -69,13 +69,15 @@ void Compute::initCommandBuffer(){
 	_isCmd = true;
 }
 
+void Compute::wait(){
+	// Wait for fence
+	auto vk_device = _device->getDevice();
+	vk_device.waitForFences(1,&_fence,true,UINT64_MAX);
+	vk_device.resetFences(_fence);
+}
+
 void Compute::run(){
 	if(!_isCmd)initCommandBuffer(); // Init command buffer if that still don't made
-
-    auto vk_device = _device->getDevice();
-
-    vk_device.waitForFences(1,&_fence,true,UINT64_MAX);
-    vk_device.resetFences(_fence);
 
     vk::SubmitInfo submitInfo;
     submitInfo.commandBufferCount = 1;

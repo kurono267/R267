@@ -54,33 +54,38 @@ class ComputeApp : public BaseApp {
             _scene = std::make_shared<Scene>();
             _scene->load("assets/models/monkey/monkey");
 
-            spModel monkey = _scene->models()[0];
-            spMesh  mesh = monkey->mesh();
-            _bvh.run(mesh);
+            //spModel monkey = _scene->models()[0];
+            //spMesh  mesh = monkey->mesh();
+            _bvh.run(_scene);
+
+			// Pack scene to VB and IB
+			std::vector<sVertex>   vertexes;
+			std::vector<uint32_t > indexes;
+			uint ibOffset = 0;
+			for(uint i = 0;i<_scene->models().size();++i){
+				std::vector<sVertex>   meshVertexes = _scene->models()[i]->mesh()->vertexes();
+				std::vector<uint32_t > meshIndexes  = _scene->models()[i]->mesh()->indexes();
+				for(auto index  : meshIndexes)indexes.push_back(index+ibOffset);
+				for(auto vertex : meshVertexes)vertexes.push_back(vertex);
+				ibOffset += meshIndexes.size();
+			}
+
+			std::cout << "NumVertexes " << vertexes.size() << std::endl;
+			std::cout << "NumIndexes " << indexes.size() << std::endl;
 
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
 			_camera->setProj(glm::radians(45.0f),(float)(wndSize.x)/(float)(wndSize.y),0.1f,10000.0f);
 
 			updateCameraData();
 
-            BVHNode test;
-            test.min = convert(glm::vec3(-1.0f));
-            test.max = convert(glm::vec3(1.0f));
-
             auto& nodes = _bvh.nodes();
 
-			_cameraUniform.create(device,sizeof(ComputeCamera),&_cameraCompute,vk::BufferUsageFlagBits::eStorageBuffer);
+			_cameraUniform.create(device,sizeof(ComputeCamera),&_cameraCompute,vk::BufferUsageFlagBits::eUniformBuffer);
 			_bvhUniform.create(device,sizeof(BVHNode)*nodes.size(),nodes.data(),vk::BufferUsageFlagBits::eStorageBuffer);
-#if 1
-            _vb.create(device,sizeof(sVertex)*mesh->vertexes().size(),mesh->vertexes().data(),vk::BufferUsageFlagBits::eStorageBuffer);
-            _ib.create(device,sizeof(uint32_t)*mesh->indexes().size(),mesh->indexes().data(),vk::BufferUsageFlagBits::eStorageBuffer);
-#else
-            auto cube_v = createCubeVB();
-            auto cube_i = createCubeIB();
 
-            _vb.create(device,sizeof(sVertex)*cube_v.size(),cube_v.data(),vk::BufferUsageFlagBits::eStorageBuffer);
-            _ib.create(device,sizeof(uint32_t)*cube_i.size(),cube_i.data(),vk::BufferUsageFlagBits::eStorageBuffer);
-#endif
+            _vb.create(device,sizeof(sVertex)*vertexes.size(),vertexes.data(),vk::BufferUsageFlagBits::eStorageBuffer);
+            _ib.create(device,sizeof(uint32_t)*indexes.size(),indexes.data(),vk::BufferUsageFlagBits::eStorageBuffer);
+
 
 			// Create Compute Shader
 			_surface = device->create<Image>();
@@ -92,7 +97,7 @@ class ComputeApp : public BaseApp {
             _computeDescSets[0] = device->create<DescSet>(); // Descriptor set for result image and camera settings
             _computeDescSets[0]->setTexture(_surface->createImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eCompute,
                                         vk::DescriptorType::eStorageImage, vk::ImageLayout::eGeneral);
-            _computeDescSets[0]->setUniformBuffer(_cameraUniform,1,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eStorageBuffer);
+            _computeDescSets[0]->setUniformBuffer(_cameraUniform,1,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eUniformBuffer);
             _computeDescSets[1] = device->create<DescSet>();
             _computeDescSets[1]->setUniformBuffer(_bvhUniform,0,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eStorageBuffer);
             _computeDescSets[2] = device->create<DescSet>();
@@ -108,7 +113,7 @@ class ComputeApp : public BaseApp {
 
 			_compute = std::make_shared<Compute>(device);
 			_compute->create("assets/compute/main_comp.spv",_computeDescSets);
-			_compute->dispatch(glm::ivec2(wndSize.x/COMPUTE_LOCAL_SIZE,wndSize.y/COMPUTE_LOCAL_SIZE));
+			_compute->dispatch(glm::ivec2((wndSize.x/COMPUTE_LOCAL_SIZE)+1,(wndSize.y/COMPUTE_LOCAL_SIZE)+1));
 
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
@@ -138,7 +143,7 @@ class ComputeApp : public BaseApp {
 				_commandBuffers[i].pipelineBarrier(
 						vk::PipelineStageFlagBits::eComputeShader,
 						vk::PipelineStageFlagBits::eFragmentShader,
-						vk::DependencyFlagBits::eByRegion,
+						vk::DependencyFlagBits::eViewLocalKHX,
 						0, nullptr,
 						0, nullptr,
 						1, &surfaceBarrier
@@ -177,14 +182,11 @@ class ComputeApp : public BaseApp {
 		}
 		bool draw(){
 			unsigned int imageIndex = vk_device.acquireNextImageKHR(swapchain->getSwapchain(),std::numeric_limits<uint64_t>::max(),_imageAvailable,nullptr).value;
-			_cameraUniform.set(sizeof(ComputeCamera),&_cameraCompute);
 
 			auto next = std::chrono::steady_clock::now();
 			_dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
 			std::cout << "FPS " << 1.0f/_dt << std::endl;
 			prev = next;
-
-			_compute->run();
 
 			vk::Semaphore waitSemaphores[] = {_imageAvailable};
 			vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
@@ -209,10 +211,17 @@ class ComputeApp : public BaseApp {
 			);
 
 			device->getPresentQueue().presentKHR(presentInfo);
+			device->getGraphicsQueue().waitIdle();
 
 			return true;
 		}
 		bool update(){
+			auto prev_t = std::chrono::steady_clock::now();
+			_compute->wait();
+			_compute->run();
+			float dt = std::chrono::duration_cast<std::chrono::duration<double> >(std::chrono::steady_clock::now() - prev).count();
+			//std::cout << "FPS " << 1.0f/dt << std::endl;
+			_cameraUniform.set(sizeof(ComputeCamera),&_cameraCompute);
 			return true;
 		}
 		
@@ -281,6 +290,7 @@ class ComputeApp : public BaseApp {
 		Uniform  _cameraUniform;
         Uniform  _vb;
         Uniform  _ib;
+		Uniform  _mesh_data;
 		ComputeCamera _cameraCompute;
 
 		std::chrono::time_point<std::chrono::steady_clock> prev;

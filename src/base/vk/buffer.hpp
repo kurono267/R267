@@ -12,9 +12,9 @@ struct sVertex {
 	sVertex(const glm::vec3& pos_ = glm::vec3(0.0f),const glm::vec2& uv_ = glm::vec2(0.0f),const glm::vec3& normal_ = glm::vec3(0.0f));
 	sVertex(const float& px,const float& py,const float& pz,const float& u = 0.0f,const float& v = 0.0f,const float& nx = 0.0f,const float& ny = 0.0f,const float& nz = 0.0f);
 
-	alignas(16) glm::vec3 pos;
-	alignas(16) glm::vec3 normal;
-	alignas(16) glm::vec2 uv;
+	/*alignas(16)*/ glm::vec3 pos;
+	/*alignas(16)*/ glm::vec3 normal;
+	/*alignas(16)*/ glm::vec2 uv;
 
 	static vk::VertexInputBindingDescription bindingDesc(){
 		return vk::VertexInputBindingDescription(0,sizeof(sVertex));

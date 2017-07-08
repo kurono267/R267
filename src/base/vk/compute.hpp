@@ -17,6 +17,7 @@ class Compute {
 		void dispatch(const int&        size);
 
 		void create(const std::string& filename,const std::vector<spDescSet>& descSets);  // Create Compute shader
+		void wait();
 		void run(); // Run compute shader
 
 		vk::Pipeline pipeline(){return _pipeline;}
