@@ -40,6 +40,10 @@ spInstance MainApp::vulkan(){
 	return _vulkan;
 }
 
+GLFWwindow* MainApp::window(){
+	return _window;
+}
+
 void MainApp::resize(const int width,const int height){
 	// Relase
 	_vulkan->device()->getDevice().waitIdle();

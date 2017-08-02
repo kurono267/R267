@@ -64,6 +64,7 @@ class MainApp : public std::enable_shared_from_this<MainApp> {
 		bool is();
 
 		spInstance vulkan();
+		GLFWwindow* window();
 
 		static ptr& instance(){
 			static ptr app; // lazy singleton, instantiated on first use

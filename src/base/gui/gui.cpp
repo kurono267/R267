@@ -26,6 +26,81 @@ struct guiVertex {
 GUI::GUI(spDevice device) : _device(device) {}
 GUI::~GUI(){}
 
+void GUI::update(updateGUI _update){
+    if(!_update(_ctx))return;
+    updateBuffer();
+    commands();
+    nk_clear(&_ctx);
+}
+
+void GUI::actionUpdate(GLFWwindow* win){
+    int i;
+    double x, y;
+    nk_context *ctx = &_ctx;
+
+    nk_input_begin(ctx);
+    //for (i = 0; i < glfw.text_len; ++i)
+    //    nk_input_unicode(ctx, glfw.text[i]);
+
+#if NK_GLFW_GL3_MOUSE_GRABBING
+    /* optional grabbing behavior */
+    if (ctx->input.mouse.grab)
+        glfwSetInputMode(glfw.win, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+    else if (ctx->input.mouse.ungrab)
+        glfwSetInputMode(glfw.win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+#endif
+
+    nk_input_key(ctx, NK_KEY_DEL, glfwGetKey(win, GLFW_KEY_DELETE) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_ENTER, glfwGetKey(win, GLFW_KEY_ENTER) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_TAB, glfwGetKey(win, GLFW_KEY_TAB) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_BACKSPACE, glfwGetKey(win, GLFW_KEY_BACKSPACE) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_UP, glfwGetKey(win, GLFW_KEY_UP) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_DOWN, glfwGetKey(win, GLFW_KEY_DOWN) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_TEXT_START, glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_TEXT_END, glfwGetKey(win, GLFW_KEY_END) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_SCROLL_START, glfwGetKey(win, GLFW_KEY_HOME) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_SCROLL_END, glfwGetKey(win, GLFW_KEY_END) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_SCROLL_DOWN, glfwGetKey(win, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_SCROLL_UP, glfwGetKey(win, GLFW_KEY_PAGE_UP) == GLFW_PRESS);
+    nk_input_key(ctx, NK_KEY_SHIFT, glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS||
+                                    glfwGetKey(win, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS);
+
+    if (glfwGetKey(win, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS ||
+        glfwGetKey(win, GLFW_KEY_RIGHT_CONTROL) == GLFW_PRESS) {
+        nk_input_key(ctx, NK_KEY_COPY, glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_PASTE, glfwGetKey(win, GLFW_KEY_V) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_CUT, glfwGetKey(win, GLFW_KEY_X) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_TEXT_UNDO, glfwGetKey(win, GLFW_KEY_Z) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_TEXT_REDO, glfwGetKey(win, GLFW_KEY_R) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_TEXT_WORD_LEFT, glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_TEXT_WORD_RIGHT, glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_TEXT_LINE_START, glfwGetKey(win, GLFW_KEY_B) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_TEXT_LINE_END, glfwGetKey(win, GLFW_KEY_E) == GLFW_PRESS);
+    } else {
+        nk_input_key(ctx, NK_KEY_LEFT, glfwGetKey(win, GLFW_KEY_LEFT) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_RIGHT, glfwGetKey(win, GLFW_KEY_RIGHT) == GLFW_PRESS);
+        nk_input_key(ctx, NK_KEY_COPY, 0);
+        nk_input_key(ctx, NK_KEY_PASTE, 0);
+        nk_input_key(ctx, NK_KEY_CUT, 0);
+        nk_input_key(ctx, NK_KEY_SHIFT, 0);
+    }
+
+    glfwGetCursorPos(win, &x, &y);
+    nk_input_motion(ctx, (int)x, (int)y);
+#if NK_GLFW_GL3_MOUSE_GRABBING
+    if (ctx->input.mouse.grabbed) {
+        glfwSetCursorPos(glfw.win, ctx->input.mouse.prev.x, ctx->input.mouse.prev.y);
+        ctx->input.mouse.pos.x = ctx->input.mouse.prev.x;
+        ctx->input.mouse.pos.y = ctx->input.mouse.prev.y;
+    }
+#endif
+    nk_input_button(ctx, NK_BUTTON_LEFT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
+    nk_input_button(ctx, NK_BUTTON_MIDDLE, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS);
+    nk_input_button(ctx, NK_BUTTON_RIGHT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
+    //nk_input_scroll(ctx, glfw.scroll);
+    nk_input_end(&_ctx);
+}
+
 void GUI::create(const glm::ivec2& size){
 	_size = size;
 	nk_init_default(&_ctx, 0);
@@ -34,7 +109,6 @@ void GUI::create(const glm::ivec2& size){
 	RenderPattern pattern;
 	pattern.inputAssembly(vk::PrimitiveTopology::eTriangleList);
 	pattern.viewport(0,0,size.x,size.y);
-	pattern.scissor(vk::Offset2D(),vk::Extent2D(size.x,size.y));
 	pattern.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eNone);
 	pattern.multisampling();
 	pattern.blend(true,RGBA,
@@ -73,41 +147,6 @@ void GUI::create(const glm::ivec2& size){
     nk_font_atlas_end(&_atlas, nk_handle_id((int)1), &null_tex);
     if (_atlas.default_font)
         nk_style_set_font(&_ctx, &_atlas.default_font->handle);
-
-    	nk_color background = nk_rgb(28,48,62);
-	if (nk_begin(&_ctx, "Demo", nk_rect(50, 50, 230, 250),
-            NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-            NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
-        {
-            enum {EASY, HARD};
-            static int op = EASY;
-            static int property = 20;
-            nk_layout_row_static(&_ctx, 30, 80, 1);
-            if (nk_button_label(&_ctx, "button"))
-                fprintf(stdout, "button pressed\n");
-
-            nk_layout_row_dynamic(&_ctx, 30, 2);
-            if (nk_option_label(&_ctx, "easy", op == EASY)) op = EASY;
-            if (nk_option_label(&_ctx, "hard", op == HARD)) op = HARD;
-
-            nk_layout_row_dynamic(&_ctx, 25, 1);
-            nk_property_int(&_ctx, "Compression:", 0, &property, 100, 10, 1);
-
-            nk_layout_row_dynamic(&_ctx, 20, 1);
-            nk_label(&_ctx, "background:", NK_TEXT_LEFT);
-            nk_layout_row_dynamic(&_ctx, 25, 1);
-            if (nk_combo_begin_color(&_ctx, background, nk_vec2(nk_widget_width(&_ctx),400))) {
-                nk_layout_row_dynamic(&_ctx, 120, 1);
-                background = nk_color_picker(&_ctx, background, NK_RGBA);
-                nk_layout_row_dynamic(&_ctx, 25, 1);
-                background.r = (nk_byte)nk_propertyi(&_ctx, "#R:", 0, background.r, 255, 1,1);
-                background.g = (nk_byte)nk_propertyi(&_ctx, "#G:", 0, background.g, 255, 1,1);
-                background.b = (nk_byte)nk_propertyi(&_ctx, "#B:", 0, background.b, 255, 1,1);
-                background.a = (nk_byte)nk_propertyi(&_ctx, "#A:", 0, background.a, 255, 1,1);
-                nk_combo_end(&_ctx);
-            }
-        }
-        nk_end(&_ctx);
 
     // Create Uniform 
 	glm::mat4 ortho = glm::mat4({
@@ -155,9 +194,12 @@ void GUI::create(const glm::ivec2& size){
     _convertConfig.shape_AA = AA;
     _convertConfig.line_AA = AA;
 
+    // Init command buffer
+    vk::CommandBufferAllocateInfo allocInfo(_device->getCommandPool(),vk::CommandBufferLevel::ePrimary, 1);
+    _commandBuffer = _device->getDevice().allocateCommandBuffers(allocInfo)[0];
+
+    // Create VB and IB buffers
     createBuffer();
-    updateBuffer();
-    _commandBuffer = commands();
 
     _renderFinish = _device->createSemaphore(vk::SemaphoreCreateInfo());
 }
@@ -205,9 +247,6 @@ void GUI::updateBuffer(){
         nk_buffer_init_fixed(&vbuf, vertices, (size_t)MAX_VERTEX_BUFFER_GUI);
         nk_buffer_init_fixed(&ebuf, elements, (size_t)MAX_ELEMENT_BUFFER_GUI);
         nk_convert(&_ctx, &_cmds, &vbuf, &ebuf, &_convertConfig);
-        for(uint i = 0;i<2000;++i){
-        	std::cout << vertices[i].pos.x << ", " << vertices[i].pos.y << std::endl;
-        }
     }
     _cpuVB->unmap();
     _cpuIB->unmap();
@@ -217,13 +256,11 @@ void GUI::updateBuffer(){
     _cpuIB->copy(*_cpuIB,*_gpuIB,_ibSize);
 }
 
-vk::CommandBuffer GUI::commands(){
-	vk::CommandBufferAllocateInfo allocInfo(_device->getCommandPool(),vk::CommandBufferLevel::ePrimary, 1);
-	vk::CommandBuffer commandBuffer = _device->getDevice().allocateCommandBuffers(allocInfo)[0];
-
+void GUI::commands(){
 	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
 
-	commandBuffer.begin(&beginInfo);
+    _commandBuffer.reset(vk::CommandBufferResetFlagBits::eReleaseResources);
+	_commandBuffer.begin(&beginInfo);
 
 	std::array<vk::ClearValue, 2> clearValues = {};
 	clearValues[0].color = vk::ClearColorValue(std::array<float,4>{28.0/255.0,48.0/255.0,62.0/255.0, 0.0f});
@@ -236,30 +273,29 @@ vk::CommandBuffer GUI::commands(){
 		clearValues.size(), clearValues.data()
 	);
 
-	commandBuffer.beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
-	commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *_pipeline);
+    _commandBuffer.beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
+    _commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *_pipeline);
 
 	vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet()};
-	commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipeline->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
+    _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipeline->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
 	vk::DeviceSize buffer = 0;
-	commandBuffer.bindVertexBuffers(0,1,&_gpuVB->buffer,&buffer);
-	commandBuffer.bindIndexBuffer(_gpuIB->buffer,0,vk::IndexType::eUint16);
+    _commandBuffer.bindVertexBuffers(0,1,&_gpuVB->buffer,&buffer);
+    _commandBuffer.bindIndexBuffer(_gpuIB->buffer,0,vk::IndexType::eUint16);
 
 	uint offset = 0;
 
 	const nk_draw_command* cmd;
 	nk_draw_foreach(cmd, &_ctx, &_cmds) {
 		if (!cmd->elem_count) continue;
-		commandBuffer.drawIndexed((uint)cmd->elem_count*3,1,offset,0,0);
+        vk::Rect2D rect(vk::Offset2D(cmd->clip_rect.x,_size.y - (cmd->clip_rect.y + cmd->clip_rect.h)),vk::Extent2D(cmd->clip_rect.w,cmd->clip_rect.h));
+        _commandBuffer.setScissor(0,1,&rect);
+        _commandBuffer.drawIndexed((uint)cmd->elem_count,1,offset,0,0);
 		offset += cmd->elem_count;
 	}
-	//nk_clear(&_ctx);
 
-	commandBuffer.endRenderPass();
-	commandBuffer.end();
-
-	return commandBuffer;
+    _commandBuffer.endRenderPass();
+    _commandBuffer.end();
 }
 
 vk::ImageView GUI::getImageView(){

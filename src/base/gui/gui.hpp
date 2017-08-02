@@ -17,6 +17,8 @@
 
 namespace r267 {
 
+typedef std::function<bool(nk_context&)> updateGUI;
+
 class GUI {
 	public:
 		GUI(spDevice device);
@@ -25,11 +27,16 @@ class GUI {
 		void create(const glm::ivec2& size);
 		vk::Semaphore render(const vk::Semaphore& wait);
 
+		void update(updateGUI _update);
+		void actionUpdate(GLFWwindow* win);
+
+		nk_context* nkContext(){return &_ctx;}
+
 		vk::ImageView getImageView(); // Frame buffer image view
 	protected:
 		void createBuffer();
 		void updateBuffer();
-		vk::CommandBuffer commands();
+		void commands();
 		// Framebuffer size
 		glm::ivec2 _size;
 

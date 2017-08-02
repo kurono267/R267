@@ -23,12 +23,14 @@ glm::vec4 convert(const glm::vec3& v){
 	return glm::vec4(v.x,v.y,v.z,0);
 }
 
-#define COMPUTE_LOCAL_SIZE 32
+#define COMPUTE_LOCAL_SIZE 8
 
 class ComputeApp : public BaseApp {
 	public:
 		ComputeApp(spMainApp app) : BaseApp(app) {}
 		virtual ~ComputeApp(){}
+
+		glm::ivec2 computeSize;
 
 		void updateCameraData(){
 			glm::ivec2 wndSize = mainApp->wndSize();
@@ -42,7 +44,7 @@ class ComputeApp : public BaseApp {
 			_cameraCompute.look = convert(look);
 			_cameraCompute.up  = convert(up);
 			_cameraCompute.right = convert(right);
-			_cameraCompute.data = glm::ivec4(wndSize.x,wndSize.y,_bvh.nodes().size(),_bvh.rootID());
+			_cameraCompute.data = glm::ivec4(computeSize.x,computeSize.y,_bvh.nodes().size(),_bvh.rootID());
 		}
 
 		bool init(){
@@ -52,7 +54,7 @@ class ComputeApp : public BaseApp {
 			glm::ivec2 wndSize = mainApp->wndSize();
 
             _scene = std::make_shared<Scene>();
-            _scene->load("assets/models/monkey/monkey");
+            _scene->load("assets/models/temple/temple");
 
             //spModel monkey = _scene->models()[0];
             //spMesh  mesh = monkey->mesh();
@@ -73,6 +75,8 @@ class ComputeApp : public BaseApp {
 			std::cout << "NumVertexes " << vertexes.size() << std::endl;
 			std::cout << "NumIndexes " << indexes.size() << std::endl;
 
+			computeSize = glm::ivec2(wndSize.x,wndSize.y);
+
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
 			_camera->setProj(glm::radians(45.0f),(float)(wndSize.x)/(float)(wndSize.y),0.1f,10000.0f);
 
@@ -89,7 +93,7 @@ class ComputeApp : public BaseApp {
 
 			// Create Compute Shader
 			_surface = device->create<Image>();
-			_surface->create(wndSize.x,wndSize.y,vk::Format::eR8G8B8A8Unorm,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eStorage | vk::ImageUsageFlagBits::eSampled);
+			_surface->create(computeSize.x,computeSize.y,vk::Format::eR8G8B8A8Srgb,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eStorage | vk::ImageUsageFlagBits::eSampled);
 
             _defaultSampler = createSampler(vk_device,linearSampler());
 
@@ -113,7 +117,7 @@ class ComputeApp : public BaseApp {
 
 			_compute = std::make_shared<Compute>(device);
 			_compute->create("assets/compute/main_comp.spv",_computeDescSets);
-			_compute->dispatch(glm::ivec2((wndSize.x/COMPUTE_LOCAL_SIZE)+1,(wndSize.y/COMPUTE_LOCAL_SIZE)+1));
+			_compute->dispatch(glm::ivec2((computeSize.x/COMPUTE_LOCAL_SIZE)+1,(computeSize.y/COMPUTE_LOCAL_SIZE)+1));
 
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);

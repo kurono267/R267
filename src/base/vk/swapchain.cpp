@@ -57,7 +57,7 @@ void Swapchain::create(const vk::PhysicalDevice& pDevice,const vk::Device& devic
 
 	createInfo.setMinImageCount(imageCount);
 	createInfo.setImageFormat(surfaceFormat.format);
-	createInfo.setImageColorSpace(surfaceFormat.colorSpace);
+	createInfo.setImageColorSpace(vk::ColorSpaceKHR::eSrgbNonlinear);
 	createInfo.setImageExtent(extent);
 	createInfo.setImageArrayLayers(1);
 	createInfo.setImageUsage(vk::ImageUsageFlagBits::eColorAttachment);

@@ -72,7 +72,7 @@ void Compute::initCommandBuffer(){
 void Compute::wait(){
 	// Wait for fence
 	auto vk_device = _device->getDevice();
-	vk_device.waitForFences(1,&_fence,true,UINT64_MAX);
+	vk_device.waitForFences(1,&_fence,true,1000000000); // Max waiting time 1 sec
 	vk_device.resetFences(_fence);
 }
 

@@ -2,7 +2,7 @@
 
 using namespace r267;
 
-RenderPattern::RenderPattern(){}
+RenderPattern::RenderPattern() : _dynamicScissor(true){}
 RenderPattern::RenderPattern(const RenderPattern& r){
 	_assembly = r._assembly;
 	_viewport = r._viewport;
@@ -19,6 +19,7 @@ RenderPattern::RenderPattern(const RenderPattern& r){
 	_depthStencil       = r._depthStencil;
 	_depthAttachment    = r._depthAttachment;
 	_depthAttachmentRef = r._depthAttachmentRef;
+	_dynamicScissor      = r._dynamicScissor;
 	for(auto a : r._attachments){
 		_attachments.push_back(a);
 	}
@@ -41,6 +42,7 @@ void RenderPattern::scissor(const glm::ivec2& offset,const glm::ivec2& size){
 
 void RenderPattern::scissor(const vk::Offset2D& offset,const vk::Extent2D& extent){
 	_scissor = vk::Rect2D(offset,extent);
+	_dynamicScissor = false;
 }
 
 void RenderPattern::rasterizer(const vk::PolygonMode& pmode,
@@ -145,6 +147,13 @@ void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& 
 
 void Pipeline::create(const vk::VertexInputBindingDescription& vertexBinding, const std::vector<vk::VertexInputAttributeDescription>& vertexAttrib){
 	_viewportState = vk::PipelineViewportStateCreateInfo(vk::PipelineViewportStateCreateFlags(),1,&(_renderpattern._viewport),1,&(_renderpattern._scissor));
+	std::vector<vk::DynamicState> dynamicStates;
+	if(_renderpattern._dynamicScissor){
+		dynamicStates.push_back(vk::DynamicState::eScissor);
+	}
+	vk::PipelineDynamicStateCreateInfo dynamicStatesCreteInfo;
+	dynamicStatesCreteInfo.pDynamicStates    = dynamicStates.data();
+	dynamicStatesCreteInfo.dynamicStateCount = dynamicStates.size();
 
 	_renderPass    = _device.createRenderPass(_renderpattern._renderPassInfo);
 
@@ -168,7 +177,7 @@ void Pipeline::create(const vk::VertexInputBindingDescription& vertexBinding, co
 		&_renderpattern._multisampling,
 		&_renderpattern._depthStencil, // Depth and stencil
 		&_renderpattern._blend,
-		nullptr,
+		&dynamicStatesCreteInfo,
 		_pLayout,
 		_renderPass,0);
 

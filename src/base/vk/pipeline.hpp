@@ -7,6 +7,7 @@
 namespace r267 {
 
 // Pipeline pattern
+// By default scissor is dynamic, if that doesn't set
 class RenderPattern {
 	friend class Pipeline;
 	public:
@@ -68,6 +69,8 @@ class RenderPattern {
 		vk::PipelineColorBlendAttachmentState    _blendAttacment;
 		vk::PipelineColorBlendStateCreateInfo    _blend;
 		vk::PipelineDepthStencilStateCreateInfo  _depthStencil;
+
+		bool _dynamicScissor;
 		
 		vk::AttachmentDescription _colorAttachment;
 		vk::AttachmentDescription _depthAttachment;

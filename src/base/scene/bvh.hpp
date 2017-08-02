@@ -43,16 +43,12 @@ class BVH {
 		BVH();
 		virtual ~BVH();
 
-		void operator()(const spMesh& mesh);
-		void run(const spMesh& mesh, const uint& mesh_id = 0);
-
 		void run(const spScene& scene);
 
 		std::vector<BVHNode>& nodes();
 		size_t rootID();
 	protected:
 		void recursive(BVHNode& root, std::vector<Prim>& primitives,const uint32_t start, const uint32_t end, const int depth, const uint& mesh_id);
-		void recursiveScene(BVHNode& root, std::vector<Prim>& primitives,const uint32_t start, const uint32_t end, const int depth);
 
 		size_t rootId;
 		std::vector<BVHNode> _nodes;

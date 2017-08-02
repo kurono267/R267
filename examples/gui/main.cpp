@@ -12,10 +12,47 @@ struct UBO {
 	glm::vec4 color;
 };
 
+static nk_color background = nk_rgb(28,48,62);
 class GUIApp : public BaseApp {
 	public:
 		GUIApp(spMainApp app) : BaseApp(app) {}
 		virtual ~GUIApp(){}
+
+		static bool updateGUI(nk_context& ctx){
+			if (nk_begin(&ctx, "Demo", nk_rect(50, 50, 230, 250),
+						 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
+						 NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+			{
+				enum {EASY, HARD};
+				static int op = EASY;
+				static int property = 20;
+				nk_layout_row_static(&ctx, 30, 80, 1);
+				if (nk_button_label(&ctx, "button"))
+					fprintf(stdout, "button pressed\n");
+
+				nk_layout_row_dynamic(&ctx, 30, 2);
+				if (nk_option_label(&ctx, "easy", op == EASY)) op = EASY;
+				if (nk_option_label(&ctx, "hard", op == HARD)) op = HARD;
+
+				nk_layout_row_dynamic(&ctx, 25, 1);
+				nk_property_int(&ctx, "Compression:", 0, &property, 100, 10, 1);
+
+				nk_layout_row_dynamic(&ctx, 20, 1);
+				nk_label(&ctx, "background:", NK_TEXT_LEFT);
+				nk_layout_row_dynamic(&ctx, 25, 1);
+				if (nk_combo_begin_color(&ctx, background, nk_vec2(nk_widget_width(&ctx),400))) {
+					nk_layout_row_dynamic(&ctx, 120, 1);
+					background = nk_color_picker(&ctx, background, NK_RGBA);
+					nk_layout_row_dynamic(&ctx, 25, 1);
+					background.r = (nk_byte)nk_propertyi(&ctx, "#R:", 0, background.r, 255, 1,1);
+					background.g = (nk_byte)nk_propertyi(&ctx, "#G:", 0, background.g, 255, 1,1);
+					background.b = (nk_byte)nk_propertyi(&ctx, "#B:", 0, background.b, 255, 1,1);
+					background.a = (nk_byte)nk_propertyi(&ctx, "#A:", 0, background.a, 255, 1,1);
+					nk_combo_end(&ctx);
+				}
+			}
+			nk_end(&ctx);
+		}
 
 		bool init(){
 			vulkan = mainApp->vulkan();device = vulkan->device(); swapchain = device->getSwapchain();vk_device = device->getDevice();
@@ -26,9 +63,9 @@ class GUIApp : public BaseApp {
 
 			auto baseRP = RenderPattern::basic(device);
 			baseRP.blend(true,RGBA,
-					vk::BlendFactor::eSrcAlpha,vk::BlendFactor::eOneMinusSrcAlpha,
+					vk::BlendFactor::eOne,vk::BlendFactor::eOneMinusDstAlpha,
 					vk::BlendOp::eAdd,
-					vk::BlendFactor::eSrcAlpha,vk::BlendFactor::eOneMinusSrcAlpha,
+					vk::BlendFactor::eOne,vk::BlendFactor::eZero,
 					vk::BlendOp::eAdd);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 			_texDesc = device->create<DescSet>();
@@ -57,7 +94,7 @@ class GUIApp : public BaseApp {
 				_commandBuffers[i].begin(&beginInfo);
 
 				std::array<vk::ClearValue, 2> clearValues = {};
-				clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 0.0f});
+				clearValues[0].color = vk::ClearColorValue(std::array<float,4>{(float)background.r/255.0f,(float)background.g/255.0f,(float)background.b/255.0f, 1.0f});
 				clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
 
 				vk::RenderPassBeginInfo renderPassInfo(
@@ -123,11 +160,30 @@ class GUIApp : public BaseApp {
 			return true;
 		}
 		bool update(){
+			_gui->actionUpdate(mainApp->window());
+			_gui->update(updateGUI);
 			return true;
 		}
 		
 		bool onKey(const GLFWKey& key){return true;}
-		bool onMouse(const GLFWMouse& mouse){return true;}
+
+#ifndef NK_GLFW_DOUBLE_CLICK_LO
+#define NK_GLFW_DOUBLE_CLICK_LO 0.02
+#endif
+#ifndef NK_GLFW_DOUBLE_CLICK_HI
+#define NK_GLFW_DOUBLE_CLICK_HI 0.2
+#endif
+		double last_button_click;
+		bool onMouse(const GLFWMouse& mouse){
+			/*if (mouse.button != GLFW_MOUSE_BUTTON_LEFT) return false;
+			if (mouse.action == GLFW_PRESS)  {
+				double dt = glfwGetTime() - last_button_click;
+				if (dt > NK_GLFW_DOUBLE_CLICK_LO && dt < NK_GLFW_DOUBLE_CLICK_HI)
+					nk_input_button(_gui->nkContext(), NK_BUTTON_DOUBLE, (int)mouse.x, (int)mouse.y, nk_true);
+				last_button_click = glfwGetTime();
+			} else nk_input_button(_gui->nkContext(), NK_BUTTON_DOUBLE, (int)mouse.x, (int)mouse.y, nk_false);*/
+			return true;
+		}
 		bool onExit(){
 			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
 			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
