@@ -83,20 +83,24 @@ void Material::setPath(const std::string& path){
 
 void Material::setAlbedo(const float& albedo){
 	_data.diffuseColor.w = albedo;
+	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
 void Material::setRoughness(const float& roughness){
 	_data.specularColor.w = roughness;
+	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
 void Material::setDiffuseColor(const glm::vec3& color){
 	float a = _data.diffuseColor.w;
 	_data.diffuseColor = glm::vec4(color,a);
+	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
 void Material::setSpecularColor(const glm::vec3& color){
 	float r = _data.specularColor.w;
 	_data.specularColor = glm::vec4(color,r);
+	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
 void Material::setDiffuseTexture(const std::string& filename){

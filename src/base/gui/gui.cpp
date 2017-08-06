@@ -27,7 +27,7 @@ GUI::GUI(spDevice device) : _device(device) {}
 GUI::~GUI(){}
 
 void GUI::update(updateGUI _update){
-    if(!_update(_ctx))return;
+    if(!_update(&_ctx))return;
     updateBuffer();
     commands();
     nk_clear(&_ctx);
@@ -101,9 +101,143 @@ void GUI::actionUpdate(GLFWwindow* win){
     nk_input_end(&_ctx);
 }
 
+vk::CommandBuffer GUI::commandBuffer(){
+    return _commandBuffer;
+}
+
+enum theme {THEME_BLACK, THEME_WHITE, THEME_RED, THEME_BLUE, THEME_DARK};
+
+void set_style(struct nk_context *ctx, enum theme theme) {
+    struct nk_color table[NK_COLOR_COUNT];
+    if (theme == THEME_WHITE) {
+        table[NK_COLOR_TEXT] = nk_rgba(70, 70, 70, 255);
+        table[NK_COLOR_WINDOW] = nk_rgba(175, 175, 175, 255);
+        table[NK_COLOR_HEADER] = nk_rgba(175, 175, 175, 255);
+        table[NK_COLOR_BORDER] = nk_rgba(0, 0, 0, 255);
+        table[NK_COLOR_BUTTON] = nk_rgba(185, 185, 185, 255);
+        table[NK_COLOR_BUTTON_HOVER] = nk_rgba(170, 170, 170, 255);
+        table[NK_COLOR_BUTTON_ACTIVE] = nk_rgba(160, 160, 160, 255);
+        table[NK_COLOR_TOGGLE] = nk_rgba(150, 150, 150, 255);
+        table[NK_COLOR_TOGGLE_HOVER] = nk_rgba(120, 120, 120, 255);
+        table[NK_COLOR_TOGGLE_CURSOR] = nk_rgba(175, 175, 175, 255);
+        table[NK_COLOR_SELECT] = nk_rgba(190, 190, 190, 255);
+        table[NK_COLOR_SELECT_ACTIVE] = nk_rgba(175, 175, 175, 255);
+        table[NK_COLOR_SLIDER] = nk_rgba(190, 190, 190, 255);
+        table[NK_COLOR_SLIDER_CURSOR] = nk_rgba(80, 80, 80, 255);
+        table[NK_COLOR_SLIDER_CURSOR_HOVER] = nk_rgba(70, 70, 70, 255);
+        table[NK_COLOR_SLIDER_CURSOR_ACTIVE] = nk_rgba(60, 60, 60, 255);
+        table[NK_COLOR_PROPERTY] = nk_rgba(175, 175, 175, 255);
+        table[NK_COLOR_EDIT] = nk_rgba(150, 150, 150, 255);
+        table[NK_COLOR_EDIT_CURSOR] = nk_rgba(0, 0, 0, 255);
+        table[NK_COLOR_COMBO] = nk_rgba(175, 175, 175, 255);
+        table[NK_COLOR_CHART] = nk_rgba(160, 160, 160, 255);
+        table[NK_COLOR_CHART_COLOR] = nk_rgba(45, 45, 45, 255);
+        table[NK_COLOR_CHART_COLOR_HIGHLIGHT] = nk_rgba( 255, 0, 0, 255);
+        table[NK_COLOR_SCROLLBAR] = nk_rgba(180, 180, 180, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR] = nk_rgba(140, 140, 140, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_HOVER] = nk_rgba(150, 150, 150, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_ACTIVE] = nk_rgba(160, 160, 160, 255);
+        table[NK_COLOR_TAB_HEADER] = nk_rgba(180, 180, 180, 255);
+        nk_style_from_table(ctx, table);
+    } else if (theme == THEME_RED) {
+        table[NK_COLOR_TEXT] = nk_rgba(190, 190, 190, 255);
+        table[NK_COLOR_WINDOW] = nk_rgba(30, 33, 40, 215);
+        table[NK_COLOR_HEADER] = nk_rgba(181, 45, 69, 220);
+        table[NK_COLOR_BORDER] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_BUTTON] = nk_rgba(181, 45, 69, 255);
+        table[NK_COLOR_BUTTON_HOVER] = nk_rgba(190, 50, 70, 255);
+        table[NK_COLOR_BUTTON_ACTIVE] = nk_rgba(195, 55, 75, 255);
+        table[NK_COLOR_TOGGLE] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_TOGGLE_HOVER] = nk_rgba(45, 60, 60, 255);
+        table[NK_COLOR_TOGGLE_CURSOR] = nk_rgba(181, 45, 69, 255);
+        table[NK_COLOR_SELECT] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_SELECT_ACTIVE] = nk_rgba(181, 45, 69, 255);
+        table[NK_COLOR_SLIDER] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_SLIDER_CURSOR] = nk_rgba(181, 45, 69, 255);
+        table[NK_COLOR_SLIDER_CURSOR_HOVER] = nk_rgba(186, 50, 74, 255);
+        table[NK_COLOR_SLIDER_CURSOR_ACTIVE] = nk_rgba(191, 55, 79, 255);
+        table[NK_COLOR_PROPERTY] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_EDIT] = nk_rgba(51, 55, 67, 225);
+        table[NK_COLOR_EDIT_CURSOR] = nk_rgba(190, 190, 190, 255);
+        table[NK_COLOR_COMBO] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_CHART] = nk_rgba(51, 55, 67, 255);
+        table[NK_COLOR_CHART_COLOR] = nk_rgba(170, 40, 60, 255);
+        table[NK_COLOR_CHART_COLOR_HIGHLIGHT] = nk_rgba( 255, 0, 0, 255);
+        table[NK_COLOR_SCROLLBAR] = nk_rgba(30, 33, 40, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR] = nk_rgba(64, 84, 95, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_HOVER] = nk_rgba(70, 90, 100, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_ACTIVE] = nk_rgba(75, 95, 105, 255);
+        table[NK_COLOR_TAB_HEADER] = nk_rgba(181, 45, 69, 220);
+        nk_style_from_table(ctx, table);
+    } else if (theme == THEME_BLUE) {
+        table[NK_COLOR_TEXT] = nk_rgba(20, 20, 20, 255);
+        table[NK_COLOR_WINDOW] = nk_rgba(202, 212, 214, 215);
+        table[NK_COLOR_HEADER] = nk_rgba(137, 182, 224, 220);
+        table[NK_COLOR_BORDER] = nk_rgba(140, 159, 173, 255);
+        table[NK_COLOR_BUTTON] = nk_rgba(137, 182, 224, 255);
+        table[NK_COLOR_BUTTON_HOVER] = nk_rgba(142, 187, 229, 255);
+        table[NK_COLOR_BUTTON_ACTIVE] = nk_rgba(147, 192, 234, 255);
+        table[NK_COLOR_TOGGLE] = nk_rgba(177, 210, 210, 255);
+        table[NK_COLOR_TOGGLE_HOVER] = nk_rgba(182, 215, 215, 255);
+        table[NK_COLOR_TOGGLE_CURSOR] = nk_rgba(137, 182, 224, 255);
+        table[NK_COLOR_SELECT] = nk_rgba(177, 210, 210, 255);
+        table[NK_COLOR_SELECT_ACTIVE] = nk_rgba(137, 182, 224, 255);
+        table[NK_COLOR_SLIDER] = nk_rgba(177, 210, 210, 255);
+        table[NK_COLOR_SLIDER_CURSOR] = nk_rgba(137, 182, 224, 245);
+        table[NK_COLOR_SLIDER_CURSOR_HOVER] = nk_rgba(142, 188, 229, 255);
+        table[NK_COLOR_SLIDER_CURSOR_ACTIVE] = nk_rgba(147, 193, 234, 255);
+        table[NK_COLOR_PROPERTY] = nk_rgba(210, 210, 210, 255);
+        table[NK_COLOR_EDIT] = nk_rgba(210, 210, 210, 225);
+        table[NK_COLOR_EDIT_CURSOR] = nk_rgba(20, 20, 20, 255);
+        table[NK_COLOR_COMBO] = nk_rgba(210, 210, 210, 255);
+        table[NK_COLOR_CHART] = nk_rgba(210, 210, 210, 255);
+        table[NK_COLOR_CHART_COLOR] = nk_rgba(137, 182, 224, 255);
+        table[NK_COLOR_CHART_COLOR_HIGHLIGHT] = nk_rgba( 255, 0, 0, 255);
+        table[NK_COLOR_SCROLLBAR] = nk_rgba(190, 200, 200, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR] = nk_rgba(64, 84, 95, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_HOVER] = nk_rgba(70, 90, 100, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_ACTIVE] = nk_rgba(75, 95, 105, 255);
+        table[NK_COLOR_TAB_HEADER] = nk_rgba(156, 193, 220, 255);
+        nk_style_from_table(ctx, table);
+    } else if (theme == THEME_DARK) {
+        table[NK_COLOR_TEXT] = nk_rgba(210, 210, 210, 255);
+        table[NK_COLOR_WINDOW] = nk_rgba(57, 67, 71, 215);
+        table[NK_COLOR_HEADER] = nk_rgba(51, 51, 56, 220);
+        table[NK_COLOR_BORDER] = nk_rgba(46, 46, 46, 255);
+        table[NK_COLOR_BUTTON] = nk_rgba(48, 83, 111, 255);
+        table[NK_COLOR_BUTTON_HOVER] = nk_rgba(58, 93, 121, 255);
+        table[NK_COLOR_BUTTON_ACTIVE] = nk_rgba(63, 98, 126, 255);
+        table[NK_COLOR_TOGGLE] = nk_rgba(50, 58, 61, 255);
+        table[NK_COLOR_TOGGLE_HOVER] = nk_rgba(45, 53, 56, 255);
+        table[NK_COLOR_TOGGLE_CURSOR] = nk_rgba(48, 83, 111, 255);
+        table[NK_COLOR_SELECT] = nk_rgba(57, 67, 61, 255);
+        table[NK_COLOR_SELECT_ACTIVE] = nk_rgba(48, 83, 111, 255);
+        table[NK_COLOR_SLIDER] = nk_rgba(50, 58, 61, 255);
+        table[NK_COLOR_SLIDER_CURSOR] = nk_rgba(48, 83, 111, 245);
+        table[NK_COLOR_SLIDER_CURSOR_HOVER] = nk_rgba(53, 88, 116, 255);
+        table[NK_COLOR_SLIDER_CURSOR_ACTIVE] = nk_rgba(58, 93, 121, 255);
+        table[NK_COLOR_PROPERTY] = nk_rgba(50, 58, 61, 255);
+        table[NK_COLOR_EDIT] = nk_rgba(50, 58, 61, 225);
+        table[NK_COLOR_EDIT_CURSOR] = nk_rgba(210, 210, 210, 255);
+        table[NK_COLOR_COMBO] = nk_rgba(50, 58, 61, 255);
+        table[NK_COLOR_CHART] = nk_rgba(50, 58, 61, 255);
+        table[NK_COLOR_CHART_COLOR] = nk_rgba(48, 83, 111, 255);
+        table[NK_COLOR_CHART_COLOR_HIGHLIGHT] = nk_rgba(255, 0, 0, 255);
+        table[NK_COLOR_SCROLLBAR] = nk_rgba(50, 58, 61, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR] = nk_rgba(48, 83, 111, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_HOVER] = nk_rgba(53, 88, 116, 255);
+        table[NK_COLOR_SCROLLBAR_CURSOR_ACTIVE] = nk_rgba(58, 93, 121, 255);
+        table[NK_COLOR_TAB_HEADER] = nk_rgba(48, 83, 111, 255);
+        nk_style_from_table(ctx, table);
+    } else {
+        nk_style_default(ctx);
+    }
+}
+
 void GUI::create(const glm::ivec2& size){
 	_size = size;
 	nk_init_default(&_ctx, 0);
+    //set_style(&_ctx,THEME_RED);
 	nk_buffer_init_default(&_cmds);
 	// Create pipeline pattern
 	RenderPattern pattern;
@@ -111,6 +245,7 @@ void GUI::create(const glm::ivec2& size){
 	pattern.viewport(0,0,size.x,size.y);
 	pattern.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eNone);
 	pattern.multisampling();
+    pattern.scissor(vk::Offset2D(),vk::Extent2D(size.x,size.y));
 	pattern.blend(true,RGBA,
 					vk::BlendFactor::eSrcAlpha,vk::BlendFactor::eOneMinusSrcAlpha,
 					vk::BlendOp::eAdd,
@@ -141,7 +276,7 @@ void GUI::create(const glm::ivec2& size){
 
     _vkAtlas = _device->create<Image>();
 	_vkAtlas->create(wAtlas,hAtlas,vk::Format::eR8G8B8A8Unorm);
-	_vkAtlas->set(cpu);
+ 	_vkAtlas->set(cpu);
    
     nk_draw_null_texture null_tex;
     nk_font_atlas_end(&_atlas, nk_handle_id((int)1), &null_tex);
@@ -151,27 +286,38 @@ void GUI::create(const glm::ivec2& size){
     // Create Uniform 
 	glm::mat4 ortho = glm::mat4({
         2.0f/(float)size.x, 0.0f, 0.0f, 0.0f,
-        0.0f,-2.0f/(float)size.y, 0.0f, 0.0f,
+        0.0f,2.0f/(float)size.y, 0.0f, 0.0f,
         0.0f, 0.0f,-1.0f, 0.0f,
-        -1.0f,1.0f, 0.0f, 1.0f
+        -1.0f,-1.0f, 0.0f, 1.0f
     });
     Uniform orthoUniform;
 	orthoUniform.create(_device,sizeof(glm::mat4),&ortho);
 	_descSet->setUniformBuffer(orthoUniform,0,vk::ShaderStageFlagBits::eVertex);
-	_descSet->setTexture(_vkAtlas->createImageView(),createSampler(_device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
+
+    vk::SamplerCreateInfo defaultSampler = vk::SamplerCreateInfo(
+            vk::SamplerCreateFlags(),
+            vk::Filter::eLinear, // Mag Filter
+            vk::Filter::eLinear, // Min Filter
+            vk::SamplerMipmapMode::eLinear, // MipMap Mode
+            vk::SamplerAddressMode::eRepeat, // U Address mode
+            vk::SamplerAddressMode::eRepeat, // V Address mode
+            vk::SamplerAddressMode::eRepeat, // W Address mode
+            0, // Mip Lod bias
+            0, // Anisotropic enabled
+            0, // Max anisotropy
+            0, // Compare enabled
+            vk::CompareOp::eAlways, // Compare Operator
+            0, // Min lod
+            0, // Max lod
+            vk::BorderColor::eFloatTransparentBlack, // Border color
+            0 // Unnormalized coordiante
+    );
+
+	_descSet->setTexture(_vkAtlas->createImageView(),createSampler(_device->getDevice(),defaultSampler),1,vk::ShaderStageFlagBits::eFragment);
 	_descSet->create();
 
 	_pipeline->descSet(_descSet);
 	_pipeline->create(guiVertex::bindingDesc(),guiVertex::attributes());
-
-		// Create framebuffer for gui
-	_fbImage = _device->create<Image>();
-	_fbImage->create(size.x,size.y,_device->getSwapchain()->getFormat());
-	_fb = _device->create<Framebuffer>();
-	_fbView = _fbImage->createImageView();
-	_fb->attachment(_fbView);
-	_fb->depth(size.x,size.y);
-	_fb->create(size.x,size.y,_pipeline->getRenderPass());
 
     const nk_anti_aliasing AA = NK_ANTI_ALIASING_ON;
 
@@ -195,7 +341,7 @@ void GUI::create(const glm::ivec2& size){
     _convertConfig.line_AA = AA;
 
     // Init command buffer
-    vk::CommandBufferAllocateInfo allocInfo(_device->getCommandPool(),vk::CommandBufferLevel::ePrimary, 1);
+    vk::CommandBufferAllocateInfo allocInfo(_device->getCommandPool(),vk::CommandBufferLevel::eSecondary, 1);
     _commandBuffer = _device->getDevice().allocateCommandBuffers(allocInfo)[0];
 
     // Create VB and IB buffers
@@ -262,18 +408,6 @@ void GUI::commands(){
     _commandBuffer.reset(vk::CommandBufferResetFlagBits::eReleaseResources);
 	_commandBuffer.begin(&beginInfo);
 
-	std::array<vk::ClearValue, 2> clearValues = {};
-	clearValues[0].color = vk::ClearColorValue(std::array<float,4>{28.0/255.0,48.0/255.0,62.0/255.0, 0.0f});
-	clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
-
-	vk::RenderPassBeginInfo renderPassInfo(
-		_pipeline->getRenderPass(),
-		_fb->vk_framebuffer(),
-		vk::Rect2D(vk::Offset2D(),vk::Extent2D(_size.x,_size.y)),
-		clearValues.size(), clearValues.data()
-	);
-
-    _commandBuffer.beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
     _commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *_pipeline);
 
 	vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet()};
@@ -288,31 +422,11 @@ void GUI::commands(){
 	const nk_draw_command* cmd;
 	nk_draw_foreach(cmd, &_ctx, &_cmds) {
 		if (!cmd->elem_count) continue;
-        vk::Rect2D rect(vk::Offset2D(cmd->clip_rect.x,_size.y - (cmd->clip_rect.y + cmd->clip_rect.h)),vk::Extent2D(cmd->clip_rect.w,cmd->clip_rect.h));
-        _commandBuffer.setScissor(0,1,&rect);
+        //vk::Rect2D rect(vk::Offset2D(cmd->clip_rect.x,_size.y - (cmd->clip_rect.y + cmd->clip_rect.h)),vk::Extent2D(cmd->clip_rect.w,cmd->clip_rect.h));
+        //_commandBuffer.setScissor(0,1,&rect);
         _commandBuffer.drawIndexed((uint)cmd->elem_count,1,offset,0,0);
 		offset += cmd->elem_count;
 	}
 
-    _commandBuffer.endRenderPass();
     _commandBuffer.end();
-}
-
-vk::ImageView GUI::getImageView(){
-	return _fbView;
-}
-
-// Return semaphore for waiting
-vk::Semaphore GUI::render(const vk::Semaphore& wait){
-	vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
-
-	vk::SubmitInfo submitInfo(
-		1, &wait,
-		waitStages, 
-		1, &_commandBuffer,
-		1, &_renderFinish
-	);
-
-	_device->getGraphicsQueue().submit(submitInfo, nullptr);
-	return _renderFinish;
 }

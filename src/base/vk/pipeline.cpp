@@ -177,7 +177,7 @@ void Pipeline::create(const vk::VertexInputBindingDescription& vertexBinding, co
 		&_renderpattern._multisampling,
 		&_renderpattern._depthStencil, // Depth and stencil
 		&_renderpattern._blend,
-		&dynamicStatesCreteInfo,
+		dynamicStates.size()==0?nullptr:&dynamicStatesCreteInfo,
 		_pLayout,
 		_renderPass,0);
 

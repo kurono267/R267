@@ -60,23 +60,17 @@ class GUIApp : public BaseApp {
 
 			_gui = std::make_shared<GUI>(device);
 			_gui->create(mainApp->wndSize());
+			_gui->update(updateGUI);
 
 			auto baseRP = RenderPattern::basic(device);
-			baseRP.blend(true,RGBA,
-					vk::BlendFactor::eOne,vk::BlendFactor::eOneMinusDstAlpha,
-					vk::BlendOp::eAdd,
-					vk::BlendFactor::eOne,vk::BlendFactor::eZero,
-					vk::BlendOp::eAdd);
+            baseRP.blend();
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 			_texDesc = device->create<DescSet>();
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/gui/render_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/gui/render_frag.spv"); // Shaders for render quad with gui
 
-			_texDesc->setTexture(_gui->getImageView(),createSampler(vk_device,linearSampler()),0,vk::ShaderStageFlagBits::eFragment);
-			_texDesc->create();
-
-			_main->descSet(_texDesc);
+			//_main->descSet(_texDesc);
 			_main->create();
 
 			_quad = std::make_shared<Quad>();
@@ -107,11 +101,11 @@ class GUIApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-					vk::DescriptorSet descSets[] = {_texDesc->getDescriptorSet()};
-
-					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
+					//_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 0, nullptr, 0, nullptr);
 
 					_quad->draw(_commandBuffers[i]);
+
+				_commandBuffers[i].executeCommands(_gui->commandBuffer());
 
 				_commandBuffers[i].endRenderPass();
 				_commandBuffers[i].end();
@@ -133,7 +127,7 @@ class GUIApp : public BaseApp {
 			std::cout << "FPS " << 1.0f/dt << std::endl;
 			prev = next;
 
-			vk::Semaphore waitSemaphores[] = {_gui->render(_imageAvailable)};
+			vk::Semaphore waitSemaphores[] = {_imageAvailable};
 			vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
 			vk::Semaphore signalSemaphores[] = {_renderFinish};
@@ -167,21 +161,8 @@ class GUIApp : public BaseApp {
 		
 		bool onKey(const GLFWKey& key){return true;}
 
-#ifndef NK_GLFW_DOUBLE_CLICK_LO
-#define NK_GLFW_DOUBLE_CLICK_LO 0.02
-#endif
-#ifndef NK_GLFW_DOUBLE_CLICK_HI
-#define NK_GLFW_DOUBLE_CLICK_HI 0.2
-#endif
 		double last_button_click;
 		bool onMouse(const GLFWMouse& mouse){
-			/*if (mouse.button != GLFW_MOUSE_BUTTON_LEFT) return false;
-			if (mouse.action == GLFW_PRESS)  {
-				double dt = glfwGetTime() - last_button_click;
-				if (dt > NK_GLFW_DOUBLE_CLICK_LO && dt < NK_GLFW_DOUBLE_CLICK_HI)
-					nk_input_button(_gui->nkContext(), NK_BUTTON_DOUBLE, (int)mouse.x, (int)mouse.y, nk_true);
-				last_button_click = glfwGetTime();
-			} else nk_input_button(_gui->nkContext(), NK_BUTTON_DOUBLE, (int)mouse.x, (int)mouse.y, nk_false);*/
 			return true;
 		}
 		bool onExit(){

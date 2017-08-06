@@ -5,6 +5,8 @@
 #include "base/vk/framebuffer.hpp"
 #include "base/vk/pipeline.hpp"
 
+#ifndef NUKLEAR_INC
+#define NUKLEAR_INC
 #define NK_INCLUDE_FIXED_TYPES
 #define NK_INCLUDE_STANDARD_IO
 #define NK_INCLUDE_STANDARD_VARARGS
@@ -12,12 +14,12 @@
 #define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
-#define NK_IMPLEMENTATION
 #include <nuklear.h>
+#endif
 
 namespace r267 {
 
-typedef std::function<bool(nk_context&)> updateGUI;
+typedef std::function<bool(nk_context*)> updateGUI;
 
 class GUI {
 	public:
@@ -25,14 +27,12 @@ class GUI {
 		virtual ~GUI();
 
 		void create(const glm::ivec2& size);
-		vk::Semaphore render(const vk::Semaphore& wait);
 
 		void update(updateGUI _update);
 		void actionUpdate(GLFWwindow* win);
+		vk::CommandBuffer commandBuffer();
 
 		nk_context* nkContext(){return &_ctx;}
-
-		vk::ImageView getImageView(); // Frame buffer image view
 	protected:
 		void createBuffer();
 		void updateBuffer();
@@ -45,10 +45,6 @@ class GUI {
 		spDescSet  _descSet;
 
 		spImage    _vkAtlas;
-
-		spImage    _fbImage;
-		vk::ImageView _fbView;
-		spFramebuffer _fb;
 
 		// Vertex and Index Buffers
 		vk::DeviceSize _vbSize;

@@ -16,6 +16,8 @@ class Uniform {
 
 		vk::Buffer vk_buffer() const;
 		size_t     size() const ;
+
+		operator bool(){return _is;}
 	protected:
 		spBuffer _gpu; // GPU buffer
 		spBuffer _cpu; // CPU staging buffer

@@ -23,5 +23,6 @@ base/scene/bvh.cpp
 base/gui/gui.cpp
 )
 
+add_definitions(-DNK_IMPLEMENTATION)
 add_library(r267 SHARED ${R267_SRC})
 target_link_libraries(r267 glfw ${Vulkan_LIBRARY} OpenImageIO stdc++fs)
