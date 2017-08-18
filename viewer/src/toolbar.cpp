@@ -55,16 +55,22 @@ bool Toolbar::update(nk_context* ctx){
             auto mat = _selected==0?_all:_scene->models()[_selected-1]->material();
             nk_layout_row_dynamic(ctx, 20, 1);
             nk_label(ctx, "--Material--", NK_TEXT_CENTERED);
-            nk_layout_row_dynamic(ctx, 20, 1);
-            nk_label(ctx, "Albedo", NK_TEXT_CENTERED);
-            // Color picker
-            nk_layout_row_dynamic(ctx, 20, 1);
-            glm::vec3 diffuseColor = rgbColorPicker(ctx,mat->data().diffuseColor);
+            if(_selected != 0){
+                nk_layout_row_dynamic(ctx, 20, 1);
+	            nk_label(ctx, "Albedo", NK_TEXT_CENTERED);
+	            // Color picker
+	            nk_layout_row_dynamic(ctx, 20, 1);
+            }
+            glm::vec3 diffuseColor = glm::vec3(0.0f);
+            if(_selected!=0)diffuseColor = rgbColorPicker(ctx,mat->data().diffuseColor);
             mat->setDiffuseColor(diffuseColor);
-            nk_layout_row_dynamic(ctx, 20, 1);
-            nk_label(ctx, "Specular", NK_TEXT_CENTERED);
-            nk_layout_row_dynamic(ctx, 20, 1);
-            glm::vec3 specColor = rgbColorPicker(ctx,mat->data().specularColor);
+            if(_selected!=0){
+                nk_layout_row_dynamic(ctx, 20, 1);
+                nk_label(ctx, "Specular", NK_TEXT_CENTERED);
+                nk_layout_row_dynamic(ctx, 20, 1);
+            }
+            glm::vec3 specColor = glm::vec3(0.0f);
+            if(_selected!=0)specColor = rgbColorPicker(ctx,mat->data().specularColor);
             mat->setSpecularColor(specColor);
             nk_layout_row_dynamic(ctx, 20, 1);
             float rough = mat->data().specularColor.w;
@@ -76,8 +82,6 @@ bool Toolbar::update(nk_context* ctx){
             if(_selected==0){
                 for (int i = 0; i < _scene->models().size(); ++i) {
                     auto cMat = _scene->models()[i]->material();
-                    cMat->setDiffuseColor(diffuseColor);
-                    cMat->setSpecularColor(specColor);
                     cMat->setRoughness(rough);
                     cMat->setAlbedo(metallic);
                 }
