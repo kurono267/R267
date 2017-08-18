@@ -33,7 +33,7 @@ void GUI::update(updateGUI _update){
     nk_clear(&_ctx);
 }
 
-void GUI::actionUpdate(GLFWwindow* win){
+bool GUI::actionUpdate(GLFWwindow* win){
     int i;
     double x, y;
     nk_context *ctx = &_ctx;
@@ -99,6 +99,8 @@ void GUI::actionUpdate(GLFWwindow* win){
     nk_input_button(ctx, NK_BUTTON_RIGHT, (int)x, (int)y, glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
     //nk_input_scroll(ctx, glfw.scroll);
     nk_input_end(&_ctx);
+
+    return nk_item_is_any_active(ctx);
 }
 
 vk::CommandBuffer GUI::commandBuffer(){

@@ -29,7 +29,7 @@ class GUI {
 		void create(const glm::ivec2& size);
 
 		void update(updateGUI _update);
-		void actionUpdate(GLFWwindow* win);
+		bool actionUpdate(GLFWwindow* win);
 		vk::CommandBuffer commandBuffer();
 
 		nk_context* nkContext(){return &_ctx;}

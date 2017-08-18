@@ -36,6 +36,7 @@ public:
     bool onKey(const GLFWKey& key){}
 
     bool onMouse(const GLFWMouse& mouse){
+        if(_guiEvents)return true;
         bool status = false;
         if(mouse.callState == GLFWMouse::onMouseButton){
             if(mouse.button == GLFW_MOUSE_BUTTON_1){
@@ -60,6 +61,7 @@ public:
         return status;
     }
     bool onScroll(const glm::vec2& offset){
+        if(_guiEvents)return true;
         _camera->scale(offset.y,_dt);
         _mvpData.view = glm::vec4(_camera->getPos(),1.0f);
         _mvpData.mvp = _camera->getVP();
@@ -81,6 +83,7 @@ protected:
 
     spPipeline _main;
     spGUI      _gui;
+    bool       _guiEvents;
 
     updateGUI  _guiFunc;
     Toolbar    _toolbar;

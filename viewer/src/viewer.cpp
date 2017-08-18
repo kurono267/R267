@@ -136,7 +136,7 @@ bool ViewerApp::draw(){
 }
 
 bool ViewerApp::update(){
-    _gui->actionUpdate(mainApp->window());
+    _guiEvents = _gui->actionUpdate(mainApp->window());
     _gui->update(_guiFunc);
     return true;
 }
