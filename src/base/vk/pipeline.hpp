@@ -3,6 +3,9 @@
 #include <base/default.hpp>
 #include "swapchain.hpp"
 #include "uniform.hpp"
+#include "framebuffer.hpp"
+
+#include <unordered_map>
 
 namespace r267 {
 
@@ -36,14 +39,14 @@ class RenderPattern {
 						   const bool& alphaToOneEnable = false,
 						   const vk::SampleMask* sampleMask = nullptr);
 
-		void blend(const bool& enable = true,const vk::ColorComponentFlags& writeMask = RGBA,
+		void blend(const uint& attachments = 1,const bool& enable = true,const vk::ColorComponentFlags& writeMask = RGBA,
 					const vk::BlendFactor& srcColorBlendFactor = vk::BlendFactor::eSrcAlpha,const vk::BlendFactor& dstColorBlendFactor = vk::BlendFactor::eOneMinusSrcAlpha,
 					const vk::BlendOp& colorBlendOp = vk::BlendOp::eAdd,
 					const vk::BlendFactor& srcAlphaBlendFactor = vk::BlendFactor::eOne,const vk::BlendFactor& dstAlphaBlendFactor = vk::BlendFactor::eZero,
 					const vk::BlendOp& alphaBlendOp = vk::BlendOp::eAdd);
 		void depth(const bool& enable = true, const bool& write = true,const vk::CompareOp& comp = vk::CompareOp::eLess);
 
-		void createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat);
+		void createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat,const uint& attachments = 1);
 
 		static RenderPattern basic(const spDevice& device){
 			// Create Basic Render Pattern
@@ -60,27 +63,28 @@ class RenderPattern {
 			pattern.createRenderPass(device->getSwapchain()->getFormat(),device->depthFormat());
 			return pattern;
 		}
+
+		struct Attachment {
+			vk::AttachmentDescription desc;
+			vk::AttachmentReference   ref;
+		};
 	private:
 		vk::PipelineInputAssemblyStateCreateInfo _assembly;
 		vk::Viewport                             _viewport;
 		vk::Rect2D                               _scissor;
 		vk::PipelineRasterizationStateCreateInfo _rasterizer;
 		vk::PipelineMultisampleStateCreateInfo   _multisampling;
-		vk::PipelineColorBlendAttachmentState    _blendAttacment;
+		std::vector<vk::PipelineColorBlendAttachmentState> _blendAttachments;
 		vk::PipelineColorBlendStateCreateInfo    _blend;
 		vk::PipelineDepthStencilStateCreateInfo  _depthStencil;
 
 		bool _dynamicScissor;
-		
-		vk::AttachmentDescription _colorAttachment;
-		vk::AttachmentDescription _depthAttachment;
-		vk::AttachmentReference   _colorAttachmentRef;
-		vk::AttachmentReference   _depthAttachmentRef;
-		vk::SubpassDescription    _subPass;
-		vk::SubpassDependency     _subPassDep;
-		vk::RenderPassCreateInfo  _renderPassInfo;
 
-		std::vector<vk::AttachmentDescription> _attachments;
+		std::vector<vk::AttachmentDescription>   _attachmentsDesc;
+		std::vector<vk::AttachmentReference>     _attachmentsRef;
+		vk::SubpassDescription    _subPass;
+		vk::SubpassDependency     _subPassDep[2];
+		vk::RenderPassCreateInfo  _renderPassInfo;
 };
 
 class DescSet {

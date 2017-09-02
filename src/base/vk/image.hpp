@@ -16,10 +16,10 @@ class Image {
 		void create(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
 					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled | vk::ImageUsageFlagBits::eColorAttachment,
-					const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
+					const vk::ImageLayout& layout = vk::ImageLayout::ePreinitialized,const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
 		void release(spDevice device);
 
-		vk::ImageView createImageView();
+		vk::ImageView ImageView();
 
 		uint mipLevels();
 

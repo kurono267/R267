@@ -34,27 +34,33 @@ bool ViewerApp::init(){
     baseRP.blend();
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
 
-    _main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/viewer/basic_vert.spv");
-    _main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/viewer/basic_frag.spv");
+    _main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/effects/differed_vert.spv");
+    _main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/effects/differed_frag.spv");
 
     _camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
     _camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
 
-    _mvpData.mvp = _camera->getVP();
-    _mvpData.view = glm::vec4(_camera->getPos(),1.0f);
-    _mvp.create(device,sizeof(UBO),&_mvpData);
+    // Init GBuffer
+    _gbuffer.init(device,_scene,_camera,matDesc,glm::ivec2(1280,720));
 
-    _sceneDesc = device->create<DescSet>();
-    _sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
-    _sceneDesc->create();
+	_differedDesc = device->create<DescSet>();
+	_differedDesc->setTexture(_gbuffer.posMap(),createSampler(device->getDevice(),linearSampler()),0,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->create();
 
-    _main->descSets({_sceneDesc,matDesc});
+	_main->descSet(_differedDesc);
     _main->create();
+
+	_quad = std::make_shared<Quad>();
+	_quad->create(device);
 
     _framebuffers = createFrameBuffers(device,_main);
 
     vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, (uint32_t)_framebuffers.size());
     _commandBuffers = vk_device.allocateCommandBuffers(allocInfo);
+
+    vk::DescriptorSet descSet = _differedDesc->getDescriptorSet();
 
     for(int i = 0;i<_commandBuffers.size();++i){
         // Fill Render passes
@@ -76,14 +82,9 @@ bool ViewerApp::init(){
         _commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
         _commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-        // Draw scene
-        for(auto& model : _scene->models()){
-            vk::DescriptorSet descSets[] = {_sceneDesc->getDescriptorSet(),model->material()->getDescSet()->getDescriptorSet()};
+        _commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, &descSet, 0, nullptr);
 
-            _commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 2, descSets, 0, nullptr);
-
-            model->mesh()->draw(_commandBuffers[i]);
-        }
+		_quad->draw(_commandBuffers[i]);
 
         _commandBuffers[i].executeCommands(_gui->commandBuffer());
 
@@ -102,13 +103,14 @@ bool ViewerApp::init(){
 
 bool ViewerApp::draw(){
     unsigned int imageIndex = vk_device.acquireNextImageKHR(swapchain->getSwapchain(),std::numeric_limits<uint64_t>::max(),_imageAvailable,nullptr).value;
-    _mvp.set(sizeof(UBO),&_mvpData);
 
     auto next = std::chrono::steady_clock::now();
     _dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
     prev = next;
 
-    vk::Semaphore waitSemaphores[] = {_imageAvailable};
+    vk::Semaphore waitGBuffer = _gbuffer.render(_imageAvailable);
+
+    vk::Semaphore waitSemaphores[] = {waitGBuffer};
     vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
     vk::Semaphore signalSemaphores[] = {_renderFinish};

@@ -7,7 +7,7 @@ Image::~Image(){}
 
 void Image::create(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels,const vk::ImageTiling& tiling,
-					const vk::ImageUsageFlags& usage,
+					const vk::ImageUsageFlags& usage,const vk::ImageLayout& layout,
 					const vk::MemoryPropertyFlags& properties){
 	_width = width;
 	_height = height;
@@ -23,7 +23,7 @@ void Image::create(const uint& width,const uint& height,
 		vk::SampleCountFlagBits::e1, // Samples
 		tiling,
 		usage,
-		vk::SharingMode::eExclusive, 0, nullptr, vk::ImageLayout::ePreinitialized
+		vk::SharingMode::eExclusive, 0, nullptr, layout
 	);
 
 	auto vk_device = _device->getDevice();
@@ -152,7 +152,7 @@ void Image::set(const spBuffer& buffer, const std::vector<uint>& offsets, const 
 	transition(_format,vk::ImageLayout::eTransferDstOptimal,vk::ImageLayout::eShaderReadOnlyOptimal);
 }
 
-vk::ImageView Image::createImageView(){
+vk::ImageView Image::ImageView(){
 	if(_imageView)return _imageView;
 	else {
 		_imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels);

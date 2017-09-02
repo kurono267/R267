@@ -248,7 +248,7 @@ void GUI::create(const glm::ivec2& size){
 	pattern.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eNone);
 	pattern.multisampling();
     pattern.scissor(vk::Offset2D(),vk::Extent2D(size.x,size.y));
-	pattern.blend(true,RGBA,
+	pattern.blend(1,true,RGBA,
 					vk::BlendFactor::eSrcAlpha,vk::BlendFactor::eOneMinusSrcAlpha,
 					vk::BlendOp::eAdd,
 					vk::BlendFactor::eSrcAlpha,vk::BlendFactor::eOneMinusSrcAlpha,
@@ -315,7 +315,7 @@ void GUI::create(const glm::ivec2& size){
             0 // Unnormalized coordiante
     );
 
-	_descSet->setTexture(_vkAtlas->createImageView(),createSampler(_device->getDevice(),defaultSampler),1,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(_vkAtlas->ImageView(),createSampler(_device->getDevice(),defaultSampler),1,vk::ShaderStageFlagBits::eFragment);
 	_descSet->create();
 
 	_pipeline->descSet(_descSet);

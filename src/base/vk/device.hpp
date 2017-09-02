@@ -9,13 +9,14 @@
 namespace r267 {
 
 #ifdef NDEBUG
-const bool enableValidationLayers = false;
+const bool enableValidationLayers = true;
 #else
 const bool enableValidationLayers = true;
 #endif
 
 const std::vector<const char*> validationLayers = {
-    "VK_LAYER_LUNARG_standard_validation"
+    "VK_LAYER_LUNARG_standard_validation",
+    "VK_LAYER_LUNARG_parameter_validation"
 };
 
 class Device : public std::enable_shared_from_this<Device> {

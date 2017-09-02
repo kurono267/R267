@@ -16,6 +16,7 @@
 
 #include <base/scene/scene.hpp>
 #include <base/scene/camera.hpp>
+#include "gbuffer.hpp"
 
 using namespace r267;
 
@@ -50,8 +51,6 @@ public:
                 if(!_isFirst){
                     glm::vec2 dp = glm::vec2(mouse.x,mouse.y)-_prev_mouse;
                     _camera->rotate(dp,_dt);
-                    _mvpData.view = glm::vec4(_camera->getPos(),1.0f);
-                    _mvpData.mvp = _camera->getVP();
                     status = true;
                 }
                 _prev_mouse = glm::vec2(mouse.x,mouse.y);
@@ -63,8 +62,6 @@ public:
     bool onScroll(const glm::vec2& offset){
         if(_guiEvents)return true;
         _camera->scale(offset.y,_dt);
-        _mvpData.view = glm::vec4(_camera->getPos(),1.0f);
-        _mvpData.mvp = _camera->getVP();
         return true;
     }
 
@@ -77,9 +74,7 @@ public:
 protected:
     std::string _filename;
 
-    spDescSet  _sceneDesc;
-    UBO        _mvpData;
-    Uniform    _mvp;
+    spDescSet  _differedDesc;
 
     spPipeline _main;
     spGUI      _gui;
@@ -99,6 +94,10 @@ protected:
     // Semaphores
     vk::Semaphore _imageAvailable;
     vk::Semaphore _renderFinish;
+
+    spShape _quad;
+
+    GBuffer _gbuffer;
 
     std::unordered_map<std::string,spImage> _imagesBuffer;
 

@@ -9,19 +9,16 @@ RenderPattern::RenderPattern(const RenderPattern& r){
 	_scissor  = r._scissor;
 	_rasterizer = r._rasterizer;
 	_multisampling = r._multisampling;
-	_blendAttacment = r._blendAttacment;
+	_blendAttachments = r._blendAttachments;
 	_blend          = r._blend;
-	
-	_colorAttachment    = r._colorAttachment;
-	_colorAttachmentRef = r._colorAttachmentRef;
+
 	_subPass            = r._subPass;
 	_renderPassInfo     = r._renderPassInfo;
 	_depthStencil       = r._depthStencil;
-	_depthAttachment    = r._depthAttachment;
-	_depthAttachmentRef = r._depthAttachmentRef;
 	_dynamicScissor      = r._dynamicScissor;
-	for(auto a : r._attachments){
-		_attachments.push_back(a);
+	for(int i = 0;i<r._attachmentsRef.size();++i){
+		_attachmentsRef.push_back(r._attachmentsRef[i]);
+		_attachmentsDesc.push_back(r._attachmentsDesc[i]);
 	}
 }
 RenderPattern::~RenderPattern(){
@@ -64,14 +61,17 @@ void RenderPattern::multisampling(const vk::SampleCountFlagBits& count,
 	_multisampling = vk::PipelineMultisampleStateCreateInfo(vk::PipelineMultisampleStateCreateFlags(),(vk::SampleCountFlagBits)count,(vk::Bool32)sampleShading,minSampleShading,sampleMask,alphaToCoverageEnable,alphaToOneEnable);
 }
 
-void RenderPattern::blend(const bool& enable,const vk::ColorComponentFlags& writeMask,
+void RenderPattern::blend(const uint& attachments,const bool& enable,const vk::ColorComponentFlags& writeMask,
 					const vk::BlendFactor& srcColorBlendFactor,const vk::BlendFactor& dstColorBlendFactor,
 					const vk::BlendOp& colorBlendOp,
 					const vk::BlendFactor& srcAlphaBlendFactor,const vk::BlendFactor& dstAlphaBlendFactor,
 					const vk::BlendOp& alphaBlendOp){
-	_blendAttacment = vk::PipelineColorBlendAttachmentState(enable,srcColorBlendFactor,dstColorBlendFactor,colorBlendOp,srcAlphaBlendFactor,dstAlphaBlendFactor,alphaBlendOp,writeMask);
+	_blendAttachments.clear();
+	for(int i = 0;i<attachments;++i){
+		_blendAttachments.push_back(vk::PipelineColorBlendAttachmentState(enable,srcColorBlendFactor,dstColorBlendFactor,colorBlendOp,srcAlphaBlendFactor,dstAlphaBlendFactor,alphaBlendOp,writeMask));
+	}
 
-	_blend = vk::PipelineColorBlendStateCreateInfo(vk::PipelineColorBlendStateCreateFlags(),0,vk::LogicOp::eCopy,1,&_blendAttacment);
+	_blend = vk::PipelineColorBlendStateCreateInfo(vk::PipelineColorBlendStateCreateFlags(),0,vk::LogicOp::eCopy,_blendAttachments.size(),_blendAttachments.data());
 }
 
 void RenderPattern::depth(const bool& enable, const bool& write,const vk::CompareOp& comp){
@@ -83,54 +83,68 @@ void RenderPattern::depth(const bool& enable, const bool& write,const vk::Compar
 	);
 }
 
+RenderPattern::Attachment createAttachment(const vk::Format& format, const bool& depth, const int index){
+	RenderPattern::Attachment att;
+	att.desc.setFormat(format);
+	att.desc.setSamples(vk::SampleCountFlagBits::e1);
+	att.desc.setLoadOp(vk::AttachmentLoadOp::eClear);
+	if(!depth)att.desc.setStoreOp(vk::AttachmentStoreOp::eStore);
+	else att.desc.setStoreOp(vk::AttachmentStoreOp::eDontCare);
+	att.desc.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare);
+	att.desc.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare);
+	att.desc.setInitialLayout(vk::ImageLayout::ePreinitialized);
+	if(!depth)att.desc.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
+	else att.desc.setFinalLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
+
+	att.ref.setAttachment(index);
+	if(!depth)att.ref.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
+	else att.ref.setLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
+
+	return att;
+}
+
 // TODO improve functional for create Render Pass
-void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat){
-	_colorAttachment.setFormat(swapchainFormat);
-	_colorAttachment.setSamples(vk::SampleCountFlagBits::e1);
-	_colorAttachment.setLoadOp(vk::AttachmentLoadOp::eClear);
-	_colorAttachment.setStoreOp(vk::AttachmentStoreOp::eStore);
-	_colorAttachment.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare);
-	_colorAttachment.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare);
-	_colorAttachment.setInitialLayout(vk::ImageLayout::eUndefined);
-	_colorAttachment.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
-	// Depth Attachment
-	_depthAttachment.setFormat(depthFormat);
-	_depthAttachment.setSamples(vk::SampleCountFlagBits::e1);
-	_depthAttachment.setLoadOp(vk::AttachmentLoadOp::eClear);
-	_depthAttachment.setStoreOp(vk::AttachmentStoreOp::eDontCare);
-	_depthAttachment.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare);
-	_depthAttachment.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare);
-	_depthAttachment.setInitialLayout(vk::ImageLayout::eUndefined);
-	_depthAttachment.setFinalLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
-
-	_colorAttachmentRef.setAttachment(0);
-	_colorAttachmentRef.setLayout(vk::ImageLayout::eColorAttachmentOptimal);
-
-	_depthAttachmentRef.setAttachment(1);
-	_depthAttachmentRef.setLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
+void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat,const uint& attachments){
+	_attachmentsDesc.clear();
+	_attachmentsRef.clear();
+	for(int i = 0;i<attachments;++i){
+		auto a = createAttachment(swapchainFormat,false,i);
+		std::cout << "Att " << i << " " << a.ref.attachment << std::endl;
+		_attachmentsDesc.push_back(a.desc);
+		_attachmentsRef.push_back(a.ref);
+	}
+	std::cout << _attachmentsRef.size() << std::endl;
+	auto depthAtt = createAttachment(depthFormat,true,attachments);
+	_attachmentsDesc.push_back(depthAtt.desc);
+	_attachmentsRef.push_back(depthAtt.ref);
 
 	_subPass.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics);
-	_subPass.setColorAttachmentCount(1);
-	_subPass.setPColorAttachments(&_colorAttachmentRef);
-	_subPass.setPDepthStencilAttachment(&_depthAttachmentRef);
+	_subPass.setColorAttachmentCount(attachments);
+	_subPass.setPColorAttachments(_attachmentsRef.data());
+	_subPass.setPDepthStencilAttachment(&_attachmentsRef[attachments]);
 
-	_subPassDep = vk::SubpassDependency(
-		VK_SUBPASS_EXTERNAL, 0,
-		vk::PipelineStageFlagBits::eColorAttachmentOutput,
-		vk::PipelineStageFlagBits::eColorAttachmentOutput,
-		vk::AccessFlags(),
-		vk::AccessFlagBits::eColorAttachmentRead | vk::AccessFlagBits::eColorAttachmentWrite
-	);
+	_subPassDep[0].srcSubpass = VK_SUBPASS_EXTERNAL;
+	_subPassDep[0].dstSubpass = 0;
+	_subPassDep[0].srcStageMask = vk::PipelineStageFlagBits::eBottomOfPipe;
+	_subPassDep[0].dstStageMask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+	_subPassDep[0].srcAccessMask = vk::AccessFlagBits::eMemoryRead;
+	_subPassDep[0].dstAccessMask = vk::AccessFlagBits::eColorAttachmentRead| vk::AccessFlagBits::eColorAttachmentWrite;
+	_subPassDep[0].dependencyFlags = vk::DependencyFlagBits::eByRegion;
 
-	_attachments.push_back(_colorAttachment);
-	_attachments.push_back(_depthAttachment);
+	_subPassDep[1].srcSubpass = 0;
+	_subPassDep[1].dstSubpass = VK_SUBPASS_EXTERNAL;
+	_subPassDep[1].srcStageMask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+	_subPassDep[1].dstStageMask = vk::PipelineStageFlagBits::eBottomOfPipe;
+	_subPassDep[1].srcAccessMask = vk::AccessFlagBits::eColorAttachmentRead| vk::AccessFlagBits::eColorAttachmentWrite;
+	_subPassDep[1].dstAccessMask = vk::AccessFlagBits::eMemoryRead;
+	_subPassDep[1].dependencyFlags = vk::DependencyFlagBits::eByRegion;
 
-	_renderPassInfo.setAttachmentCount(_attachments.size());
-	_renderPassInfo.setPAttachments(_attachments.data());
+	_renderPassInfo.setAttachmentCount(_attachmentsDesc.size());
+	_renderPassInfo.setPAttachments(_attachmentsDesc.data());
 	_renderPassInfo.setSubpassCount(1);
 	_renderPassInfo.setPSubpasses(&_subPass);
-	_renderPassInfo.setDependencyCount(1);
-	_renderPassInfo.setPDependencies(&_subPassDep);
+	_renderPassInfo.setDependencyCount(2);
+	_renderPassInfo.setPDependencies(_subPassDep);
 }
 
 void Pipeline::addShader(const vk::ShaderStageFlagBits& type,const std::string& filename){
@@ -224,16 +238,29 @@ void DescSet::create(){
 
 	auto vk_device = _device->getDevice();
 
+	std::unordered_map<int,int> typesDesc;
 	// Add Layout binding for UBO
 	for(auto u : _uboBinds){
-		std::cout << "Biniding " << u.binding << std::endl;
 		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,u.descType,1,u.stage));
-		poolSizes.push_back(vk::DescriptorPoolSize(u.descType,1));
+		//poolSizes.push_back(vk::DescriptorPoolSize(u.descType,1));
+		if(typesDesc.find((int)u.descType) == typesDesc.end()){
+			typesDesc.insert(std::pair<int,int>((int)u.descType,1));
+		} else {
+			typesDesc[(int)u.descType] += 1;
+		}
 	}
 	for(auto s : _samplerBinds) {
 		layoutBinds.push_back(
 				vk::DescriptorSetLayoutBinding(s.binding, s.descType, 1, s.stage));
-		poolSizes.push_back(vk::DescriptorPoolSize(s.descType, 1));
+		//poolSizes.push_back(vk::DescriptorPoolSize(s.descType, 1));
+		if(typesDesc.find((int)s.descType) == typesDesc.end()){
+			typesDesc.insert(std::pair<int,int>((int)s.descType,1));
+		} else {
+			typesDesc[(int)s.descType] += 1;
+		}
+	}
+	for(auto t : typesDesc){
+		poolSizes.push_back(vk::DescriptorPoolSize((vk::DescriptorType)t.first,t.second));
 	}
 
 	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),layoutBinds.size(),layoutBinds.data());

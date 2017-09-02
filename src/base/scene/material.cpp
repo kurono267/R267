@@ -41,8 +41,8 @@ void Material::read(const ptree& tree){
 		}
 	}
 
-	std::cout << _data.diffuseColor.x << ", " << _data.diffuseColor.y << ", " << _data.diffuseColor.z << std::endl;
-	std::cout << _data.specularColor.x << ", " << _data.specularColor.y << ", " << _data.specularColor.z << std::endl;
+	//std::cout << _data.diffuseColor.x << ", " << _data.diffuseColor.y << ", " << _data.diffuseColor.z << std::endl;
+	//std::cout << _data.specularColor.x << ", " << _data.specularColor.y << ", " << _data.specularColor.z << std::endl;
 
 	_diffuseFilename = tree.get<std::string>("diffuseTexture","");
 }
@@ -115,7 +115,7 @@ bool Material::equal(const std::shared_ptr<Material>& material){
 }
 
 void Material::create(spDevice device,std::unordered_map<std::string,spImage>& imagesBuffer){
-	std::cout << sizeof(MaterialUBO) << std::endl;
+	//std::cout << sizeof(MaterialUBO) << std::endl;
 	_uniform.create(device,sizeof(MaterialUBO),&_data);
 	std::string filename = _path+_diffuseFilename;
 	auto tmp = imagesBuffer.find(filename);
@@ -127,7 +127,7 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 		imagesBuffer.insert(std::pair<std::string,spImage>(filename,_diffTexture));
 	}
 
-	_diffView = _diffTexture->createImageView();
+	_diffView = _diffTexture->ImageView();
 	_sampler  = createSampler(device->getDevice(),linearSampler(_diffTexture->mipLevels()));
 
 	_descSet  = device->create<DescSet>();
