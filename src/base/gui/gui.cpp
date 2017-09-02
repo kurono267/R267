@@ -236,8 +236,9 @@ void set_style(struct nk_context *ctx, enum theme theme) {
     }
 }
 
-void GUI::create(const glm::ivec2& size){
+void GUI::create(const glm::ivec2& size,vk::CommandBufferInheritanceInfo inheritanceInfo){
 	_size = size;
+	_inheritanceInfo = inheritanceInfo;
 	nk_init_default(&_ctx, 0);
     //set_style(&_ctx,THEME_RED);
 	nk_buffer_init_default(&_cmds);
@@ -405,7 +406,8 @@ void GUI::updateBuffer(){
 }
 
 void GUI::commands(){
-	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
+	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse | vk::CommandBufferUsageFlagBits::eRenderPassContinue);
+	beginInfo.pInheritanceInfo = &_inheritanceInfo;
 
     _commandBuffer.reset(vk::CommandBufferResetFlagBits::eReleaseResources);
 	_commandBuffer.begin(&beginInfo);

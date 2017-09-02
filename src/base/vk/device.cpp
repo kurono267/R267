@@ -108,7 +108,7 @@ void Device::create(const vk::Instance& instance,const vk::SurfaceKHR& surface,c
 	_swapchain = std::make_shared<Swapchain>();
 	_swapchain->create(_pDevice,_device,_surface,size);
 
-	vk::CommandPoolCreateInfo poolInfo(vk::CommandPoolCreateFlags(),queueFamiliesIndices().graphicsFamily);
+	vk::CommandPoolCreateInfo poolInfo(vk::CommandPoolCreateFlagBits::eResetCommandBuffer,queueFamiliesIndices().graphicsFamily);
 	_pool = _device.createCommandPool(poolInfo); 
 	vk::CommandPoolCreateInfo poolComputeInfo(vk::CommandPoolCreateFlags(),queueFamiliesIndices().computeFamily);
 	_poolCompute = _device.createCommandPool(poolComputeInfo); 

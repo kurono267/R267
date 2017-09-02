@@ -62,18 +62,28 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 
 	uint srcAccess;
 	uint dstAccess;
+	vk::PipelineStageFlagBits srcStage;
+	vk::PipelineStageFlagBits dstStage;
 	if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eTransferDstOptimal) {
 		srcAccess = (uint)vk::AccessFlagBits::eHostWrite;
 		dstAccess = (uint)vk::AccessFlagBits::eTransferWrite;
+		srcStage  = vk::PipelineStageFlagBits::eHost;
+		dstStage  = vk::PipelineStageFlagBits::eTransfer;
 	} else if (oldLayout == vk::ImageLayout::eTransferDstOptimal && newLayout == vk::ImageLayout::eShaderReadOnlyOptimal) {
 		srcAccess = (uint)vk::AccessFlagBits::eTransferWrite;
 		dstAccess = (uint)vk::AccessFlagBits::eShaderRead;
+		srcStage  = vk::PipelineStageFlagBits::eTransfer;
+		dstStage  = vk::PipelineStageFlagBits::eFragmentShader;
 	} else if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
             srcAccess = 0;
             dstAccess = (uint)(vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite);
+            srcStage  = vk::PipelineStageFlagBits::eTopOfPipe;
+		dstStage  = vk::PipelineStageFlagBits::eEarlyFragmentTests;
     } else if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eGeneral) {
 		srcAccess = (uint)vk::AccessFlagBits::eHostWrite;
 		dstAccess = (uint)(vk::AccessFlagBits::eShaderRead|vk::AccessFlagBits::eShaderWrite);
+		srcStage  = vk::PipelineStageFlagBits::eHost;
+		dstStage  = vk::PipelineStageFlagBits::eFragmentShader;
 	} else {
 		throw std::invalid_argument("Unsupported layout transition!");
 	}
@@ -94,7 +104,7 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 	);
 
 	commandBuffer.pipelineBarrier(
-		vk::PipelineStageFlagBits::eTopOfPipe, vk::PipelineStageFlagBits::eTopOfPipe,
+		srcStage, dstStage,
 		vk::DependencyFlagBits::eByRegion,
 		0, nullptr,
 		0, nullptr,

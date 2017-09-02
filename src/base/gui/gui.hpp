@@ -26,7 +26,7 @@ class GUI {
 		GUI(spDevice device);
 		virtual ~GUI();
 
-		void create(const glm::ivec2& size);
+		void create(const glm::ivec2& size,vk::CommandBufferInheritanceInfo inheritanceInfo);
 
 		void update(updateGUI _update);
 		bool actionUpdate(GLFWwindow* win);
@@ -56,6 +56,7 @@ class GUI {
 
 		vk::Semaphore _renderFinish;
 		vk::CommandBuffer _commandBuffer;
+		vk::CommandBufferInheritanceInfo _inheritanceInfo;
 
 		// NK Objects
 		nk_context    _ctx;

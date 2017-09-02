@@ -111,6 +111,9 @@ class DescSet {
 		vk::DescriptorSet       _descSet;
 		vk::DescriptorPool      _descPool;
 
+		std::vector<vk::DescriptorImageInfo>  _descImageInfos;
+		std::vector<vk::DescriptorBufferInfo> _descBufferInfos;
+
 		struct UBOBinding {
 			Uniform buffer;
 			size_t    binding;

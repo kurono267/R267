@@ -24,12 +24,6 @@ bool ViewerApp::init(){
 
     _toolbar.setScene(_scene);
 
-    _guiFunc = std::bind(&Toolbar::update,std::ref(_toolbar),std::placeholders::_1);
-
-    _gui = std::make_shared<GUI>(device);
-    _gui->create(mainApp->wndSize());
-    _gui->update(_guiFunc);
-
     auto baseRP = RenderPattern::basic(device);
     baseRP.blend();
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
@@ -56,6 +50,12 @@ bool ViewerApp::init(){
 	_quad->create(device);
 
     _framebuffers = createFrameBuffers(device,_main);
+
+    _guiFunc = std::bind(&Toolbar::update,std::ref(_toolbar),std::placeholders::_1);
+
+    _gui = std::make_shared<GUI>(device);
+    _gui->create(mainApp->wndSize(),vk::CommandBufferInheritanceInfo(_main->getRenderPass()));
+    _gui->update(_guiFunc);
 
     vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, (uint32_t)_framebuffers.size());
     _commandBuffers = vk_device.allocateCommandBuffers(allocInfo);

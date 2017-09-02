@@ -92,7 +92,8 @@ RenderPattern::Attachment createAttachment(const vk::Format& format, const bool&
 	else att.desc.setStoreOp(vk::AttachmentStoreOp::eDontCare);
 	att.desc.setStencilLoadOp(vk::AttachmentLoadOp::eDontCare);
 	att.desc.setStencilStoreOp(vk::AttachmentStoreOp::eDontCare);
-	att.desc.setInitialLayout(vk::ImageLayout::ePreinitialized);
+	if(!depth)att.desc.setInitialLayout(vk::ImageLayout::ePresentSrcKHR);
+	else att.desc.setInitialLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
 	if(!depth)att.desc.setFinalLayout(vk::ImageLayout::ePresentSrcKHR);
 	else att.desc.setFinalLayout(vk::ImageLayout::eDepthStencilAttachmentOptimal);
 
@@ -242,7 +243,7 @@ void DescSet::create(){
 	// Add Layout binding for UBO
 	for(auto u : _uboBinds){
 		layoutBinds.push_back(vk::DescriptorSetLayoutBinding(u.binding,u.descType,1,u.stage));
-		//poolSizes.push_back(vk::DescriptorPoolSize(u.descType,1));
+		poolSizes.push_back(vk::DescriptorPoolSize(u.descType,1));
 		if(typesDesc.find((int)u.descType) == typesDesc.end()){
 			typesDesc.insert(std::pair<int,int>((int)u.descType,1));
 		} else {
@@ -252,16 +253,19 @@ void DescSet::create(){
 	for(auto s : _samplerBinds) {
 		layoutBinds.push_back(
 				vk::DescriptorSetLayoutBinding(s.binding, s.descType, 1, s.stage));
-		//poolSizes.push_back(vk::DescriptorPoolSize(s.descType, 1));
+		poolSizes.push_back(vk::DescriptorPoolSize(s.descType, 1));
 		if(typesDesc.find((int)s.descType) == typesDesc.end()){
 			typesDesc.insert(std::pair<int,int>((int)s.descType,1));
 		} else {
 			typesDesc[(int)s.descType] += 1;
 		}
 	}
+	/*int poolSize = 0;
 	for(auto t : typesDesc){
+		std::cout << to_string((vk::DescriptorType)t.first) << " " << t.second << std::endl;
 		poolSizes.push_back(vk::DescriptorPoolSize((vk::DescriptorType)t.first,t.second));
-	}
+		poolSize++;
+	}*/
 
 	vk::DescriptorSetLayoutCreateInfo layoutInfo(vk::DescriptorSetLayoutCreateFlags(),layoutBinds.size(),layoutBinds.data());
 	_descLayout = vk_device.createDescriptorSetLayout(layoutInfo);
@@ -273,13 +277,15 @@ void DescSet::create(){
 	_descSet = vk_device.allocateDescriptorSets(allocInfo)[0];
 
 	std::vector<vk::WriteDescriptorSet>         descWrites;
+	_descBufferInfos.resize(_uboBinds.size());
 	for(auto u : _uboBinds){
-		vk::DescriptorBufferInfo bufferInfo(u.buffer.vk_buffer(),0,u.buffer.size());
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,u.descType,nullptr,&bufferInfo,nullptr));
+		_descBufferInfos.push_back(vk::DescriptorBufferInfo(u.buffer.vk_buffer(),0,u.buffer.size()));
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,u.binding,0,1,u.descType,nullptr,&_descBufferInfos[_descBufferInfos.size()-1],nullptr));
 	}
+	_descImageInfos.resize(_samplerBinds.size());
 	for(auto s : _samplerBinds){
-		vk::DescriptorImageInfo imageInfo(s.sampler, s.imageView, s.layout);
-		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,s.descType,&imageInfo,nullptr,nullptr));
+		_descImageInfos.push_back(vk::DescriptorImageInfo(s.sampler, s.imageView, s.layout));
+		descWrites.push_back(vk::WriteDescriptorSet(_descSet,s.binding,0,1,s.descType,&_descImageInfos[_descImageInfos.size()-1],nullptr,nullptr));
 	}
 	vk_device.updateDescriptorSets(descWrites,nullptr);
 }
