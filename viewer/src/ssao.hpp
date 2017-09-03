@@ -4,7 +4,6 @@
 #include <random>
 
 struct ssaoUBO {
-    glm::mat4 view;
     glm::mat4 proj;
     glm::vec4 kernels[64];
 };

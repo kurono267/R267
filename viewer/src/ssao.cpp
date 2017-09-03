@@ -93,7 +93,6 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
 }
 
 void SSAO::update(spCamera camera){
-	_ssaoData.view = camera->getView();
     _ssaoData.proj = camera->getProj();
 }
 
