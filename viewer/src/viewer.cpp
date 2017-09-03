@@ -75,12 +75,22 @@ bool ViewerApp::init(){
     vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, (uint32_t)_framebuffers.size());
     _commandBuffers = vk_device.allocateCommandBuffers(allocInfo);
 
-    vk::DescriptorSet descSet = _differedDesc->getDescriptorSet();
+    // Create semaphores
+    _imageAvailable = device->createSemaphore(vk::SemaphoreCreateInfo());
+    _renderFinish = device->createSemaphore(vk::SemaphoreCreateInfo());
 
+    prev = std::chrono::steady_clock::now();
+
+    return true;
+}
+
+void ViewerApp::updateCommandBuffers(){
+    vk::DescriptorSet descSet = _differedDesc->getDescriptorSet();
     for(int i = 0;i<_commandBuffers.size();++i){
         // Fill Render passes
         vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
 
+        _commandBuffers[i].reset(vk::CommandBufferResetFlagBits::eReleaseResources);
         _commandBuffers[i].begin(&beginInfo);
 
         std::array<vk::ClearValue, 2> clearValues = {};
@@ -106,14 +116,6 @@ bool ViewerApp::init(){
         _commandBuffers[i].endRenderPass();
         _commandBuffers[i].end();
     }
-
-    // Create semaphores
-    _imageAvailable = device->createSemaphore(vk::SemaphoreCreateInfo());
-    _renderFinish = device->createSemaphore(vk::SemaphoreCreateInfo());
-
-    prev = std::chrono::steady_clock::now();
-
-    return true;
 }
 
 bool ViewerApp::draw(){
@@ -157,6 +159,7 @@ bool ViewerApp::draw(){
 bool ViewerApp::update(){
     _guiEvents = _gui->actionUpdate(mainApp->window());
     _gui->update(_guiFunc);
+    updateCommandBuffers();
     _ssao.update(_camera);
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
     _ubo.viewMat = _camera->getView();

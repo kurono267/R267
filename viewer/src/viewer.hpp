@@ -75,6 +75,8 @@ public:
         return true;
     }
 protected:
+	void updateCommandBuffers();
+
     std::string _filename;
 
     spDescSet  _differedDesc;
