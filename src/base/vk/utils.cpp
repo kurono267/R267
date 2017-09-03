@@ -141,6 +141,27 @@ vk::SamplerCreateInfo r267::linearSampler(const uint& mipLevels){
 	);
 }
 
+vk::SamplerCreateInfo r267::nearsetSampler(const uint& mipLevels){
+	return vk::SamplerCreateInfo(
+		vk::SamplerCreateFlags(),
+		vk::Filter::eNearest, // Mag Filter
+		vk::Filter::eNearest, // Min Filter
+		vk::SamplerMipmapMode::eNearest, // MipMap Mode
+		vk::SamplerAddressMode::eRepeat, // U Address mode
+		vk::SamplerAddressMode::eRepeat, // V Address mode
+		vk::SamplerAddressMode::eRepeat, // W Address mode
+		0, // Mip Lod bias
+		1, // Anisotropic enabled
+		1, // Max anisotropy
+		0, // Compare enabled
+		vk::CompareOp::eAlways, // Compare Operator
+		0, // Min lod
+		mipLevels-1, // Max lod
+		vk::BorderColor::eFloatTransparentBlack, // Border color
+		0 // Unnormalized coordiante
+	);
+}
+
 vk::ShaderModule r267::createShaderModule(vk::Device device,const std::string& filename){
 	auto shaderCode = readFile(filename);
 	vk::ShaderModuleCreateInfo createInfo(vk::ShaderModuleCreateFlags(),shaderCode.size(),(uint32_t*) shaderCode.data());

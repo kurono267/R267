@@ -38,6 +38,7 @@ vk::ImageView createImageView(vk::Device device, vk::Image image, vk::Format for
 vk::Sampler   createSampler(vk::Device device, vk::SamplerCreateInfo samplerInfo);
 
 vk::SamplerCreateInfo linearSampler(const uint& mipLevels = 1);
+vk::SamplerCreateInfo nearsetSampler(const uint& mipLevels = 1);
 
 inline bool hasStencilComponent(vk::Format format) {
     return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;

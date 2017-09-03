@@ -20,9 +20,10 @@
 
 using namespace r267;
 
-struct UBO {
-    glm::mat4 mvp;
-    glm::vec4 view;
+struct ssaoUBO {
+    glm::mat4 view;
+    glm::mat4 proj;
+    glm::vec4 kernels[64];
 };
 
 class ViewerApp : public BaseApp {
@@ -98,6 +99,11 @@ protected:
     spShape _quad;
 
     GBuffer _gbuffer;
+    ssaoUBO _ssaoData;
+    Uniform _ssaoUniform;
+
+    spImage _kernelImage;
+    spImage _rotationImage;
 
     std::unordered_map<std::string,spImage> _imagesBuffer;
 
