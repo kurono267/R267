@@ -14,7 +14,7 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
 
 	RenderPattern rpGBuffer;
 	rpGBuffer = RenderPattern::basic(_device);
-	rpGBuffer.blend(3);
+	rpGBuffer.blend(3,false);
 	rpGBuffer.createRenderPass(vk::Format::eR32G32B32A32Sfloat,_device->depthFormat(),3);
 
 	_pipeline = std::make_shared<Pipeline>(rpGBuffer,device->getDevice());
@@ -117,14 +117,14 @@ void GBuffer::createCommands(){
     _command.end();
 }
 
-vk::ImageView GBuffer::posMap(){
+vk::ImageView GBuffer::posMap() const {
 	return _posMap->ImageView();
 }
 
-vk::ImageView GBuffer::normalMap(){
+vk::ImageView GBuffer::normalMap() const {
 	return _normalMap->ImageView();
 }
 
-vk::ImageView GBuffer::colorMap(){
+vk::ImageView GBuffer::colorMap() const {
 	return _colorMap->ImageView();
 }

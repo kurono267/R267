@@ -26,9 +26,9 @@ class GBuffer {
 
 		void init(spDevice device,spScene scene,spCamera camera,spDescSet matDescSet,const glm::ivec2& size);
 
-		vk::ImageView posMap();
-		vk::ImageView normalMap();
-		vk::ImageView colorMap();
+		vk::ImageView posMap() const;
+		vk::ImageView normalMap() const;
+		vk::ImageView colorMap() const;
 
 		vk::Semaphore render(vk::Semaphore& wait);
 	protected:

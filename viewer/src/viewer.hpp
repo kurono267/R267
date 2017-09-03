@@ -16,14 +16,12 @@
 
 #include <base/scene/scene.hpp>
 #include <base/scene/camera.hpp>
-#include "gbuffer.hpp"
+#include "ssao.hpp"
 
 using namespace r267;
 
-struct ssaoUBO {
-    glm::mat4 view;
-    glm::mat4 proj;
-    glm::vec4 kernels[64];
+struct UBO {
+    glm::vec4 view;
 };
 
 class ViewerApp : public BaseApp {
@@ -99,11 +97,10 @@ protected:
     spShape _quad;
 
     GBuffer _gbuffer;
-    ssaoUBO _ssaoData;
-    Uniform _ssaoUniform;
+    SSAO    _ssao;
 
-    spImage _kernelImage;
-    spImage _rotationImage;
+    Uniform _uniform;
+    UBO     _ubo;
 
     std::unordered_map<std::string,spImage> _imagesBuffer;
 

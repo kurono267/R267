@@ -4,56 +4,7 @@
 
 #include "viewer.hpp"
 
-#include <random>
-
 using namespace r267;
-
-float lerp(float a, float b, float f) {
-    return a + f * (b - a);
-}
-
-void ssaoKernelGen(spDevice device,ssaoUBO& ubo){
-	std::uniform_real_distribution<float> randomFloats(0.0, 1.0); // random floats between 0.0 - 1.0
-	std::default_random_engine generator;
-	std::vector<glm::vec3> ssaoKernel;
-	for (unsigned int i = 0; i < 64; ++i)
-	{
-	    glm::vec3 sample(
-	        randomFloats(generator) * 2.0 - 1.0,
-	        randomFloats(generator) * 2.0 - 1.0,
-	        randomFloats(generator)
-	    );
-	    sample  = glm::normalize(sample);
-	    sample *= randomFloats(generator);
-	    float scale = (float)i / 64.0;
-	    scale   = lerp(0.1f, 1.0f, scale * scale);
-        sample *= scale;
-        ubo.kernels[i] = glm::vec4(sample,1.0f);
-	}
-}
-
-spImage ssaoKernelRotationGen(spDevice device){
-	std::uniform_real_distribution<float> randomFloats(0.0, 1.0); // random floats between 0.0 - 1.0
-	std::default_random_engine generator;
-	std::vector<glm::vec3> ssaoNoise;
-	for (unsigned int i = 0; i < 16; i++){
-	    glm::vec3 noise(
-	        randomFloats(generator) * 2.0 - 1.0,
-	        randomFloats(generator) * 2.0 - 1.0,
-	        0.0f);
-	    ssaoNoise.push_back(noise);
-	}
-	spImage kernelImage = device->create<Image>();
-	spBuffer cpu     = device->create<Buffer>();
-	cpu->create(64*sizeof(glm::vec3),vk::BufferUsageFlagBits::eTransferSrc,
-		vk::MemoryPropertyFlagBits::eHostVisible |
-		vk::MemoryPropertyFlagBits::eHostCoherent);
-	cpu->set(ssaoNoise.data(),16*sizeof(glm::vec3));
-	kernelImage->create(4,4,vk::Format::eR16G16B16A16Sfloat);
-	kernelImage->set(cpu);
-
-	return kernelImage;
-}
 
 bool ViewerApp::init(){
     vulkan = mainApp->vulkan();device = vulkan->device(); swapchain = device->getSwapchain();vk_device = device->getDevice();
@@ -83,25 +34,21 @@ bool ViewerApp::init(){
     _camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
     _camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
 
-    _ssaoData.view = _camera->getView();
-    _ssaoData.proj = _camera->getProj();
-     ssaoKernelGen(device,_ssaoData);
-    _rotationImage = ssaoKernelRotationGen(device);
-
-    _ssaoUniform.create(device,sizeof(ssaoUBO),&_ssaoData);
-
     // Init GBuffer
     _gbuffer.init(device,_scene,_camera,matDesc,glm::ivec2(1280,720));
-
+    _ssao.init(device,_gbuffer,glm::ivec2(1280,720));
 
     vk::Sampler noiseSampler = createSampler(device->getDevice(),nearsetSampler());
+
+    _ubo.view = glm::vec4(_camera->getPos(),1.0f);
+    _uniform.create(device,sizeof(UBO),&_ubo);
 
 	_differedDesc = device->create<DescSet>();
 	_differedDesc->setTexture(_gbuffer.posMap(),createSampler(device->getDevice(),linearSampler()),0,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setTexture(_rotationImage->ImageView(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setUniformBuffer(_ssaoUniform,4,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_ssao.ssaoImage(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setUniformBuffer(_uniform,4,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->create();
 
 	_main->descSet(_differedDesc);
@@ -163,9 +110,7 @@ bool ViewerApp::init(){
 }
 
 bool ViewerApp::draw(){
-	_ssaoData.view = _camera->getView();
-	_ssaoUniform.set(sizeof(ssaoUBO),&_ssaoData);
-
+	_uniform.set(sizeof(UBO),&_ubo);
     unsigned int imageIndex = vk_device.acquireNextImageKHR(swapchain->getSwapchain(),std::numeric_limits<uint64_t>::max(),_imageAvailable,nullptr).value;
 
     auto next = std::chrono::steady_clock::now();
@@ -173,8 +118,9 @@ bool ViewerApp::draw(){
     prev = next;
 
     vk::Semaphore waitGBuffer = _gbuffer.render(_imageAvailable);
+	vk::Semaphore waitSSAO    = _ssao.render(device,waitGBuffer);
 
-    vk::Semaphore waitSemaphores[] = {waitGBuffer};
+    vk::Semaphore waitSemaphores[] = {waitSSAO};
     vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 
     vk::Semaphore signalSemaphores[] = {_renderFinish};
@@ -204,5 +150,7 @@ bool ViewerApp::draw(){
 bool ViewerApp::update(){
     _guiEvents = _gui->actionUpdate(mainApp->window());
     _gui->update(_guiFunc);
+    _ssao.update(_camera);
+    _ubo.view = glm::vec4(_camera->getPos(),1.0f);
     return true;
 }
