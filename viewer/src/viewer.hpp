@@ -22,6 +22,7 @@ using namespace r267;
 
 struct UBO {
     glm::vec4 view;
+    glm::mat4 viewproj;
 };
 
 class ViewerApp : public BaseApp {
@@ -101,6 +102,8 @@ protected:
 
     Uniform _uniform;
     UBO     _ubo;
+
+    spImage _background;
 
     std::unordered_map<std::string,spImage> _imagesBuffer;
 

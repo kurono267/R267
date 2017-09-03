@@ -33,6 +33,7 @@ class Material {
 		void setSpecularColor(const glm::vec3& color);
 
 		void setDiffuseTexture(const std::string& filename);
+		void setNormalTexture(const std::string& filename);
 
 		bool equal(const std::shared_ptr<Material>& material);
 
@@ -48,9 +49,11 @@ class Material {
 		MaterialUBO _data;
 		// Material Texture
 		std::string _diffuseFilename;
+		std::string _normalFilename;
 
 		Uniform       _uniform;
 		spImage       _diffTexture;
+		spImage       _normalTexture;
 		vk::ImageView _diffView;
 		vk::Sampler   _sampler;
 		spDescSet     _descSet;

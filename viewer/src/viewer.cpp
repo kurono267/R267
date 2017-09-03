@@ -24,6 +24,8 @@ bool ViewerApp::init(){
 
     _toolbar.setScene(_scene);
 
+    _background = loadImage(device,"assets/texture/hdr.hdr");
+
     auto baseRP = RenderPattern::basic(device);
     baseRP.blend();
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
@@ -41,6 +43,7 @@ bool ViewerApp::init(){
     vk::Sampler noiseSampler = createSampler(device->getDevice(),nearsetSampler());
 
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
+    _ubo.viewproj = _camera->getVP();
     _uniform.create(device,sizeof(UBO),&_ubo);
 
 	_differedDesc = device->create<DescSet>();
@@ -49,6 +52,7 @@ bool ViewerApp::init(){
 	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_ssao.ssaoImage(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setUniformBuffer(_uniform,4,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_background->ImageView(),createSampler(device->getDevice(),linearSampler()),5,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->create();
 
 	_main->descSet(_differedDesc);
@@ -152,5 +156,6 @@ bool ViewerApp::update(){
     _gui->update(_guiFunc);
     _ssao.update(_camera);
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
+    _ubo.viewproj = _camera->getVP();
     return true;
 }

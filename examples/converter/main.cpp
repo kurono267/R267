@@ -66,6 +66,7 @@ spScene assimp_import(const std::string& filename){
 	const aiScene* scene = importer.ReadFile( filename,
 											aiProcess_Triangulate | 
 											aiProcess_GenSmoothNormals |
+											aiProcess_CalcTangentSpace |
 											aiProcess_SortByPType);
 
 	if( !scene)
@@ -99,10 +100,13 @@ spScene assimp_import(const std::string& filename){
 
 				aiString map_Kd;
 				aMat->GetTexture(aiTextureType_DIFFUSE,0,&map_Kd);
+				aiString map_Bump;
+				aMat->GetTexture(aiTextureType_NORMALS,0,&map_Bump);
 
 				s_material->setDiffuseColor(glm::vec3(aKd.r,aKd.g,aKd.b));
 				s_material->setSpecularColor(glm::vec3(aKs.r,aKs.g,aKs.b));
 				s_material->setDiffuseTexture(map_Kd.data);
+				s_material->setNormalTexture(map_Bump.data);
 			}
 		}
 
@@ -128,6 +132,14 @@ spScene assimp_import(const std::string& filename){
 				if(i_mesh->mTextureCoords[0] != nullptr){
 					const aiVector3D i_uv = i_mesh->mTextureCoords[0][i_face.mIndices[v]];
 					vertex.uv = glm::vec2(i_uv.x,i_uv.y);
+				}
+				if(i_mesh->mTangents != nullptr){
+					const aiVector3D i_tangents = i_mesh->mTangents[i_face.mIndices[v]];
+					vertex.tangent = glm::vec3(i_tangents.x,i_tangents.y,i_tangents.z);
+				}
+				if(i_mesh->mBitangents != nullptr){
+					const aiVector3D i_bitangents = i_mesh->mBitangents[i_face.mIndices[v]];
+					vertex.binormal = glm::vec3(i_bitangents.x,i_bitangents.y,i_bitangents.z);
 				}
 				vertexes.push_back(vertex);
 				indexes.push_back(vertexes.size()-1);

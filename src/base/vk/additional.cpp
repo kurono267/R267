@@ -78,22 +78,23 @@ spImage r267::whiteTexture(spDevice device,const uint& width, const uint& height
 	return image;
 }
 
-// Downscale to 2x 
-std::vector<float> downscale(const std::vector<float>& pixels,const uint& width,const uint& height){
+// Downscale to 2x
+template<typename T>
+std::vector<T> downscale(const std::vector<T>& pixels,const uint& width,const uint& height){
 	uint width2 = width/2;
 	uint height2 = height/2;
-	std::vector<float> result;
-	for(uint y2 = 0;y2<width2;++y2){
-		for(uint x2 = 0;x2<height2;++x2){
+	std::vector<T> result;
+	for(uint y2 = 0;y2<height2;++y2){
+		for(uint x2 = 0;x2<width2;++x2){
 			float pixel[4] = {0};
 			float num = 0.0f;
 			// Compute middle color
 			for(uint ys = 0;ys<2;++ys){
 				uint y = y2*2+ys;
-				if(y >= width)continue;
+				if(y >= height)continue;
 				for(uint xs = 0;xs<2;++xs){
 					uint x = x2*2+xs;
-					if(x >= height)continue;
+					if(x >= width)continue;
 					for(uint ch = 0;ch<4;++ch){
 						pixel[ch] += pixels[(y*width+x)*4+ch];
 					}
@@ -110,11 +111,12 @@ std::vector<float> downscale(const std::vector<float>& pixels,const uint& width,
 }
 
 // Very simple gen mipmaps
-std::vector<float> genMipmaps(const std::vector<float>& pixels,const uint& width,const uint& height, uint& mipLevels, std::vector<uint>& offsets, std::vector<glm::ivec2>& sizes){
+template<typename T>
+std::vector<T> genMipmaps(const std::vector<T>& pixels,const uint& width,const uint& height, uint& mipLevels, std::vector<uint>& offsets, std::vector<glm::ivec2>& sizes){
 	uint w = width;
 	uint h = height;
 	mipLevels = 0;
-	std::vector<float> result;
+	std::vector<T> result;
 	while(w > 1 && h > 1){
 		std::cout << "w " << w << ", h " << h << std::endl;
 		sizes.push_back(glm::ivec2(w,h));
@@ -127,9 +129,9 @@ std::vector<float> genMipmaps(const std::vector<float>& pixels,const uint& width
 	w = width; h = height;
 	offsets.push_back(0);
 	for(int m = 1;m<mipLevels;++m){
-		auto level = downscale(prevLevel,w,h);
+		auto level = downscale<T>(prevLevel,w,h);
 
-		offsets.push_back(result.size()*sizeof(float));
+		offsets.push_back(result.size()*sizeof(T));
 		result.insert(result.end(), level.begin(), level.end());
 		prevLevel = level;
 
@@ -142,27 +144,18 @@ std::vector<float> genMipmaps(const std::vector<float>& pixels,const uint& width
 // Usage overheaded format
 #include <OpenImageIO/imageio.h>
 OIIO_NAMESPACE_USING
-spImage r267::loadImage(spDevice device,const std::string& filename){
-	ImageInput *in = ImageInput::open (filename);
-	if (! in){
-		std::stringstream str;
-		str << "Image " << filename << " don't found";
-		throw std::runtime_error(str.str());
-	}
-	const ImageSpec &spec = in->spec();
-	uint width = spec.width;
-	uint height = spec.height;
-	uint channels = spec.nchannels;
-	std::vector<float> pixels (width*height*channels);
-	in->read_image (TypeDesc::FLOAT, pixels.data());
+
+template<typename T>
+spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format format,int width,int height,int channels){
+	std::vector<T> pixels (width*height*channels);
+	in->read_image (inputFormat, pixels.data());
 	in->close ();
 	ImageInput::destroy (in);
 
-	vk::Format format = vk::Format::eR32G32B32A32Sfloat;
-	size_t pixelSize = 4*sizeof(float);
+	size_t pixelSize = 4*sizeof(T);
 	if(channels == 3){
 		// Bad case emulate RGBA8
-		std::vector<float> pixels4(width*height*4);
+		std::vector<T> pixels4(width*height*4);
 		for(int y = 0;y<height;++y){
 			for(int x = 0;x<width;++x){
 				pixels4[(y*width+x)*4+0] = pixels[(y*width+x)*3];
@@ -176,13 +169,13 @@ spImage r267::loadImage(spDevice device,const std::string& filename){
 
 	uint mipLevels = 1;std::vector<uint> offsets;
 	std::vector<glm::ivec2> sizes;
-	auto mipMaps = genMipmaps(pixels,width,height,mipLevels,offsets,sizes);
+	auto mipMaps = genMipmaps<T>(pixels,width,height,mipLevels,offsets,sizes);
 
-	vk::DeviceSize size = mipMaps.size()*sizeof(float);
+	vk::DeviceSize size = mipMaps.size()*sizeof(T);
 
 	spBuffer cpu = device->create<Buffer>();
 	cpu->create(size,vk::BufferUsageFlagBits::eTransferSrc,
-		vk::MemoryPropertyFlagBits::eHostVisible | 
+		vk::MemoryPropertyFlagBits::eHostVisible |
 		vk::MemoryPropertyFlagBits::eHostCoherent);
 	cpu->set(mipMaps.data(),size);
 
@@ -191,6 +184,39 @@ spImage r267::loadImage(spDevice device,const std::string& filename){
 	image->set(cpu,offsets,sizes);
 
 	return image;
+}
+
+spImage r267::loadImage(spDevice device,const std::string& filename){
+	ImageInput *in = ImageInput::open (filename);
+	if (! in){
+		std::stringstream str;
+		str << "Image " << filename << " don't found";
+		throw std::runtime_error(str.str());
+	}
+	const ImageSpec &spec = in->spec();
+	uint width = spec.width;
+	uint height = spec.height;
+	uint channels = spec.nchannels;
+	TypeDesc format = spec.channelformat(0);
+	for(int i = 1;i<channels;++i){
+		if(format != spec.channelformat(i))throw std::runtime_error("Image channels has different channel");
+	}
+
+	std::cout << format << std::endl;
+
+	switch(format.basetype){
+		case TypeDesc::UINT8:
+		return readImage<uint8_t>(device,in,format,vk::Format::eR8G8B8A8Unorm,width,height,channels);
+		break;
+		case TypeDesc::FLOAT:
+		return readImage<float>(device,in,format,vk::Format::eR32G32B32A32Sfloat,width,height,channels);
+		break;
+		case TypeDesc::HALF:
+		return readImage<float>(device,in,format,vk::Format::eR16G16B16A16Unorm,width,height,channels);
+		break;
+		default:
+		throw std::runtime_error("Unsupported channels format");
+	}
 }
 
 vk::ImageMemoryBarrier r267::imageBarrier(spImage image, AccessTransfer access, ImageLayoutTransfer layout){

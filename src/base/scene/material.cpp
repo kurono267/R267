@@ -45,6 +45,7 @@ void Material::read(const ptree& tree){
 	//std::cout << _data.specularColor.x << ", " << _data.specularColor.y << ", " << _data.specularColor.z << std::endl;
 
 	_diffuseFilename = tree.get<std::string>("diffuseTexture","");
+	_normalFilename  = tree.get<std::string>("normalTexture","");
 }
 
 void Material::save(ptree& root,const std::string& object){
@@ -71,6 +72,7 @@ void Material::save(ptree& tree){
 	}
 	tree.add_child("specularColor",specularColor);
 	tree.put("diffuseTexture",_diffuseFilename);
+	tree.put("normalTexture",_normalFilename);
 }
 
 MaterialUBO Material::data(){
@@ -107,6 +109,10 @@ void Material::setDiffuseTexture(const std::string& filename){
 	_diffuseFilename = filename;
 }
 
+void Material::setNormalTexture(const std::string& filename){
+	_normalFilename = filename;
+}
+
 bool Material::equal(const std::shared_ptr<Material>& material){
 	if(_data.diffuseColor != material->_data.diffuseColor)return false;
 	if(_data.specularColor != material->_data.specularColor)return false;
@@ -126,6 +132,15 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 		else _diffTexture = whiteTexture(device,1,1); 
 		imagesBuffer.insert(std::pair<std::string,spImage>(filename,_diffTexture));
 	}
+	filename = _path+_normalFilename;
+	tmp = imagesBuffer.find(filename);
+	if(tmp != imagesBuffer.end()){
+		_normalTexture = tmp->second;
+	} else {
+		if(!_normalFilename.empty())_normalTexture = loadImage(device,filename);
+		else _normalTexture = whiteTexture(device,1,1);
+		imagesBuffer.insert(std::pair<std::string,spImage>(filename,_normalTexture));
+	}
 
 	_diffView = _diffTexture->ImageView();
 	_sampler  = createSampler(device->getDevice(),linearSampler(_diffTexture->mipLevels()));
@@ -133,6 +148,7 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 	_descSet  = device->create<DescSet>();
 	_descSet->setUniformBuffer(_uniform,0,vk::ShaderStageFlagBits::eFragment);
 	_descSet->setTexture(_diffView,_sampler,1,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(_normalTexture->ImageView(),_sampler,2,vk::ShaderStageFlagBits::eFragment);
 	_descSet->create();
 }
 

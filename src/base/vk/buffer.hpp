@@ -15,16 +15,20 @@ struct sVertex {
 	/*alignas(16)*/ glm::vec3 pos;
 	/*alignas(16)*/ glm::vec3 normal;
 	/*alignas(16)*/ glm::vec2 uv;
+	glm::vec3 tangent;
+	glm::vec3 binormal;
 
 	static vk::VertexInputBindingDescription bindingDesc(){
 		return vk::VertexInputBindingDescription(0,sizeof(sVertex));
 	}
 
 	static std::vector<vk::VertexInputAttributeDescription> attributes(){
-		std::vector<vk::VertexInputAttributeDescription> attrs(3);
+		std::vector<vk::VertexInputAttributeDescription> attrs(5);
 		attrs[0] = vk::VertexInputAttributeDescription(0,0,vk::Format::eR32G32B32Sfloat,offsetof(sVertex,pos));
 		attrs[1] = vk::VertexInputAttributeDescription(1,0,vk::Format::eR32G32B32Sfloat,offsetof(sVertex,normal));
 		attrs[2] = vk::VertexInputAttributeDescription(2,0,vk::Format::eR32G32Sfloat,offsetof(sVertex,uv));
+		attrs[3] = vk::VertexInputAttributeDescription(3,0,vk::Format::eR32G32B32Sfloat,offsetof(sVertex,tangent));
+		attrs[4] = vk::VertexInputAttributeDescription(4,0,vk::Format::eR32G32B32Sfloat,offsetof(sVertex,binormal));
 		return attrs;
 	}
 };
