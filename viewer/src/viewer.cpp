@@ -24,10 +24,10 @@ bool ViewerApp::init(){
 
     _toolbar.setScene(_scene);
 
-    _background = loadImage(device,"assets/texture/hdr.hdr");
+    _background = loadImage(device,"assets/texture/Jerusalem.ppm");
 
     auto baseRP = RenderPattern::basic(device);
-    baseRP.blend();
+    baseRP.blend(1,false);
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
 
     _main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/effects/differed_vert.spv");
@@ -43,7 +43,10 @@ bool ViewerApp::init(){
     vk::Sampler noiseSampler = createSampler(device->getDevice(),nearsetSampler());
 
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
+    _ubo.viewMat = _camera->getView();
     _ubo.viewproj = _camera->getVP();
+    _ubo.invview  = inverse(_camera->getView());
+    _ubo.invproj  = inverse(_camera->getProj());
     _uniform.create(device,sizeof(UBO),&_ubo);
 
 	_differedDesc = device->create<DescSet>();
@@ -51,8 +54,8 @@ bool ViewerApp::init(){
 	_differedDesc->setTexture(_gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_ssao.ssaoImage(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setUniformBuffer(_uniform,4,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setTexture(_background->ImageView(),createSampler(device->getDevice(),linearSampler()),5,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_background->ImageView(),createSampler(device->getDevice(),linearSampler()),4,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setUniformBuffer(_uniform,5,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eVertex);
 	_differedDesc->create();
 
 	_main->descSet(_differedDesc);
@@ -156,6 +159,8 @@ bool ViewerApp::update(){
     _gui->update(_guiFunc);
     _ssao.update(_camera);
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
+    _ubo.viewMat = _camera->getView();
     _ubo.viewproj = _camera->getVP();
+    _ubo.invview  = inverse(_camera->getView());
     return true;
 }

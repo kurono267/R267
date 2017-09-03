@@ -22,7 +22,10 @@ using namespace r267;
 
 struct UBO {
     glm::vec4 view;
+    glm::mat4 viewMat;
     glm::mat4 viewproj;
+    glm::mat4 invview;
+    glm::mat4 invproj;
 };
 
 class ViewerApp : public BaseApp {

@@ -59,6 +59,7 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
 
 vk::Semaphore GBuffer::render(vk::Semaphore& wait){
 	_cameraData.mvp = _camera->getVP();
+	_cameraData.viewMat = _camera->getView();
     _cameraData.view = glm::vec4(_camera->getPos(),1.0f);
     _cameraUniform.set(sizeof(CameraData),&_cameraData);
 
@@ -89,9 +90,9 @@ void GBuffer::createCommands(){
     _command.begin(&beginInfo);
 
     std::array<vk::ClearValue, 4> clearValues = {};
-    clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 1.0f});
-    clearValues[1].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 1.0f});
-    clearValues[2].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 1.0f});
+    clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 0.0f});
+    clearValues[1].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 0.0f});
+    clearValues[2].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 0.0f});
     clearValues[3].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
 
     vk::RenderPassBeginInfo renderPassInfo(

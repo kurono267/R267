@@ -51,7 +51,7 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
 	_size = size;
 
 	auto baseRP = RenderPattern::basic(device);
-    baseRP.blend();
+    baseRP.blend(1,false);
     baseRP.createRenderPass(vk::Format::eR16G16B16A16Sfloat,device->depthFormat(),1);
     _main = std::make_shared<Pipeline>(baseRP,device->getDevice());
 

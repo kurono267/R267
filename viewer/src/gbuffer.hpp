@@ -16,6 +16,7 @@ using namespace r267;
 
 struct CameraData {
 	glm::mat4 mvp;
+	glm::mat4 viewMat;
 	glm::vec4 view;
 };
 
