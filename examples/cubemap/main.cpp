@@ -3,45 +3,51 @@
 #include <base/vk/additional.hpp>
 #include <base/vk/shape.hpp>
 #include <base/vk/image.hpp>
+#include <base/scene/scene.hpp>
+#include <base/scene/camera.hpp>
 
 #include <chrono>
 
 using namespace r267;
 
 struct UBO {
-	glm::vec4 color;
+	glm::mat4 mvp;
+	glm::vec4 view;
 };
 
-class TextureApp : public BaseApp {
+class MeshApp : public BaseApp {
 	public:
-		TextureApp(spMainApp app) : BaseApp(app) {}
-		virtual ~TextureApp(){}
+		MeshApp(spMainApp app) : BaseApp(app) {}
+		virtual ~MeshApp(){}
 
 		bool init(){
 			vulkan = mainApp->vulkan();device = vulkan->device(); swapchain = device->getSwapchain();vk_device = device->getDevice();
 			_commandPool = device->getCommandPool();
+			glm::ivec2 wnd = mainApp->wndSize();
+
+			_cube = std::make_shared<Cube>();
+			_cube->create(device);
 
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
-			_texDesc = device->create<DescSet>();
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/texture/main_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/texture/main_frag.spv");
-			
-			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
-			_color.create(device,sizeof(UBO),&_colorData);
+			_sceneDesc = device->create<DescSet>();
 
-			spImage image = loadImage(device,"assets/texture/hdr.hdr");//checkboardTexture(device,512,512,64);
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/cubemap_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/cubemap_frag.spv");
 
-			_texDesc->setTexture(image->ImageView(),createSampler(vk_device,linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
-			_texDesc->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);
-			_texDesc->create();
+			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, 5.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
+			_camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
 
-			_main->descSet(_texDesc);
+			_mvpData.mvp = _camera->getVP();
+			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
+			_mvp.create(device,sizeof(UBO),&_mvpData);
+
+			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
+			_sceneDesc->create();
+
+			_main->descSet(_sceneDesc);
 			_main->create();
-
-			_quad = std::make_shared<Quad>();
-			_quad->create(device);
 
 			_framebuffers = createFrameBuffers(device,_main);
 
@@ -68,11 +74,11 @@ class TextureApp : public BaseApp {
 				_commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
 				_commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
 
-					vk::DescriptorSet descSets[] = {_texDesc->getDescriptorSet()};
+				vk::DescriptorSet descSets[] = {_sceneDesc->getDescriptorSet()};
 
-					_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
+				_commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
-					_quad->draw(_commandBuffers[i]);
+				_cube->draw(_commandBuffers[i]);
 
 				_commandBuffers[i].endRenderPass();
 				_commandBuffers[i].end();
@@ -88,10 +94,11 @@ class TextureApp : public BaseApp {
 		}
 		bool draw(){
 			unsigned int imageIndex = vk_device.acquireNextImageKHR(swapchain->getSwapchain(),std::numeric_limits<uint64_t>::max(),_imageAvailable,nullptr).value;
+			_mvp.set(sizeof(UBO),&_mvpData);
 
 			auto next = std::chrono::steady_clock::now();
-			auto dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
-			std::cout << "FPS " << 1.0f/dt << std::endl;
+			_dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
+			std::cout << "FPS " << 1.0f/_dt << std::endl;
 			prev = next;
 
 			vk::Semaphore waitSemaphores[] = {_imageAvailable};
@@ -101,7 +108,7 @@ class TextureApp : public BaseApp {
 
 			vk::SubmitInfo submitInfo(
 				1, waitSemaphores,
-				waitStages, 
+				waitStages,
 				1, &_commandBuffers[imageIndex],
 				1, signalSemaphores
 			);
@@ -123,19 +130,45 @@ class TextureApp : public BaseApp {
 		bool update(){
 			return true;
 		}
-		
+
 		bool onKey(const GLFWKey& key){}
-		bool onMouse(const GLFWMouse& mouse){}
+		bool onMouse(const GLFWMouse& mouse){
+			if(mouse.callState == GLFWMouse::onMouseButton){
+				if(mouse.button == GLFW_MOUSE_BUTTON_1){
+					if(mouse.action == GLFW_PRESS){
+						_isPressed = true;
+						_isFirst = true;
+					} else _isPressed = false;
+				}
+			} else if (mouse.callState == GLFWMouse::onMousePosition){
+				if(_isPressed){
+					if(!_isFirst){
+						glm::vec2 dp = glm::vec2(mouse.x,mouse.y)-_prev_mouse;
+						_camera->rotate(dp,_dt);
+					}
+					_prev_mouse = glm::vec2(mouse.x,mouse.y);
+					_isFirst = false;
+				}
+			}
+			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
+			_mvpData.mvp = _camera->getVP();
+		}
+		bool onScroll(const glm::vec2& offset){
+			_camera->scale(offset.y,_dt);
+			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
+			_mvpData.mvp = _camera->getVP();
+			return true;
+		}
 		bool onExit(){
 			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
 			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
 			_main->release();
 		}
 	protected:
-		spDescSet  _texDesc;
+		spDescSet  _sceneDesc;
 		spPipeline _main;
-		UBO        _colorData;
-		Uniform    _color;
+		UBO        _mvpData;
+		Uniform    _mvp;
 
 		// Framebuffers
 		std::vector<spFramebuffer> _framebuffers;
@@ -146,19 +179,27 @@ class TextureApp : public BaseApp {
 		vk::Semaphore _imageAvailable;
 		vk::Semaphore _renderFinish;
 
-		spShape _quad;
+		std::unordered_map<std::string,spImage> _imagesBuffer;
+
+		spShape  _cube;
+		spCamera _camera;
+
+		// For camera rotate
+		bool _isPressed;
+		bool _isFirst;
+		glm::vec2 _prev_mouse;
+		float _dt;
 
 		std::chrono::time_point<std::chrono::steady_clock> prev;
 };
 
-int main(){
+int main(int argc, char const *argv[]){
 	spMainApp main = MainApp::instance();
-	spBaseApp app = std::make_shared<TextureApp>(main);
+	spBaseApp app = std::make_shared<MeshApp>(main);
 
-	main->create("Texture",1280,720);
+	main->create("Mesh",1280,720);
 	main->setBaseApp(app);
 
 	main->run();
-
 	return 0;
 }

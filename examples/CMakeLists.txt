@@ -46,3 +46,10 @@ target_link_libraries(compute r267)
 add_shader("compute/main.vert" compute)
 add_shader("compute/main.frag" compute)
 add_shader("compute/main.comp" compute)
+
+# CubeMap example
+add_executable(cubemap cubemap/main.cpp)
+target_link_libraries(cubemap r267)
+
+add_shader("cubemap/cubemap.vert" cubemap)
+add_shader("cubemap/cubemap.frag" cubemap)

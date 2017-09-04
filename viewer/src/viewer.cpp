@@ -44,7 +44,7 @@ bool ViewerApp::init(){
 
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
     _ubo.viewMat = _camera->getView();
-    _ubo.viewproj = _camera->getVP();
+    _ubo.proj = _camera->getProj();
     _ubo.invview  = inverse(_camera->getView());
     _ubo.invproj  = inverse(_camera->getProj());
     _uniform.create(device,sizeof(UBO),&_ubo);
@@ -163,7 +163,6 @@ bool ViewerApp::update(){
     _ssao.update(_camera);
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
     _ubo.viewMat = _camera->getView();
-    _ubo.viewproj = _camera->getVP();
     _ubo.invview  = inverse(_camera->getView());
     return true;
 }
