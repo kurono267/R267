@@ -11,11 +11,17 @@ class Image {
 		~Image();
 
 		void set(const spBuffer& buffer); // Set without mip levels
-		void set(const spBuffer& buffer, const std::vector<uint>& offsets, const std::vector<glm::ivec2>& sizes);
+		void set(const spBuffer& buffer, const glm::ivec2 size, const uint mipLevel = 0, const uint layer = 0, const uint offsetBuffer = 0);
+
+		void setMipmaps(const spBuffer& buffer, const std::vector<uint>& offsets, const std::vector<glm::ivec2>& sizes);
 
 		void create(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
 					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled | vk::ImageUsageFlagBits::eColorAttachment,
+					const vk::ImageLayout& layout = vk::ImageLayout::ePreinitialized,const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
+		void createCubemap(const uint& width,const uint& height,
+					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
+					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
 					const vk::ImageLayout& layout = vk::ImageLayout::ePreinitialized,const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
 		void release(spDevice device);
 
@@ -23,7 +29,7 @@ class Image {
 
 		uint mipLevels();
 
-		void transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout);
+		void transition(const vk::ImageLayout& newLayout);
 
 		vk::Image vk_image();
 
@@ -42,8 +48,11 @@ class Image {
 		uint             _height;
 		vk::Format       _format;
 		uint             _mipLevels;
+		uint             _layers;
 
-		void setBuffer(const spBuffer& buffer);
+		vk::ImageLayout  _currLayout;
+
+		void setBuffer(const spBuffer& buffer, const glm::ivec2& size, const uint& mipLevel, const uint& layer, const uint& offsetBuffer);
 };
 
 typedef std::shared_ptr<Image> spImage;

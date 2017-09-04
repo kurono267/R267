@@ -48,7 +48,9 @@ spImage r267::checkboardTexture(spDevice device,const uint& width, const uint& h
 
 	spImage image = device->create<Image>();
 	image->create(width,height,vk::Format::eR32G32B32A32Sfloat);
+	image->transition(vk::ImageLayout::eTransferDstOptimal);
 	image->set(cpu);
+	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal);
 
 	return image;
 }
@@ -73,7 +75,9 @@ spImage r267::whiteTexture(spDevice device,const uint& width, const uint& height
 
 	spImage image = device->create<Image>();
 	image->create(width,height,vk::Format::eR32G32B32A32Sfloat);
+	image->transition(vk::ImageLayout::eTransferDstOptimal);
 	image->set(cpu);
+	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal);
 
 	return image;
 }
@@ -181,7 +185,9 @@ spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format
 
 	spImage image = device->create<Image>();
 	image->create(width,height,format,mipLevels);
-	image->set(cpu,offsets,sizes);
+	image->transition(vk::ImageLayout::eTransferDstOptimal);
+	image->setMipmaps(cpu,offsets,sizes);
+	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal);
 
 	return image;
 }

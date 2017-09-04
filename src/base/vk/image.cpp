@@ -13,13 +13,16 @@ void Image::create(const uint& width,const uint& height,
 	_height = height;
 	_format = format;
 	_mipLevels = mipLevels;
+	_currLayout    = layout;
+	_layers   = 1;
+
 	vk::ImageCreateInfo imageInfo(
 		vk::ImageCreateFlags(), // Basic
 		vk::ImageType::e2D, // Type 1D,2D,3D
 		format, // Format
 		vk::Extent3D(width,height,1), // Width, Height and Depth
 		mipLevels, // Mip Levels
-		1, // Array Layers
+		_layers, // Array Layers
 		vk::SampleCountFlagBits::e1, // Samples
 		tiling,
 		usage,
@@ -39,23 +42,22 @@ void Image::create(const uint& width,const uint& height,
 }
 
 void Image::set(const spBuffer& buffer){
-	transition(_format,vk::ImageLayout::ePreinitialized,vk::ImageLayout::eTransferDstOptimal);
-	setBuffer(buffer);
-	transition(_format,vk::ImageLayout::eTransferDstOptimal,vk::ImageLayout::eShaderReadOnlyOptimal);
+	setBuffer(buffer,glm::ivec2(_width,_height),0,0,0);
 }
 
 vk::Image Image::vk_image(){
 	return _image;
 }
 
-void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout,const vk::ImageLayout& newLayout) {
+void Image::transition(const vk::ImageLayout& newLayout) {
+	const vk::ImageLayout oldLayout = _currLayout;
 	vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
 
 	vk::ImageAspectFlags aspectMask = vk::ImageAspectFlagBits::eColor;
 	if (newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
 		aspectMask = vk::ImageAspectFlagBits::eDepth;
 
-		if (hasStencilComponent(format)) {
+		if (hasStencilComponent(_format)) {
 			aspectMask |= vk::ImageAspectFlagBits::eStencil;
 		}
 	}
@@ -90,7 +92,7 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 
 	vk::ImageSubresourceRange subRes(
 		aspectMask,
-		0, _mipLevels, /* Mip levels current and count*/ 0, 1 /* Layers current and count */ );
+		0, _mipLevels, /* Mip levels current and count*/ 0, _layers /* Layers current and count */ );
 
 	vk::ImageMemoryBarrier barrier(
 		(vk::AccessFlagBits)srcAccess,
@@ -112,22 +114,23 @@ void Image::transition(const vk::Format& format,const vk::ImageLayout& oldLayout
 	);
 
 	endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
+	_currLayout = newLayout;
 }
 
-void Image::setBuffer(const spBuffer& buffer){
+void Image::setBuffer(const spBuffer& buffer, const glm::ivec2& size, const uint& mipLevel, const uint& layer, const uint& offsetBuffer){
 	vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
 
 	vk::ImageSubresourceLayers subRes(
 		vk::ImageAspectFlagBits::eColor,
-		0, /* Mip levels current*/ 0, 1 /* Layers current and count */ );
+		mipLevel, /* Mip levels current*/ layer, 1 /* Layers current and count */ );
 
 	vk::BufferImageCopy region(
 		/* bufferOffset bufferRowLength bufferImageHeight */
-		0, 0, 0,
+		offsetBuffer, 0, 0,
 		/* subRes imageOffest */ 
 		subRes, {0, 0, 0},
 		/* imageExtent */
-		{_width,_height,1}
+		{(uint)size.x,(uint)size.y,1}
 	);
 
 	commandBuffer.copyBufferToImage(buffer->buffer,_image,vk::ImageLayout::eTransferDstOptimal, {region});
@@ -135,31 +138,10 @@ void Image::setBuffer(const spBuffer& buffer){
 	endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
 }
 
-void Image::set(const spBuffer& buffer, const std::vector<uint>& offsets, const std::vector<glm::ivec2>& sizes){
-	transition(_format,vk::ImageLayout::ePreinitialized,vk::ImageLayout::eTransferDstOptimal);
-
+void Image::setMipmaps(const spBuffer& buffer, const std::vector<uint>& offsets, const std::vector<glm::ivec2>& sizes){
 	for(uint l = 0;l<offsets.size();++l){
-		vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
-
-		vk::ImageSubresourceLayers subRes(
-			vk::ImageAspectFlagBits::eColor,
-			l, /* Mip levels current*/ 0, 1 /* Layers current and count */ );
-
-		vk::BufferImageCopy region(
-			/* bufferOffset bufferRowLength bufferImageHeight */
-			offsets[l], 0, 0,
-			/* subRes imageOffest */ 
-			subRes, {0, 0, 0},
-			/* imageExtent */
-			{sizes[l].x,sizes[l].y,1}
-		);
-
-		commandBuffer.copyBufferToImage(buffer->buffer,_image,vk::ImageLayout::eTransferDstOptimal, {region});
-
-		endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
+		setBuffer(buffer,sizes[l],l,0,offsets[l]);
 	}
-
-	transition(_format,vk::ImageLayout::eTransferDstOptimal,vk::ImageLayout::eShaderReadOnlyOptimal);
 }
 
 vk::ImageView Image::ImageView(){
