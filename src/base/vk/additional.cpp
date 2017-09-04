@@ -144,6 +144,10 @@ std::vector<T> genMipmaps(const std::vector<T>& pixels,const uint& width,const u
 	return result;
 }
 
+void genMipmapsGPU(spDevice device,spImage image){
+
+}
+
 // Simple loading image with usage OpenImageIO
 // Usage overheaded format
 #include <OpenImageIO/imageio.h>
@@ -171,23 +175,65 @@ spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format
 		pixels = pixels4;
 	} else if(channels != 4)throw std::runtime_error("Unsupported format");
 
-	uint mipLevels = 1;std::vector<uint> offsets;
-	std::vector<glm::ivec2> sizes;
-	auto mipMaps = genMipmaps<T>(pixels,width,height,mipLevels,offsets,sizes);
-
-	vk::DeviceSize size = mipMaps.size()*sizeof(T);
+	vk::DeviceSize size = pixels.size()*sizeof(T);
 
 	spBuffer cpu = device->create<Buffer>();
 	cpu->create(size,vk::BufferUsageFlagBits::eTransferSrc,
 		vk::MemoryPropertyFlagBits::eHostVisible |
 		vk::MemoryPropertyFlagBits::eHostCoherent);
-	cpu->set(mipMaps.data(),size);
+	cpu->set(pixels.data(),size);
+
+	int mipLevels = floor(log2(std::max(width, height))) + 1;
 
 	spImage image = device->create<Image>();
-	image->create(width,height,format,mipLevels);
-	image->transition(vk::ImageLayout::eTransferDstOptimal);
-	image->setMipmaps(cpu,offsets,sizes);
-	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal);
+	image->create(width,height,format,mipLevels,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eTransferSrc|vk::ImageUsageFlagBits::eTransferDst|vk::ImageUsageFlagBits::eSampled);
+	image->transition(vk::ImageLayout::eTransferDstOptimal,vk::ImageLayout::ePreinitialized,0,1,0,1);
+	image->set(cpu);
+	image->transition(vk::ImageLayout::eTransferSrcOptimal,vk::ImageLayout::eTransferDstOptimal,0,1,0,1);
+
+	auto vk_device = device->getDevice();
+	vk::CommandBufferAllocateInfo allocInfo(device->getCommandPool(),vk::CommandBufferLevel::ePrimary, 1);
+
+	vk::CommandBuffer blitCmd = vk_device.allocateCommandBuffers(allocInfo)[0];
+
+	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
+	blitCmd.begin(&beginInfo);
+
+	for(int i = 1;i<mipLevels;++i){
+		vk::ImageBlit imageBlit;
+
+		imageBlit.srcSubresource = vk::ImageSubresourceLayers(vk::ImageAspectFlagBits::eColor,i-1,0,1);
+		imageBlit.srcOffsets[1].x = width >> (i-1);
+		imageBlit.srcOffsets[1].y = height >> (i-1);
+		imageBlit.srcOffsets[1].z = 1;
+
+		imageBlit.dstSubresource = vk::ImageSubresourceLayers(vk::ImageAspectFlagBits::eColor,i,0,1);
+		imageBlit.dstOffsets[1].x = width >> (i);
+		imageBlit.dstOffsets[1].y = height >> (i);
+		imageBlit.dstOffsets[1].z = 1;
+
+		image->transition(blitCmd,vk::ImageLayout::eTransferDstOptimal,vk::ImageLayout::ePreinitialized,i,1,0,1);
+
+		blitCmd.blitImage(image->vk_image(),vk::ImageLayout::eTransferSrcOptimal,image->vk_image(),vk::ImageLayout::eTransferDstOptimal,imageBlit,vk::Filter::eLinear);
+
+		image->transition(blitCmd,vk::ImageLayout::eTransferSrcOptimal,vk::ImageLayout::eTransferDstOptimal,i,1,0,1);
+	}
+	blitCmd.end();
+
+	vk::SubmitInfo submitInfo;
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = &blitCmd;
+
+	// Create fence to ensure that the command buffer has finished executing
+	vk::FenceCreateInfo fenceInfo;
+	vk::Fence fence;
+	fence = vk_device.createFence(fenceInfo);
+
+	device->getGraphicsQueue().submit(submitInfo,fence);
+	vk_device.waitForFences(fence,true,100000000000);
+
+	// Transition image to shader read optimal
+	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal,vk::ImageLayout::eTransferSrcOptimal);
 
 	return image;
 }

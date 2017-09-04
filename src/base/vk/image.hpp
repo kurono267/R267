@@ -29,7 +29,9 @@ class Image {
 
 		uint mipLevels();
 
-		void transition(const vk::ImageLayout& newLayout);
+		void transition(const vk::ImageLayout& newLayout); // Transition for all levels and layers
+		void transition(const vk::ImageLayout& newLayout, const vk::ImageLayout& oldLayout, const int level = 0, const int numLevels = -1, const int layer = 0, const int numLayers = -1);
+		void transition(vk::CommandBuffer& cmd,const vk::ImageLayout& newLayout, const vk::ImageLayout& oldLayout, const int level = 0, const int numLevels = -1, const int layer = 0, const int numLayers = -1);
 
 		vk::Image vk_image();
 

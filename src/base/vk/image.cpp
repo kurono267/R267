@@ -49,10 +49,48 @@ vk::Image Image::vk_image(){
 	return _image;
 }
 
-void Image::transition(const vk::ImageLayout& newLayout) {
-	const vk::ImageLayout oldLayout = _currLayout;
-	vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
+void Image::transition(const vk::ImageLayout& newLayout){
+	transition(newLayout,_currLayout);
+}
 
+void flagsFromLayout(const vk::ImageLayout& layout,vk::AccessFlags& accessFlag,vk::PipelineStageFlags& stage){
+	switch(layout){
+		case vk::ImageLayout::ePreinitialized:
+			accessFlag = vk::AccessFlagBits::eHostWrite;
+			stage      = vk::PipelineStageFlagBits::eHost;
+		break;
+		case vk::ImageLayout::eTransferDstOptimal:
+			accessFlag = vk::AccessFlagBits::eTransferWrite;
+			stage      = vk::PipelineStageFlagBits::eTransfer;
+		break;
+		case vk::ImageLayout::eShaderReadOnlyOptimal:
+			accessFlag = vk::AccessFlagBits::eShaderRead;
+			stage      = vk::PipelineStageFlagBits::eFragmentShader;
+		break;
+		case vk::ImageLayout::eUndefined:
+			accessFlag = (vk::AccessFlagBits)0;
+			stage      = vk::PipelineStageFlagBits::eTopOfPipe;
+		break;
+		case vk::ImageLayout::eGeneral:
+			accessFlag = vk::AccessFlagBits::eShaderRead|vk::AccessFlagBits::eShaderWrite;
+			stage      = vk::PipelineStageFlagBits::eFragmentShader;
+		break;
+		case vk::ImageLayout::eTransferSrcOptimal:
+			accessFlag = vk::AccessFlagBits::eTransferRead;
+			stage      = vk::PipelineStageFlagBits::eTransfer;
+		break;
+		case vk::ImageLayout::eColorAttachmentOptimal:
+			accessFlag = vk::AccessFlagBits::eColorAttachmentWrite;
+			stage      = vk::PipelineStageFlagBits::eFragmentShader;
+		break;
+		case vk::ImageLayout::eDepthStencilAttachmentOptimal:
+			accessFlag = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
+			stage      = vk::PipelineStageFlagBits::eFragmentShader;
+		break;
+	}
+}
+
+void Image::transition(vk::CommandBuffer& cmd,const vk::ImageLayout& newLayout, const vk::ImageLayout& oldLayout, const int level, const int numLevels, const int layer, const int numLayers){
 	vk::ImageAspectFlags aspectMask = vk::ImageAspectFlagBits::eColor;
 	if (newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
 		aspectMask = vk::ImageAspectFlagBits::eDepth;
@@ -62,41 +100,20 @@ void Image::transition(const vk::ImageLayout& newLayout) {
 		}
 	}
 
-	uint srcAccess;
-	uint dstAccess;
-	vk::PipelineStageFlagBits srcStage;
-	vk::PipelineStageFlagBits dstStage;
-	if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eTransferDstOptimal) {
-		srcAccess = (uint)vk::AccessFlagBits::eHostWrite;
-		dstAccess = (uint)vk::AccessFlagBits::eTransferWrite;
-		srcStage  = vk::PipelineStageFlagBits::eHost;
-		dstStage  = vk::PipelineStageFlagBits::eTransfer;
-	} else if (oldLayout == vk::ImageLayout::eTransferDstOptimal && newLayout == vk::ImageLayout::eShaderReadOnlyOptimal) {
-		srcAccess = (uint)vk::AccessFlagBits::eTransferWrite;
-		dstAccess = (uint)vk::AccessFlagBits::eShaderRead;
-		srcStage  = vk::PipelineStageFlagBits::eTransfer;
-		dstStage  = vk::PipelineStageFlagBits::eFragmentShader;
-	} else if (oldLayout == vk::ImageLayout::eUndefined && newLayout == vk::ImageLayout::eDepthStencilAttachmentOptimal) {
-            srcAccess = 0;
-            dstAccess = (uint)(vk::AccessFlagBits::eDepthStencilAttachmentRead | vk::AccessFlagBits::eDepthStencilAttachmentWrite);
-            srcStage  = vk::PipelineStageFlagBits::eTopOfPipe;
-		dstStage  = vk::PipelineStageFlagBits::eEarlyFragmentTests;
-    } else if (oldLayout == vk::ImageLayout::ePreinitialized && newLayout == vk::ImageLayout::eGeneral) {
-		srcAccess = (uint)vk::AccessFlagBits::eHostWrite;
-		dstAccess = (uint)(vk::AccessFlagBits::eShaderRead|vk::AccessFlagBits::eShaderWrite);
-		srcStage  = vk::PipelineStageFlagBits::eHost;
-		dstStage  = vk::PipelineStageFlagBits::eFragmentShader;
-	} else {
-		throw std::invalid_argument("Unsupported layout transition!");
-	}
+	vk::AccessFlags srcAccess;
+	vk::AccessFlags dstAccess;
+	vk::PipelineStageFlags srcStage;
+	vk::PipelineStageFlags dstStage;
+	flagsFromLayout(oldLayout,srcAccess,srcStage);
+	flagsFromLayout(newLayout,dstAccess,dstStage);
 
 	vk::ImageSubresourceRange subRes(
 		aspectMask,
-		0, _mipLevels, /* Mip levels current and count*/ 0, _layers /* Layers current and count */ );
+		level, numLevels==-1?_mipLevels:numLevels, /* Mip levels current and count*/ layer, numLayers==-1?_layers:numLayers /* Layers current and count */ );
 
 	vk::ImageMemoryBarrier barrier(
-		(vk::AccessFlagBits)srcAccess,
-		(vk::AccessFlagBits)dstAccess,
+		srcAccess,
+		dstAccess,
 		oldLayout,
 		newLayout,
 		VK_QUEUE_FAMILY_IGNORED,
@@ -105,13 +122,19 @@ void Image::transition(const vk::ImageLayout& newLayout) {
 		subRes
 	);
 
-	commandBuffer.pipelineBarrier(
+	cmd.pipelineBarrier(
 		srcStage, dstStage,
 		vk::DependencyFlagBits::eByRegion,
 		0, nullptr,
 		0, nullptr,
 		1, &barrier
 	);
+}
+
+void Image::transition(const vk::ImageLayout& newLayout, const vk::ImageLayout& oldLayout, const int level, const int numLevels, const int layer, const int numLayers){
+	vk::CommandBuffer commandBuffer = beginSingle(_device->getDevice(),_pool);
+
+	transition(commandBuffer,newLayout,oldLayout,level,numLevels,layer,numLayers);
 
 	endSingle(_device->getDevice(),_queue,_pool,commandBuffer);
 	_currLayout = newLayout;
