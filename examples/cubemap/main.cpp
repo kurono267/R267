@@ -29,9 +29,13 @@ class MeshApp : public BaseApp {
 			_cube->create(device);
 
 			auto baseRP = RenderPattern::basic(device);
+			baseRP.depth(true,true,vk::CompareOp::eGreater);
+			baseRP.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eFront);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 
 			_sceneDesc = device->create<DescSet>();
+
+			_cubemap = r267::defaultCubemap(device,512,512);
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/cubemap_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/cubemap_frag.spv");
@@ -44,6 +48,8 @@ class MeshApp : public BaseApp {
 			_mvp.create(device,sizeof(UBO),&_mvpData);
 
 			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
+
+			_sceneDesc->setTexture(_cubemap->ImageView(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 			_sceneDesc->create();
 
 			_main->descSet(_sceneDesc);
@@ -62,7 +68,7 @@ class MeshApp : public BaseApp {
 
 				std::array<vk::ClearValue, 2> clearValues = {};
 				clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.5f, 0.0f, 1.0f});
-				clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
+				clearValues[1].depthStencil = vk::ClearDepthStencilValue(0.0f, 0);
 
 				vk::RenderPassBeginInfo renderPassInfo(
 					_main->getRenderPass(),
@@ -169,6 +175,8 @@ class MeshApp : public BaseApp {
 		spPipeline _main;
 		UBO        _mvpData;
 		Uniform    _mvp;
+
+		spImage    _cubemap;
 
 		// Framebuffers
 		std::vector<spFramebuffer> _framebuffers;

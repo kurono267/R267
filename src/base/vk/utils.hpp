@@ -34,7 +34,7 @@ const vk::ColorComponentFlags RGBA = vk::ColorComponentFlagBits::eR | vk::ColorC
 vk::CommandBuffer beginSingle(vk::Device device,vk::CommandPool pool);
 void              endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::CommandBuffer commands);
 
-vk::ImageView createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags = vk::ImageAspectFlagBits::eColor, const uint& mipLevels = 1);
+vk::ImageView createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags = vk::ImageAspectFlagBits::eColor, const uint& mipLevels = 1, const uint& layers = 1);
 vk::Sampler   createSampler(vk::Device device, vk::SamplerCreateInfo samplerInfo);
 
 vk::SamplerCreateInfo linearSampler(const uint& mipLevels = 1);
@@ -42,6 +42,11 @@ vk::SamplerCreateInfo nearsetSampler(const uint& mipLevels = 1);
 
 inline bool hasStencilComponent(vk::Format format) {
     return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
+}
+
+inline bool hasDepthComponent(vk::Format format) {
+    return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint
+        || format == vk::Format::eD16Unorm || format == vk::Format::eD16UnormS8Uint || format == vk::Format::eD32Sfloat;
 }
 
 vk::ShaderModule createShaderModule(vk::Device device,const std::string& filename);

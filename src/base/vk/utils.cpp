@@ -101,7 +101,7 @@ void r267::endSingle(vk::Device device,vk::Queue queue,vk::CommandPool pool,vk::
 	device.freeCommandBuffers(pool,{commands});
 }
 
-vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags, const uint& mipLevels){
+vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Format format, vk::ImageAspectFlags aspectFlags, const uint& mipLevels, const uint& layers){
 	vk::ImageViewCreateInfo createInfo(
 		vk::ImageViewCreateFlags(),
 		image,
@@ -110,7 +110,7 @@ vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Form
 		vk::ComponentMapping(),
 		vk::ImageSubresourceRange(
 			aspectFlags,
-			0, mipLevels, 0, 1)
+			0, mipLevels, 0, layers)
 	);
 
 	return device.createImageView(createInfo);

@@ -39,10 +39,66 @@ void Image::create(const uint& width,const uint& height,
 	_memory = vk_device.allocateMemory(allocInfo);
 
 	vk_device.bindImageMemory(_image,_memory,0);
+
+	if(hasDepthComponent(_format))_imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eDepth, _mipLevels,_layers);
+	else _imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels,_layers);
+}
+
+void Image::createCubemap(const uint& width,const uint& height,
+					const vk::Format& format,const uint& mipLevels,const vk::ImageTiling& tiling,
+					const vk::ImageUsageFlags& usage,
+					const vk::ImageLayout& layout,const vk::MemoryPropertyFlags& properties){
+	_width = width;
+	_height = height;
+	_format = format;
+	_mipLevels = mipLevels;
+	_currLayout    = layout;
+	_layers   = 6;
+
+	vk::ImageCreateInfo imageInfo(
+		vk::ImageCreateFlagBits::eCubeCompatible, // Basic
+		vk::ImageType::e2D, // Type 1D,2D,3D
+		format, // Format
+		vk::Extent3D(width,height,1), // Width, Height and Depth
+		mipLevels, // Mip Levels
+		_layers, // Array Layers
+		vk::SampleCountFlagBits::e1, // Samples
+		tiling,
+		usage,
+		vk::SharingMode::eExclusive, 0, nullptr, layout
+	);
+
+	auto vk_device = _device->getDevice();
+
+	// Create Image
+	_image = vk_device.createImage(imageInfo);
+	auto memoryReq = vk_device.getImageMemoryRequirements(_image);
+
+	vk::MemoryAllocateInfo allocInfo(memoryReq.size,findMemoryType(_device->getPhysicalDevice(),memoryReq.memoryTypeBits, properties));
+	_memory = vk_device.allocateMemory(allocInfo);
+
+	vk_device.bindImageMemory(_image,_memory,0);
+
+	vk::ImageViewCreateInfo createInfo(
+		vk::ImageViewCreateFlags(),
+		_image,
+		vk::ImageViewType::eCube,
+		_format,
+		vk::ComponentMapping(),
+		vk::ImageSubresourceRange(
+			vk::ImageAspectFlagBits::eColor,
+			0, _mipLevels, 0, _layers)
+	);
+
+	_imageView = vk_device.createImageView(createInfo);
 }
 
 void Image::set(const spBuffer& buffer){
 	setBuffer(buffer,glm::ivec2(_width,_height),0,0,0);
+}
+
+void Image::set(const spBuffer& buffer, const glm::ivec2 size, const uint mipLevel, const uint layer, const uint offsetBuffer){
+	setBuffer(buffer,size,mipLevel,layer,offsetBuffer);
 }
 
 vk::Image Image::vk_image(){
@@ -81,11 +137,11 @@ void flagsFromLayout(const vk::ImageLayout& layout,vk::AccessFlags& accessFlag,v
 		break;
 		case vk::ImageLayout::eColorAttachmentOptimal:
 			accessFlag = vk::AccessFlagBits::eColorAttachmentWrite;
-			stage      = vk::PipelineStageFlagBits::eFragmentShader;
+			stage      = vk::PipelineStageFlagBits::eColorAttachmentOutput;
 		break;
 		case vk::ImageLayout::eDepthStencilAttachmentOptimal:
 			accessFlag = vk::AccessFlagBits::eDepthStencilAttachmentWrite;
-			stage      = vk::PipelineStageFlagBits::eFragmentShader;
+			stage      = vk::PipelineStageFlagBits::eEarlyFragmentTests;
 		break;
 	}
 }
@@ -168,11 +224,7 @@ void Image::setMipmaps(const spBuffer& buffer, const std::vector<uint>& offsets,
 }
 
 vk::ImageView Image::ImageView(){
-	if(_imageView)return _imageView;
-	else {
-		_imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels);
-		return _imageView;
-	}
+	return _imageView;
 }
 
 uint Image::mipLevels(){

@@ -55,6 +55,42 @@ spImage r267::checkboardTexture(spDevice device,const uint& width, const uint& h
 	return image;
 }
 
+spImage r267::defaultCubemap(spDevice device,const uint& width,const uint& height){
+	// Create data
+	const int step = std::max(width,height)/20;
+	glm::vec4* pixels = new glm::vec4[width*height];
+	for(uint y = 0;y<height;++y){
+		uint yStep = (y/step);
+		bool isLine = yStep%2;
+		for(uint x = 0;x<width;++x){
+			uint xStep = (x/step);
+			bool isX = (xStep+isLine)%2;
+			if(isX){
+				pixels[y*width+x] = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+			} else pixels[y*width+x] = glm::vec4(0,0,0,1.0f);
+		}
+	}
+
+	size_t pixelSize = sizeof(glm::vec4);
+	vk::DeviceSize size = width*height*pixelSize;
+
+	spBuffer cpu = device->create<Buffer>();
+	cpu->create(size,vk::BufferUsageFlagBits::eTransferSrc,
+		vk::MemoryPropertyFlagBits::eHostVisible |
+		vk::MemoryPropertyFlagBits::eHostCoherent);
+	cpu->set(pixels,size);
+
+	spImage image = device->create<Image>();
+	image->createCubemap(width,height,vk::Format::eR32G32B32A32Sfloat);
+	image->transition(vk::ImageLayout::eTransferDstOptimal);
+	for(int i = 0;i<6;++i){
+		image->set(cpu,glm::ivec2(width,height),0,i,0);
+	}
+	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal);
+
+	return image;
+}
+
 spImage r267::whiteTexture(spDevice device,const uint& width, const uint& height){
 	// Create data
 	glm::vec4* pixels = new glm::vec4[width*height];

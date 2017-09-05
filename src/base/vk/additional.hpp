@@ -12,6 +12,7 @@ std::vector<spFramebuffer> createFrameBuffers(spDevice device,spPipeline pipelin
 spImage checkboardTexture(spDevice device,const uint& width, const uint& height, const uint& step);
 spImage whiteTexture(spDevice device,const uint& width, const uint& height);
 spImage loadImage(spDevice device,const std::string& filename);
+spImage defaultCubemap(spDevice device,const uint& width,const uint& height);
 
 struct AccessTransfer {
     AccessTransfer(){}
