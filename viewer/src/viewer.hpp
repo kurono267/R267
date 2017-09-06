@@ -96,6 +96,7 @@ protected:
     // Command Buffers
     vk::CommandPool _commandPool;
     std::vector<vk::CommandBuffer> _commandBuffers;
+    vk::CommandBuffer _differedBuffer;
     // Semaphores
     vk::Semaphore _imageAvailable;
     vk::Semaphore _renderFinish;

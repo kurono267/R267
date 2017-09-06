@@ -69,7 +69,8 @@ bool ViewerApp::init(){
     _guiFunc = std::bind(&Toolbar::update,std::ref(_toolbar),std::placeholders::_1);
 
     _gui = std::make_shared<GUI>(device);
-    _gui->create(mainApp->wndSize(),vk::CommandBufferInheritanceInfo(_main->getRenderPass()));
+    vk::CommandBufferInheritanceInfo inheritanceInfo(_main->getRenderPass());
+    _gui->create(mainApp->wndSize(),inheritanceInfo);
     _gui->update(_guiFunc);
 
     vk::CommandBufferAllocateInfo allocInfo(_commandPool,vk::CommandBufferLevel::ePrimary, (uint32_t)_framebuffers.size());
@@ -80,6 +81,20 @@ bool ViewerApp::init(){
     _renderFinish = device->createSemaphore(vk::SemaphoreCreateInfo());
 
     prev = std::chrono::steady_clock::now();
+
+    _differedBuffer = vk_device.allocateCommandBuffers(vk::CommandBufferAllocateInfo(_commandPool,vk::CommandBufferLevel::eSecondary,1))[0];
+    vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse | vk::CommandBufferUsageFlagBits::eRenderPassContinue);
+    beginInfo.pInheritanceInfo = &inheritanceInfo;
+    _differedBuffer.begin(beginInfo);
+
+    _differedBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
+
+    vk::DescriptorSet descSet = _differedDesc->getDescriptorSet();
+    _differedBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, &descSet, 0, nullptr);
+
+    _quad->draw(_differedBuffer);
+
+    _differedBuffer.end();
 
     return true;
 }
@@ -104,13 +119,9 @@ void ViewerApp::updateCommandBuffers(){
                 (uint32_t)clearValues.size(), clearValues.data()
         );
 
-        _commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
-        _commandBuffers[i].bindPipeline(vk::PipelineBindPoint::eGraphics, *_main);
+        _commandBuffers[i].beginRenderPass(&renderPassInfo,vk::SubpassContents::eSecondaryCommandBuffers);
 
-        _commandBuffers[i].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _main->getPipelineLayout(), 0, 1, &descSet, 0, nullptr);
-
-		_quad->draw(_commandBuffers[i]);
-
+        _commandBuffers[i].executeCommands(_differedBuffer);
         _commandBuffers[i].executeCommands(_gui->commandBuffer());
 
         _commandBuffers[i].endRenderPass();
