@@ -147,8 +147,8 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 
 	_descSet  = device->create<DescSet>();
 	_descSet->setUniformBuffer(_uniform,0,vk::ShaderStageFlagBits::eFragment);
-	_descSet->setTexture(_diffView,_sampler,1,vk::ShaderStageFlagBits::eFragment);
-	_descSet->setTexture(_normalTexture->ImageView(),_sampler,2,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(_diffView,_sampler,1,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
+	_descSet->setTexture(_normalTexture->ImageView(),_sampler,2,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
 	_descSet->create();
 }
 

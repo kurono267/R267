@@ -15,20 +15,25 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
 	RenderPattern rpGBuffer;
 	rpGBuffer = RenderPattern::basic(_device);
 	rpGBuffer.blend(3,false);
+	//rpGBuffer.rasterizer(vk::PolygonMode::eLine);
+	rpGBuffer.inputAssembly(vk::PrimitiveTopology::ePatchList);
 	rpGBuffer.createRenderPass(vk::Format::eR32G32B32A32Sfloat,_device->depthFormat(),3);
 
 	_pipeline = std::make_shared<Pipeline>(rpGBuffer,device->getDevice());
 	_pipeline->addShader(vk::ShaderStageFlagBits::eVertex,"assets/effects/gbuffer_vert.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eTessellationControl,"assets/effects/displace_tesc.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eTessellationEvaluation,"assets/effects/displace_tese.spv");
 	_pipeline->addShader(vk::ShaderStageFlagBits::eFragment,"assets/effects/gbuffer_frag.spv");
 
 	// Create and fill Uniform buffer
 
 	_cameraData.mvp = _camera->getVP();
     _cameraData.view = glm::vec4(_camera->getPos(),1.0f);
+    _cameraData.proj = _camera->getProj();
     _cameraUniform.create(device,sizeof(CameraData),&_cameraData);
 
 	_cameraDesc = device->create<DescSet>();
-	_cameraDesc->setUniformBuffer(_cameraUniform,0,vk::ShaderStageFlagBits::eVertex);
+	_cameraDesc->setUniformBuffer(_cameraUniform,0,vk::ShaderStageFlagBits::eTessellationEvaluation|vk::ShaderStageFlagBits::eTessellationControl);
     _cameraDesc->create();
 
     // Finish setup pipeline and create it

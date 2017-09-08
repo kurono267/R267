@@ -183,10 +183,12 @@ void Pipeline::create(const vk::VertexInputBindingDescription& vertexBinding, co
     	attributeDescriptions.size(),attributeDescriptions.data()
     );
 
+	vk::PipelineTessellationStateCreateInfo tessInfo(vk::PipelineTessellationStateCreateFlags(),3);
+
 	vk::GraphicsPipelineCreateInfo pipelineInfo(vk::PipelineCreateFlags(),
 		_shaders.size(),_shaders.data(),
 		&vertexInputInfo,&_renderpattern._assembly,
-		nullptr,
+		&tessInfo,
 		&_viewportState,
 		&_renderpattern._rasterizer,
 		&_renderpattern._multisampling,

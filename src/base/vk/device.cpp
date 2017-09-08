@@ -3,7 +3,8 @@
 using namespace r267;
 
 const std::vector<const char*> deviceExtensions = {
-	VK_KHR_SWAPCHAIN_EXTENSION_NAME
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+	VK_KHX_MULTIVIEW_EXTENSION_NAME
 };
 
 void Device::pickPhysicalDevice(){
@@ -76,7 +77,9 @@ void Device::createLogicalDevice() {
 	}
 
 	vk::PhysicalDeviceFeatures deviceFeatures;
-	deviceFeatures.samplerAnisotropy = VK_TRUE;
+	deviceFeatures.samplerAnisotropy = true;
+	deviceFeatures.tessellationShader = true;
+	deviceFeatures.multiViewport = true;
 
 	vk::DeviceCreateInfo createInfo;
 
