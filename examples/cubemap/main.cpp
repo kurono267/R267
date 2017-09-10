@@ -48,7 +48,7 @@ class MeshApp : public BaseApp {
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/cubemap_frag.spv");
 
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, 5.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
-			_camera->setProj(glm::radians(90.0f),/*(float)(wnd.x)/(float)(wnd.y)*/1.0f,0.1f,10000.0f);
+			_camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
 
 			_mvpData.mvp = _camera->getVP();
 			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
@@ -56,7 +56,7 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
 
-			_sceneDesc->setTexture(_image2cube.cubemap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
+			_sceneDesc->setTexture(_image2cube.irradiance(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 			_sceneDesc->create();
 
 			_main->descSet(_sceneDesc);

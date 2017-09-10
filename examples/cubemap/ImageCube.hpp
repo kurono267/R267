@@ -24,14 +24,18 @@ class ImageCube {
 		void run();
 
 		vk::ImageView cubemap();
+		vk::ImageView irradiance();
 	protected:
 		spDevice   _device;
 
 		spPipeline _pipeline;
+		spPipeline _irrPipeline;
 		spDescSet  _descSet;
+		spDescSet  _irrDescSet;
 
 		spImage    _source;
 		spImage    _cubemap;
+		spImage    _irradiance;
 
 		glm::mat4  _mats[6];
 
@@ -39,8 +43,10 @@ class ImageCube {
 		Uniform    _uboUniform;
 
 		spFramebuffer _framebuffers[6];
+		spFramebuffer _irrFramebuffers[6];
 
 		spShape    _cube;
 
 		vk::CommandBuffer _cmd;
+		vk::CommandBuffer _irrCmd;
 };
