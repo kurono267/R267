@@ -26,6 +26,7 @@ class Image {
 		void release(spDevice device);
 
 		vk::ImageView ImageView();
+		vk::ImageView ImageView(const int layer,const int level = 0,const int numLayers = -1,const int numLevels = -1);
 
 		uint mipLevels();
 
@@ -53,6 +54,8 @@ class Image {
 		uint             _layers;
 
 		vk::ImageLayout  _currLayout;
+
+		vk::ImageViewCreateInfo _imageViewCreateInfo;
 
 		void setBuffer(const spBuffer& buffer, const glm::ivec2& size, const uint& mipLevel, const uint& layer, const uint& offsetBuffer);
 };

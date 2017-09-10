@@ -33,10 +33,12 @@ class ImageCube {
 		spImage    _source;
 		spImage    _cubemap;
 
+		glm::mat4  _mats[6];
+
 		UBO        _uboData;
 		Uniform    _uboUniform;
 
-		spFramebuffer _framebuffer;
+		spFramebuffer _framebuffers[6];
 
 		spShape    _cube;
 

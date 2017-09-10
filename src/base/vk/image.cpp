@@ -79,18 +79,21 @@ void Image::createCubemap(const uint& width,const uint& height,
 
 	vk_device.bindImageMemory(_image,_memory,0);
 
-	vk::ImageViewCreateInfo createInfo(
+	vk::ImageAspectFlags imageAspectFlags = vk::ImageAspectFlagBits::eColor;
+	if(hasDepthComponent(_format))imageAspectFlags = vk::ImageAspectFlagBits::eDepth;
+
+	_imageViewCreateInfo = vk::ImageViewCreateInfo(
 		vk::ImageViewCreateFlags(),
 		_image,
 		vk::ImageViewType::eCube,
 		_format,
 		vk::ComponentMapping(),
 		vk::ImageSubresourceRange(
-			vk::ImageAspectFlagBits::eColor,
+			imageAspectFlags,
 			0, _mipLevels, 0, _layers)
 	);
 
-	_imageView = vk_device.createImageView(createInfo);
+	_imageView = vk_device.createImageView(_imageViewCreateInfo);
 }
 
 void Image::set(const spBuffer& buffer){
@@ -225,6 +228,17 @@ void Image::setMipmaps(const spBuffer& buffer, const std::vector<uint>& offsets,
 
 vk::ImageView Image::ImageView(){
 	return _imageView;
+}
+
+// TODO Suport only cubemap
+vk::ImageView Image::ImageView(const int layer,const int level,const int numLayers,const int numLevels){
+	_imageViewCreateInfo.viewType = vk::ImageViewType::e2D;
+	_imageViewCreateInfo.subresourceRange.baseArrayLayer = layer;
+	_imageViewCreateInfo.subresourceRange.layerCount     = numLayers<0?_layers:numLayers;
+	_imageViewCreateInfo.subresourceRange.baseMipLevel   = level;
+	_imageViewCreateInfo.subresourceRange.levelCount     = numLevels<0?_mipLevels:numLevels;
+
+	return _device->getDevice().createImageView(_imageViewCreateInfo);
 }
 
 uint Image::mipLevels(){

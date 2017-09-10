@@ -53,3 +53,6 @@ target_link_libraries(cubemap r267)
 
 add_shader("cubemap/cubemap.vert" cubemap)
 add_shader("cubemap/cubemap.frag" cubemap)
+add_shader("cubemap/image2cube.vert" cubemap)
+add_shader("cubemap/image2cube.frag" cubemap)
+add_shader("cubemap/image2cube.geom" cubemap)

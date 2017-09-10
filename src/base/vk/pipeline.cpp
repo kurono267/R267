@@ -213,9 +213,11 @@ void Pipeline::descSets(const std::vector<spDescSet>& descSets){
 void Pipeline::descSet(const spDescSet& d){
 	_descLayouts.push_back(d->getLayout());
 
+	_pushConstRange = vk::PushConstantRange(vk::ShaderStageFlagBits::eAllGraphics,0,4);
+
 	_pipelineLayoutInfo = vk::PipelineLayoutCreateInfo(
 		vk::PipelineLayoutCreateFlags(),
-		_descLayouts.size(), _descLayouts.data());
+		_descLayouts.size(), _descLayouts.data(),1,&_pushConstRange);
 }
 
 void Pipeline::release(){

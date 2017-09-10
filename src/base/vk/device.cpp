@@ -80,6 +80,7 @@ void Device::createLogicalDevice() {
 	deviceFeatures.samplerAnisotropy = true;
 	deviceFeatures.tessellationShader = true;
 	deviceFeatures.multiViewport = true;
+	deviceFeatures.geometryShader = true;
 
 	vk::DeviceCreateInfo createInfo;
 

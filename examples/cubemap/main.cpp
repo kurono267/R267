@@ -6,6 +6,8 @@
 #include <base/scene/scene.hpp>
 #include <base/scene/camera.hpp>
 
+#include "ImageCube.hpp"
+
 #include <chrono>
 
 using namespace r267;
@@ -35,13 +37,18 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc = device->create<DescSet>();
 
+			_image = loadImage(device,"assets/texture/Jerusalem.ppm");
+
+			_image2cube.init(device,_image);
+			_image2cube.run();
+
 			_cubemap = r267::defaultCubemap(device,512,512);
 
 			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/cubemap_vert.spv");
 			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/cubemap_frag.spv");
 
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, 5.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
-			_camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
+			_camera->setProj(glm::radians(90.0f),/*(float)(wnd.x)/(float)(wnd.y)*/1.0f,0.1f,10000.0f);
 
 			_mvpData.mvp = _camera->getVP();
 			_mvpData.view = glm::vec4(_camera->getPos(),1.0f);
@@ -49,7 +56,7 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
 
-			_sceneDesc->setTexture(_cubemap->ImageView(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
+			_sceneDesc->setTexture(_image2cube.cubemap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 			_sceneDesc->create();
 
 			_main->descSet(_sceneDesc);
@@ -105,6 +112,7 @@ class MeshApp : public BaseApp {
 			auto next = std::chrono::steady_clock::now();
 			_dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
 			std::cout << "FPS " << 1.0f/_dt << std::endl;
+			std::cout << "Pos " << _camera->getPos().x << "," << _camera->getPos().y << "," << _camera->getPos().z << std::endl;
 			prev = next;
 
 			vk::Semaphore waitSemaphores[] = {_imageAvailable};
@@ -177,6 +185,8 @@ class MeshApp : public BaseApp {
 		Uniform    _mvp;
 
 		spImage    _cubemap;
+		ImageCube  _image2cube;
+		spImage    _image;
 
 		// Framebuffers
 		std::vector<spFramebuffer> _framebuffers;

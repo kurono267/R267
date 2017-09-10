@@ -162,6 +162,8 @@ class Pipeline {
 		std::vector<vk::DescriptorSetLayout> _descLayouts;
 		vk::PipelineLayoutCreateInfo _pipelineLayoutInfo;
 
+		vk::PushConstantRange _pushConstRange;
+
 		vk::RenderPass              _renderPass;
 		vk::Pipeline                _pipeline;
 		vk::PipelineLayout          _pLayout;
