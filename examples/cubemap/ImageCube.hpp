@@ -36,6 +36,7 @@ class ImageCube {
 
 		void initConvert();
 		void initIrradiance();
+		void initFilter();
 
 		spDevice   _device;
 
@@ -53,6 +54,7 @@ class ImageCube {
 
 		spFramebuffer _framebuffers[6];
 		spFramebuffer _irrFramebuffers[6];
+		std::vector<spFramebuffer> _roughFramebuffers;
 
 		spShape    _cube;
 

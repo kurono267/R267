@@ -2,7 +2,7 @@
 
 using namespace r267;
 
-RenderPattern::RenderPattern() : _dynamicScissor(true){}
+RenderPattern::RenderPattern() : _dynamicScissor(true),_dynamicViewport(true){}
 RenderPattern::RenderPattern(const RenderPattern& r){
 	_assembly = r._assembly;
 	_viewport = r._viewport;
@@ -15,10 +15,14 @@ RenderPattern::RenderPattern(const RenderPattern& r){
 	_subPass            = r._subPass;
 	_renderPassInfo     = r._renderPassInfo;
 	_depthStencil       = r._depthStencil;
-	_dynamicScissor      = r._dynamicScissor;
+	_dynamicScissor     = r._dynamicScissor;
+	_dynamicViewport    = r._dynamicViewport;
 	for(int i = 0;i<r._attachmentsRef.size();++i){
 		_attachmentsRef.push_back(r._attachmentsRef[i]);
 		_attachmentsDesc.push_back(r._attachmentsDesc[i]);
+	}
+	for(int i = 0;i<r._pushConsts.size();++i){
+		_pushConsts.push_back(r._pushConsts[i]);
 	}
 }
 RenderPattern::~RenderPattern(){
@@ -31,6 +35,7 @@ void RenderPattern::inputAssembly(vk::PrimitiveTopology topology){
 
 void RenderPattern::viewport(const float& x,const float& y,const float& width,const float& height,const float& minDepth,const float& maxDepth){
 	_viewport = vk::Viewport(x,y,width,height,minDepth,maxDepth);
+	_dynamicViewport = false;
 }
 
 void RenderPattern::scissor(const glm::ivec2& offset,const glm::ivec2& size){
@@ -40,6 +45,14 @@ void RenderPattern::scissor(const glm::ivec2& offset,const glm::ivec2& size){
 void RenderPattern::scissor(const vk::Offset2D& offset,const vk::Extent2D& extent){
 	_scissor = vk::Rect2D(offset,extent);
 	_dynamicScissor = false;
+}
+
+void RenderPattern::dynamicScissor(){
+	_dynamicScissor = true;
+}
+
+void RenderPattern::dynamicViewport(){
+	_dynamicViewport = true;
 }
 
 void RenderPattern::rasterizer(const vk::PolygonMode& pmode,
@@ -104,6 +117,10 @@ RenderPattern::Attachment createAttachment(const vk::Format& format, const bool&
 	return att;
 }
 
+void RenderPattern::constants(const size_t& offset, const size_t& size, const vk::ShaderStageFlagBits& stage){
+	_pushConsts.push_back(vk::PushConstantRange(stage,offset,size));
+}
+
 // TODO improve functional for create Render Pass
 void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat,const uint& attachments){
 	_attachmentsDesc.clear();
@@ -166,6 +183,9 @@ void Pipeline::create(const vk::VertexInputBindingDescription& vertexBinding, co
 	if(_renderpattern._dynamicScissor){
 		dynamicStates.push_back(vk::DynamicState::eScissor);
 	}
+	if(_renderpattern._dynamicViewport){
+		dynamicStates.push_back(vk::DynamicState::eViewport);
+	}
 	vk::PipelineDynamicStateCreateInfo dynamicStatesCreteInfo;
 	dynamicStatesCreteInfo.pDynamicStates    = dynamicStates.data();
 	dynamicStatesCreteInfo.dynamicStateCount = dynamicStates.size();
@@ -213,11 +233,9 @@ void Pipeline::descSets(const std::vector<spDescSet>& descSets){
 void Pipeline::descSet(const spDescSet& d){
 	_descLayouts.push_back(d->getLayout());
 
-	_pushConstRange = vk::PushConstantRange(vk::ShaderStageFlagBits::eAllGraphics,0,4);
-
 	_pipelineLayoutInfo = vk::PipelineLayoutCreateInfo(
 		vk::PipelineLayoutCreateFlags(),
-		_descLayouts.size(), _descLayouts.data(),1,&_pushConstRange);
+		_descLayouts.size(), _descLayouts.data(),_renderpattern._pushConsts.size(),_renderpattern._pushConsts.data());
 }
 
 void Pipeline::release(){

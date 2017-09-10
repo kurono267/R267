@@ -231,8 +231,8 @@ vk::ImageView Image::ImageView(){
 }
 
 // TODO Suport only cubemap
-vk::ImageView Image::ImageView(const int layer,const int level,const int numLayers,const int numLevels){
-	_imageViewCreateInfo.viewType = vk::ImageViewType::e2D;
+vk::ImageView Image::ImageView(const int layer,const int level,const int numLayers,const int numLevels,const vk::ImageViewType type){
+	_imageViewCreateInfo.viewType = type;
 	_imageViewCreateInfo.subresourceRange.baseArrayLayer = layer;
 	_imageViewCreateInfo.subresourceRange.layerCount     = numLayers<0?_layers:numLayers;
 	_imageViewCreateInfo.subresourceRange.baseMipLevel   = level;

@@ -28,6 +28,7 @@ void ImageCube::init(spDevice device,spImage source){
 
 	initConvert();
 	initIrradiance();
+	initFilter();
 }
 
 void ImageCube::initConvert(){
@@ -35,6 +36,7 @@ void ImageCube::initConvert(){
 	baseRP.depth(true,true,vk::CompareOp::eLess);
 	baseRP.scissor(glm::ivec2(0),glm::ivec2(CUBEMAP_SIZE));
 	baseRP.viewport(0,0,CUBEMAP_SIZE,CUBEMAP_SIZE);
+	baseRP.constants(0,sizeof(int),vk::ShaderStageFlagBits::eAllGraphics);
 	baseRP.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eFront);
 	baseRP.createRenderPass(vk::Format::eR16G16B16A16Sfloat,_device->depthFormat(),1);
 
@@ -42,7 +44,7 @@ void ImageCube::initConvert(){
 
 	_cubemap = _device->create<Image>();
 	_cubemap->createCubemap(CUBEMAP_SIZE,CUBEMAP_SIZE,
-							vk::Format::eR16G16B16A16Sfloat,1,vk::ImageTiling::eOptimal,
+							vk::Format::eR16G16B16A16Sfloat,log2(CUBEMAP_SIZE),vk::ImageTiling::eOptimal,
 							vk::ImageUsageFlagBits::eSampled|vk::ImageUsageFlagBits::eColorAttachment);
 	_cubemap->transition(vk::ImageLayout::eColorAttachmentOptimal);
 
@@ -58,7 +60,7 @@ void ImageCube::initConvert(){
 
 	for(int i = 0;i<6;++i){
 		_framebuffers[i] = _device->create<Framebuffer>();
-		_framebuffers[i]->attachment(_cubemap->ImageView(i,0,1));
+		_framebuffers[i]->attachment(_cubemap->ImageView(i,0,1,1));
 		_framebuffers[i]->depth(CUBEMAP_SIZE,CUBEMAP_SIZE);
 		_framebuffers[i]->create(CUBEMAP_SIZE,CUBEMAP_SIZE,_pipelines[Convert]->getRenderPass());
 	}
@@ -99,6 +101,7 @@ void ImageCube::initIrradiance(){
 	irradiancePattern.depth(true,true,vk::CompareOp::eLess);
 	irradiancePattern.scissor(glm::ivec2(0),glm::ivec2(IRRADIANCE_SIZE));
 	irradiancePattern.viewport(0,0,IRRADIANCE_SIZE,IRRADIANCE_SIZE);
+	irradiancePattern.constants(0,sizeof(int),vk::ShaderStageFlagBits::eAllGraphics);
 	irradiancePattern.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eFront);
 	irradiancePattern.createRenderPass(vk::Format::eR16G16B16A16Sfloat,_device->depthFormat(),1);
 	_pipelines[Irradiance] = std::make_shared<Pipeline>(irradiancePattern,_device->getDevice());
@@ -156,6 +159,85 @@ void ImageCube::initIrradiance(){
 	_cmds[Irradiance].end();
 }
 
+struct FilterConsts {
+	int face;
+	float rough;
+};
+
+void ImageCube::initFilter(){
+	auto pattern = RenderPattern::basic(_device);
+	pattern.depth(true,true,vk::CompareOp::eLess);
+	pattern.dynamicScissor();
+	pattern.dynamicViewport();
+	pattern.constants(0,sizeof(FilterConsts),vk::ShaderStageFlagBits::eAllGraphics);
+	pattern.rasterizer(vk::PolygonMode::eFill,vk::CullModeFlagBits::eFront);
+	pattern.createRenderPass(vk::Format::eR16G16B16A16Sfloat,_device->depthFormat(),1);
+	_pipelines[Filter] = std::make_shared<Pipeline>(pattern,_device->getDevice());
+
+	_descSets[Filter] = _device->create<DescSet>();
+	_descSets[Filter]->setUniformBuffer(_uboUniform,0,vk::ShaderStageFlagBits::eVertex);
+	_descSets[Filter]->setTexture(_cubemap->ImageView(0,0,-1,1,vk::ImageViewType::eCube),createSampler(_device->getDevice(),linearSampler(1)),1,vk::ShaderStageFlagBits::eFragment);
+	_descSets[Filter]->create();
+
+	_pipelines[Filter]->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/filter_vert.spv");
+	_pipelines[Filter]->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/filter_frag.spv");
+	_pipelines[Filter]->descSet(_descSets[Filter]);
+	_pipelines[Filter]->create();
+
+	const int roughLevels = _cubemap->mipLevels()-1;
+	_roughFramebuffers.resize(roughLevels*6);
+	for(int m = 0;m<roughLevels;++m){
+		int mipsize = CUBEMAP_SIZE >> m+1;
+		for(int i = 0;i<6;++i){
+			_roughFramebuffers[m*6+i] = _device->create<Framebuffer>();
+			_roughFramebuffers[m*6+i]->attachment(_cubemap->ImageView(i,m+1,1,1));
+			_roughFramebuffers[m*6+i]->depth(mipsize,mipsize);
+			_roughFramebuffers[m*6+i]->create(mipsize,mipsize,_pipelines[Filter]->getRenderPass());
+		}
+	}
+
+	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
+	_cmds[Filter].begin(&beginInfo);
+
+	std::array<vk::ClearValue, 2> clearValues = {};
+	clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 1.0f});
+	clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
+
+	FilterConsts consts;
+
+	for(int m = 0;m<roughLevels;++m){
+		int mipsize = CUBEMAP_SIZE >> m+1;
+		for(int f = 0;f<6;++f){
+			vk::RenderPassBeginInfo renderPassInfo(
+				_pipelines[Filter]->getRenderPass(),
+				_roughFramebuffers[m*6+f]->vk_framebuffer(),
+				vk::Rect2D(vk::Offset2D(),vk::Extent2D(mipsize,mipsize)),
+				clearValues.size(), clearValues.data()
+			);
+
+			_cmds[Filter].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
+			_cmds[Filter].bindPipeline(vk::PipelineBindPoint::eGraphics, *_pipelines[Filter]);
+
+			vk::Viewport viewport(0,0,mipsize,mipsize);
+			vk::Rect2D   scissor(vk::Offset2D(),vk::Extent2D(mipsize,mipsize));
+			_cmds[Filter].setViewport(0,viewport);
+			_cmds[Filter].setScissor(0,1,&scissor);
+
+			vk::DescriptorSet descSets[] = {_descSets[Filter]->getDescriptorSet()};
+
+			_cmds[Filter].bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipelines[Filter]->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
+
+			consts.face = f;
+			consts.rough = (float)(m)/((float)roughLevels-1.0f);
+			_cmds[Filter].pushConstants(_pipelines[Filter]->getPipelineLayout(),vk::ShaderStageFlagBits::eAllGraphics,0,sizeof(FilterConsts),&consts);
+			_cube->draw(_cmds[Filter]);
+
+			_cmds[Filter].endRenderPass();
+		}
+	}
+	_cmds[Filter].end();
+}
+
 void ImageCube::run(){
 	auto vk_device = _device->getDevice();
 
@@ -165,7 +247,7 @@ void ImageCube::run(){
 
 	vk::SubmitInfo submitInfo;
 	submitInfo.commandBufferCount = 1;
-	for(int i = 0;i<2;++i){
+	for(int i = 0;i<3;++i){
 		submitInfo.pCommandBuffers = &_cmds[i];
 
 		_device->getGraphicsQueue().submit(submitInfo,fence);

@@ -24,6 +24,9 @@ class RenderPattern {
 		void scissor(const glm::ivec2& offset,const glm::ivec2& size);
 		void scissor(const vk::Offset2D& offset,const vk::Extent2D& extent);
 
+		void dynamicScissor();
+		void dynamicViewport();
+
 		void rasterizer(const vk::PolygonMode& pmode = vk::PolygonMode::eFill,
 						const vk::CullModeFlagBits& cmode = vk::CullModeFlagBits::eBack,
 						const vk::FrontFace& face = vk::FrontFace::eClockwise,
@@ -45,6 +48,7 @@ class RenderPattern {
 					const vk::BlendFactor& srcAlphaBlendFactor = vk::BlendFactor::eOne,const vk::BlendFactor& dstAlphaBlendFactor = vk::BlendFactor::eZero,
 					const vk::BlendOp& alphaBlendOp = vk::BlendOp::eAdd);
 		void depth(const bool& enable = true, const bool& write = true,const vk::CompareOp& comp = vk::CompareOp::eLess);
+		void constants(const size_t& offset, const size_t& size,const vk::ShaderStageFlagBits& stage);
 
 		void createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat,const uint& attachments = 1);
 
@@ -79,12 +83,15 @@ class RenderPattern {
 		vk::PipelineDepthStencilStateCreateInfo  _depthStencil;
 
 		bool _dynamicScissor;
+		bool _dynamicViewport;
 
 		std::vector<vk::AttachmentDescription>   _attachmentsDesc;
 		std::vector<vk::AttachmentReference>     _attachmentsRef;
 		vk::SubpassDescription    _subPass;
 		vk::SubpassDependency     _subPassDep[2];
 		vk::RenderPassCreateInfo  _renderPassInfo;
+
+		std::vector<vk::PushConstantRange> _pushConsts;
 };
 
 class DescSet {
