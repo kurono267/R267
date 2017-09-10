@@ -26,12 +26,21 @@ class ImageCube {
 		vk::ImageView cubemap();
 		vk::ImageView irradiance();
 	protected:
+		enum Step {
+			Convert = 0,
+			Irradiance,
+			Filter,
+			BRDF,
+			NumSteps
+		};
+
+		void initConvert();
+		void initIrradiance();
+
 		spDevice   _device;
 
-		spPipeline _pipeline;
-		spPipeline _irrPipeline;
-		spDescSet  _descSet;
-		spDescSet  _irrDescSet;
+		spPipeline _pipelines[NumSteps];
+		spDescSet  _descSets[NumSteps];
 
 		spImage    _source;
 		spImage    _cubemap;
@@ -47,6 +56,5 @@ class ImageCube {
 
 		spShape    _cube;
 
-		vk::CommandBuffer _cmd;
-		vk::CommandBuffer _irrCmd;
+		vk::CommandBuffer _cmds[NumSteps];
 };
