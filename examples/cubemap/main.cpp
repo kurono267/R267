@@ -56,7 +56,7 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
 
-			_sceneDesc->setTexture(_image2cube.cubemap(),createSampler(device->getDevice(),linearSampler(10)),1,vk::ShaderStageFlagBits::eFragment);
+			_sceneDesc->setTexture(_image2cube.irradiance(),createSampler(device->getDevice(),linearSampler(10)),1,vk::ShaderStageFlagBits::eFragment);
 			_sceneDesc->create();
 
 			_main->descSet(_sceneDesc);

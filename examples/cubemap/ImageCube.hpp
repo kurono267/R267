@@ -25,6 +25,7 @@ class ImageCube {
 
 		vk::ImageView cubemap();
 		vk::ImageView irradiance();
+		vk::ImageView brdf();
 	protected:
 		enum Step {
 			Convert = 0,
@@ -37,6 +38,7 @@ class ImageCube {
 		void initConvert();
 		void initIrradiance();
 		void initFilter();
+		void initBRDF();
 
 		spDevice   _device;
 
@@ -46,6 +48,7 @@ class ImageCube {
 		spImage    _source;
 		spImage    _cubemap;
 		spImage    _irradiance;
+		spImage    _brdf;
 
 		glm::mat4  _mats[6];
 
@@ -55,8 +58,10 @@ class ImageCube {
 		spFramebuffer _framebuffers[6];
 		spFramebuffer _irrFramebuffers[6];
 		std::vector<spFramebuffer> _roughFramebuffers;
+		spFramebuffer _brdfFramebuffer;
 
 		spShape    _cube;
+		spShape    _quad;
 
 		vk::CommandBuffer _cmds[NumSteps];
 };

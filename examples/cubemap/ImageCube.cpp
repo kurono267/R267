@@ -2,6 +2,7 @@
 
 #define CUBEMAP_SIZE 1024
 #define IRRADIANCE_SIZE 64
+#define BRDF_SIZE 128
 
 void ImageCube::init(spDevice device,spImage source){
 	_source = source;
@@ -9,6 +10,9 @@ void ImageCube::init(spDevice device,spImage source){
 
 	_cube = std::make_shared<Cube>();
 	_cube->create(device);
+
+	_quad = std::make_shared<Quad>();
+	_quad->create(device);
 
 	// Create matrix
 	glm::mat4 proj = glm::perspective(glm::radians(90.0f),1.0f,0.1f,100.0f);
@@ -29,6 +33,7 @@ void ImageCube::init(spDevice device,spImage source){
 	initConvert();
 	initIrradiance();
 	initFilter();
+	initBRDF();
 }
 
 void ImageCube::initConvert(){
@@ -238,6 +243,53 @@ void ImageCube::initFilter(){
 	_cmds[Filter].end();
 }
 
+void ImageCube::initBRDF(){
+	auto pattern = RenderPattern::basic(_device);
+	pattern.depth(true,true,vk::CompareOp::eLess);
+	pattern.scissor(glm::ivec2(0),glm::ivec2(BRDF_SIZE,BRDF_SIZE));
+	pattern.viewport(0,0,BRDF_SIZE,BRDF_SIZE);
+	pattern.blend(1,false);
+	pattern.createRenderPass(vk::Format::eR16G16Sfloat,_device->depthFormat(),1);
+	_pipelines[BRDF] = std::make_shared<Pipeline>(pattern,_device->getDevice());
+
+	_brdf = _device->create<Image>();
+	_brdf->create(BRDF_SIZE,BRDF_SIZE,
+							vk::Format::eR16G16Sfloat,1,vk::ImageTiling::eOptimal,
+							vk::ImageUsageFlagBits::eSampled|vk::ImageUsageFlagBits::eColorAttachment);
+	_brdf->transition(vk::ImageLayout::eColorAttachmentOptimal);
+
+	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/brdf_vert.spv");
+	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/brdf_frag.spv");
+	_pipelines[BRDF]->create();
+
+	_brdfFramebuffer = _device->create<Framebuffer>();
+	_brdfFramebuffer->attachment(_brdf->ImageView());
+	_brdfFramebuffer->depth(BRDF_SIZE,BRDF_SIZE);
+	_brdfFramebuffer->create(BRDF_SIZE,BRDF_SIZE,_pipelines[BRDF]->getRenderPass());
+
+	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse);
+	_cmds[BRDF].begin(&beginInfo);
+
+	std::array<vk::ClearValue, 2> clearValues = {};
+	clearValues[0].color = vk::ClearColorValue(std::array<float,4>{0.0f, 0.0f, 0.0f, 1.0f});
+	clearValues[1].depthStencil = vk::ClearDepthStencilValue(1.0f, 0);
+
+	vk::RenderPassBeginInfo renderPassInfo(
+		_pipelines[BRDF]->getRenderPass(),
+		_brdfFramebuffer->vk_framebuffer(),
+		vk::Rect2D(vk::Offset2D(),vk::Extent2D(BRDF_SIZE,BRDF_SIZE)),
+		clearValues.size(), clearValues.data()
+	);
+
+	_cmds[BRDF].beginRenderPass(&renderPassInfo,vk::SubpassContents::eInline);
+	_cmds[BRDF].bindPipeline(vk::PipelineBindPoint::eGraphics, *_pipelines[BRDF]);
+
+	_quad->draw(_cmds[BRDF]);
+
+	_cmds[BRDF].endRenderPass();
+	_cmds[BRDF].end();
+}
+
 void ImageCube::run(){
 	auto vk_device = _device->getDevice();
 
@@ -247,7 +299,7 @@ void ImageCube::run(){
 
 	vk::SubmitInfo submitInfo;
 	submitInfo.commandBufferCount = 1;
-	for(int i = 0;i<3;++i){
+	for(int i = 0;i<NumSteps;++i){
 		submitInfo.pCommandBuffers = &_cmds[i];
 
 		_device->getGraphicsQueue().submit(submitInfo,fence);
@@ -259,6 +311,10 @@ void ImageCube::run(){
 
 vk::ImageView ImageCube::cubemap(){
 	return _cubemap->ImageView();
+}
+
+vk::ImageView ImageCube::brdf(){
+	return _brdf->ImageView();
 }
 
 vk::ImageView ImageCube::irradiance(){
