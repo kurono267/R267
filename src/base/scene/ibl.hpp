@@ -9,16 +9,20 @@
 #include <base/vk/framebuffer.hpp>
 #include <base/vk/shape.hpp>
 
-using namespace r267;
+namespace r267 {
 
+// IBL precompute class
 // Convert image to cubemap
-class ImageCube {
+// Compute roughness mipmaps
+// Compute irradiance
+// Compute BRDF
+class IBL {
 	struct UBO {
 		glm::mat4 mat[6];
 	};
 	public:
-		ImageCube(){}
-		~ImageCube(){}
+		IBL(){}
+		~IBL(){}
 
 		void init(spDevice device,spImage source);
 		void run();
@@ -64,4 +68,6 @@ class ImageCube {
 		spShape    _quad;
 
 		vk::CommandBuffer _cmds[NumSteps];
+};
+
 };

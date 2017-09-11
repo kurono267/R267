@@ -1,10 +1,12 @@
-#include "ImageCube.hpp"
+#include "ibl.hpp"
 
 #define CUBEMAP_SIZE 1024
 #define IRRADIANCE_SIZE 64
 #define BRDF_SIZE 128
 
-void ImageCube::init(spDevice device,spImage source){
+using namespace r267;
+
+void IBL::init(spDevice device,spImage source){
 	_source = source;
 	_device = device;
 
@@ -36,7 +38,7 @@ void ImageCube::init(spDevice device,spImage source){
 	initBRDF();
 }
 
-void ImageCube::initConvert(){
+void IBL::initConvert(){
 	auto baseRP = RenderPattern::basic(_device);
 	baseRP.depth(true,true,vk::CompareOp::eLess);
 	baseRP.scissor(glm::ivec2(0),glm::ivec2(CUBEMAP_SIZE));
@@ -101,7 +103,7 @@ void ImageCube::initConvert(){
 	_cmds[Convert].end();
 }
 
-void ImageCube::initIrradiance(){
+void IBL::initIrradiance(){
 	auto irradiancePattern = RenderPattern::basic(_device);
 	irradiancePattern.depth(true,true,vk::CompareOp::eLess);
 	irradiancePattern.scissor(glm::ivec2(0),glm::ivec2(IRRADIANCE_SIZE));
@@ -169,7 +171,7 @@ struct FilterConsts {
 	float rough;
 };
 
-void ImageCube::initFilter(){
+void IBL::initFilter(){
 	auto pattern = RenderPattern::basic(_device);
 	pattern.depth(true,true,vk::CompareOp::eLess);
 	pattern.dynamicScissor();
@@ -243,7 +245,7 @@ void ImageCube::initFilter(){
 	_cmds[Filter].end();
 }
 
-void ImageCube::initBRDF(){
+void IBL::initBRDF(){
 	auto pattern = RenderPattern::basic(_device);
 	pattern.depth(true,true,vk::CompareOp::eLess);
 	pattern.scissor(glm::ivec2(0),glm::ivec2(BRDF_SIZE,BRDF_SIZE));
@@ -290,7 +292,7 @@ void ImageCube::initBRDF(){
 	_cmds[BRDF].end();
 }
 
-void ImageCube::run(){
+void IBL::run(){
 	auto vk_device = _device->getDevice();
 
 	vk::FenceCreateInfo fenceCreateInfo;
@@ -309,14 +311,14 @@ void ImageCube::run(){
 	}
 }
 
-vk::ImageView ImageCube::cubemap(){
+vk::ImageView IBL::cubemap(){
 	return _cubemap->ImageView();
 }
 
-vk::ImageView ImageCube::brdf(){
+vk::ImageView IBL::brdf(){
 	return _brdf->ImageView();
 }
 
-vk::ImageView ImageCube::irradiance(){
+vk::ImageView IBL::irradiance(){
 	return _irradiance->ImageView();
 }

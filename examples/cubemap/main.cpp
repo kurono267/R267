@@ -5,8 +5,7 @@
 #include <base/vk/image.hpp>
 #include <base/scene/scene.hpp>
 #include <base/scene/camera.hpp>
-
-#include "ImageCube.hpp"
+#include <base/scene/ibl.hpp>
 
 #include <chrono>
 
@@ -185,7 +184,7 @@ class MeshApp : public BaseApp {
 		Uniform    _mvp;
 
 		spImage    _cubemap;
-		ImageCube  _image2cube;
+		IBL        _image2cube;
 		spImage    _image;
 
 		// Framebuffers

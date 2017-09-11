@@ -19,6 +19,7 @@ base/scene/model.cpp
 base/scene/scene.cpp
 base/scene/camera.cpp
 base/scene/bvh.cpp
+base/scene/ibl.cpp
 
 base/gui/gui.cpp
 )
