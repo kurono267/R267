@@ -14,6 +14,7 @@ void Scene::add(const spModel& model){
 void Scene::load(const std::string& filename){
 	// Read binary meshes
 	// Check filesize
+	_filename = filename;
 	std::string binFilename = filename + "." + binExt;
 	std::cout << binFilename << std::endl;
 	fs::path path = fs::canonical(binFilename);
@@ -120,6 +121,10 @@ void Scene::save(const std::string& filename){
     	m.second->save(root,m.first);
     }
     json_parser::write_json(filename + "." + mtlExt,root);
+}
+
+std::string Scene::getFilename(){
+	return _filename;
 }
 
 std::vector<spModel> Scene::models(){

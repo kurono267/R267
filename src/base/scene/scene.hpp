@@ -23,6 +23,8 @@ class Scene {
 		void load(const std::string& filename);
 		void save(const std::string& filename);
 
+		std::string getFilename();
+
 		std::vector<spModel> models();
 		std::unordered_map<std::string,spMaterial>& materials();
 
@@ -30,6 +32,7 @@ class Scene {
 	protected:
 		std::vector<spModel> _models;
 		std::unordered_map<std::string,spMaterial> _materials;
+		std::string          _filename;
 };
 
 typedef std::shared_ptr<Scene> spScene;
