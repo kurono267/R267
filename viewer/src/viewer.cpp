@@ -26,6 +26,9 @@ bool ViewerApp::init(){
 
     _background = loadImage(device,"assets/texture/Jerusalem.ppm");
 
+    _ibl.init(device,_background);
+    _ibl.run();
+
     auto baseRP = RenderPattern::basic(device);
     baseRP.blend(1,false);
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
@@ -54,8 +57,10 @@ bool ViewerApp::init(){
 	_differedDesc->setTexture(_gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_ssao.ssaoImage(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setTexture(_background->ImageView(),createSampler(device->getDevice(),linearSampler()),4,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setUniformBuffer(_uniform,5,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eVertex);
+	_differedDesc->setTexture(_ibl.cubemap(),createSampler(device->getDevice(),linearSampler(10)),4,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_ibl.irradiance(),createSampler(device->getDevice(),linearSampler(1)),5,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_ibl.brdf(),createSampler(device->getDevice(),linearSampler(1)),6,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setUniformBuffer(_uniform,7,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eVertex);
 	_differedDesc->create();
 
 	_main->descSet(_differedDesc);

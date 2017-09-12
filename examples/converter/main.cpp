@@ -63,6 +63,8 @@ spScene assimp_import(const std::string& filename){
 	// Assimp import
 	Assimp::Importer importer;
 
+	std::cout << filename << std::endl;
+
 	const aiScene* scene = importer.ReadFile( filename,
 											aiProcess_Triangulate | 
 											aiProcess_GenSmoothNormals |
@@ -71,6 +73,8 @@ spScene assimp_import(const std::string& filename){
 
 	if( !scene)
 		throw std::runtime_error("Assimp!: import failed");
+
+	std::cout << "NumMeshes " << scene->mNumMeshes << std::endl;
 
 	if(!scene->HasMeshes())
 		throw std::runtime_error("Assimp!: imported scene hasn't mashes");
@@ -87,26 +91,36 @@ spScene assimp_import(const std::string& filename){
 
 		std::string name = i_mesh->mName.data;
 
-		spMaterial s_material = std::make_shared<Material>();
+		spMaterial s_material;
 
 		if(scene->HasMaterials()){
-			uint materialId = i_mesh->mMaterialIndex;
-			aiMaterial* aMat = scene->mMaterials[materialId];
-			if(aMat){
-				aiColor3D aKd;aiColor3D aKs;
+			if(result_scene->materials().find(name) == result_scene->materials().end()){
+				uint materialId = i_mesh->mMaterialIndex;
+				aiMaterial* aMat = scene->mMaterials[materialId];
+				if(aMat){
+					aiColor3D aKd;aiColor3D aKs;
 
-				aMat->Get(AI_MATKEY_COLOR_DIFFUSE,aKd);
-				aMat->Get(AI_MATKEY_COLOR_SPECULAR,aKs);
+					aMat->Get(AI_MATKEY_COLOR_DIFFUSE,aKd);
+					aMat->Get(AI_MATKEY_COLOR_SPECULAR,aKs);
 
-				aiString map_Kd;
-				aMat->GetTexture(aiTextureType_DIFFUSE,0,&map_Kd);
-				aiString map_Bump;
-				aMat->GetTexture(aiTextureType_NORMALS,0,&map_Bump);
+					float shininess;
+					aMat->Get(AI_MATKEY_SHININESS,shininess);
 
-				s_material->setDiffuseColor(glm::vec3(aKd.r,aKd.g,aKd.b));
-				s_material->setSpecularColor(glm::vec3(aKs.r,aKs.g,aKs.b));
-				s_material->setDiffuseTexture(map_Kd.data);
-				s_material->setNormalTexture(map_Bump.data);
+					aiString map_Kd;
+					aMat->GetTexture(aiTextureType_DIFFUSE,0,&map_Kd);
+					aiString map_Bump;
+					aMat->GetTexture(aiTextureType_NORMALS,0,&map_Bump);
+
+					s_material = std::make_shared<Material>();
+					s_material->setDiffuseColor(glm::vec3(aKd.r,aKd.g,aKd.b));
+					s_material->setSpecularColor(glm::vec3(aKs.r,aKs.g,aKs.b));
+					s_material->setDiffuseTexture(map_Kd.data);
+					s_material->setNormalTexture(map_Bump.data);
+					s_material->setRoughness(1.0f-shininess);
+					result_scene->materials().insert(std::pair<std::string,spMaterial>(name,s_material));
+				}
+			} else {
+				s_material = result_scene->materials()[name];
 			}
 		}
 

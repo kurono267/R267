@@ -16,6 +16,7 @@
 
 #include <base/scene/scene.hpp>
 #include <base/scene/camera.hpp>
+#include <base/scene/ibl.hpp>
 #include "ssao.hpp"
 
 using namespace r267;
@@ -108,6 +109,8 @@ protected:
 
     Uniform _uniform;
     UBO     _ubo;
+
+    IBL     _ibl;
 
     spImage _background;
 

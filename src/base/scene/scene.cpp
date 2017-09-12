@@ -60,9 +60,13 @@ void Scene::load(const std::string& filename){
 	json_parser::read_json(filename + "." + mtlExt,root);
 	// Read material
 	for(auto m : _models){
-		spMaterial material = std::make_shared<Material>();
-		material->setPath(fs::path(filename).remove_filename());
-		material->read(root,m->name());
+		spMaterial material;
+		if(_materials.find(m->name()) == _materials.end()){
+			material = std::make_shared<Material>();
+			material->setPath(fs::path(filename).remove_filename());
+			material->read(root,m->name());
+			_materials.insert(std::pair<std::string,spMaterial>(m->name(),material));
+		} else material = _materials[m->name()];
 		m->setMaterial(material);
 	}
 }
@@ -112,14 +116,18 @@ void Scene::save(const std::string& filename){
 
     // Save materials
     ptree root;
-    for(auto m : _models){
-    	m->material()->save(root,m->name());
+    for(auto m : _materials){
+    	m.second->save(root,m.first);
     }
     json_parser::write_json(filename + "." + mtlExt,root);
 }
 
 std::vector<spModel> Scene::models(){
 	return _models;
+}
+
+std::unordered_map<std::string,spMaterial>& Scene::materials(){
+	return _materials;
 }
 
 bool Scene::equal(const std::shared_ptr<Scene>& scene){

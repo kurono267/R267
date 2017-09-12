@@ -23,6 +23,6 @@ class Toolbar {
     protected:
         spMaterial _all;
         spScene    _scene;
-        int                      _selected;
+        std::string              _selected;
         std::vector<std::string> _names;
 };

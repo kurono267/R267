@@ -24,10 +24,12 @@ class Scene {
 		void save(const std::string& filename);
 
 		std::vector<spModel> models();
+		std::unordered_map<std::string,spMaterial>& materials();
 
 		bool equal(const std::shared_ptr<Scene>& scene);
 	protected:
 		std::vector<spModel> _models;
+		std::unordered_map<std::string,spMaterial> _materials;
 };
 
 typedef std::shared_ptr<Scene> spScene;

@@ -7,6 +7,7 @@
 
 Toolbar::Toolbar(){
     _all = std::make_shared<Material>();
+    _selected = "ALL";
 }
 Toolbar::~Toolbar(){}
 
@@ -40,37 +41,40 @@ bool Toolbar::update(nk_context* ctx){
     if (nk_begin(ctx, "Toolbar", nk_rect(0, 0, 230, 250),
                  NK_WINDOW_BORDER| NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE)) {
         if(_scene) {
+            bool isAll = _selected == "ALL";
+
             nk_layout_row_dynamic(ctx, 20, 2);
-            nk_label(ctx, "Object:", NK_TEXT_LEFT);
-            if (nk_combo_begin_label(ctx, _selected==0?"ALL":_scene->models()[_selected-1]->name().c_str(), nk_vec2(nk_widget_width(ctx), 400))) {
+            nk_label(ctx, "Material:", NK_TEXT_LEFT);
+            if (nk_combo_begin_label(ctx, isAll?"ALL":_selected.c_str(), nk_vec2(nk_widget_width(ctx), 400))) {
                 nk_layout_row_dynamic(ctx, 20, 1);
                 if (nk_combo_item_label(ctx, "ALL", NK_TEXT_LEFT))
-                    _selected = 0;
-                for (int i = 0; i < _scene->models().size(); ++i) {
-                    if (nk_combo_item_label(ctx, _scene->models()[i]->name().c_str(), NK_TEXT_LEFT))
-                        _selected = i+1;
+                    _selected = "ALL";
+                else {
+	                for (auto m : _scene->materials()) {
+	                    if (nk_combo_item_label(ctx, m.first.c_str(), NK_TEXT_LEFT))
+	                        _selected = m.first;
+	                }
                 }
                 nk_combo_end(ctx);
             }
-            auto mat = _selected==0?_all:_scene->models()[_selected-1]->material();
-            nk_layout_row_dynamic(ctx, 20, 1);
-            nk_label(ctx, "--Material--", NK_TEXT_CENTERED);
-            if(_selected != 0){
+            isAll = _selected == "ALL";
+            auto mat = isAll?_all:_scene->materials()[_selected];
+            if(!isAll){
                 nk_layout_row_dynamic(ctx, 20, 1);
 	            nk_label(ctx, "Albedo", NK_TEXT_CENTERED);
 	            // Color picker
 	            nk_layout_row_dynamic(ctx, 20, 1);
             }
             glm::vec3 diffuseColor = glm::vec3(0.0f);
-            if(_selected!=0)diffuseColor = rgbColorPicker(ctx,mat->data().diffuseColor);
+            if(!isAll)diffuseColor = rgbColorPicker(ctx,mat->data().diffuseColor);
             mat->setDiffuseColor(diffuseColor);
-            if(_selected!=0){
+            if(!isAll){
                 nk_layout_row_dynamic(ctx, 20, 1);
                 nk_label(ctx, "Specular", NK_TEXT_CENTERED);
                 nk_layout_row_dynamic(ctx, 20, 1);
             }
             glm::vec3 specColor = glm::vec3(0.0f);
-            if(_selected!=0)specColor = rgbColorPicker(ctx,mat->data().specularColor);
+            if(!isAll)specColor = rgbColorPicker(ctx,mat->data().specularColor);
             mat->setSpecularColor(specColor);
             nk_layout_row_dynamic(ctx, 20, 1);
             float rough = mat->data().specularColor.w;
@@ -79,11 +83,10 @@ bool Toolbar::update(nk_context* ctx){
             float metallic = mat->data().diffuseColor.w;
             nk_property_float(ctx,"Metallic",0.0001f,&metallic,1.0f,0.01f,0.01f);
             mat->setAlbedo(metallic);
-            if(_selected==0){
-                for (int i = 0; i < _scene->models().size(); ++i) {
-                    auto cMat = _scene->models()[i]->material();
-                    cMat->setRoughness(rough);
-                    cMat->setAlbedo(metallic);
+            if(isAll){
+                for (auto m : _scene->materials()) {
+                    m.second->setRoughness(rough);
+                    m.second->setAlbedo(metallic);
                 }
             }
         }
