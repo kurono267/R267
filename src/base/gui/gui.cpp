@@ -236,6 +236,25 @@ void set_style(struct nk_context *ctx, enum theme theme) {
     }
 }
 
+const vk::SamplerCreateInfo defaultSampler = vk::SamplerCreateInfo(
+        vk::SamplerCreateFlags(),
+        vk::Filter::eLinear, // Mag Filter
+        vk::Filter::eLinear, // Min Filter
+        vk::SamplerMipmapMode::eLinear, // MipMap Mode
+        vk::SamplerAddressMode::eRepeat, // U Address mode
+        vk::SamplerAddressMode::eRepeat, // V Address mode
+        vk::SamplerAddressMode::eRepeat, // W Address mode
+        0, // Mip Lod bias
+        0, // Anisotropic enabled
+        0, // Max anisotropy
+        0, // Compare enabled
+        vk::CompareOp::eAlways, // Compare Operator
+        0, // Min lod
+        0, // Max lod
+        vk::BorderColor::eFloatTransparentBlack, // Border color
+        0 // Unnormalized coordiante
+);
+
 void GUI::create(const glm::ivec2& size,vk::CommandBufferInheritanceInfo inheritanceInfo){
 	_size = size;
 	_inheritanceInfo = inheritanceInfo;
@@ -277,12 +296,13 @@ void GUI::create(const glm::ivec2& size,vk::CommandBufferInheritanceInfo inherit
 		vk::MemoryPropertyFlagBits::eHostCoherent);
 	cpu->set(image,atlasSize);
 
-    _vkAtlas = _device->create<Image>();
-	_vkAtlas->create(wAtlas,hAtlas,vk::Format::eR8G8B8A8Unorm);
- 	_vkAtlas->set(cpu);
+    spImage vkAtlas = _device->create<Image>();
+	vkAtlas->create(wAtlas,hAtlas,vk::Format::eR8G8B8A8Unorm);
+ 	vkAtlas->set(cpu);
+ 	_images.push_back(vkAtlas);
    
     nk_draw_null_texture null_tex;
-    nk_font_atlas_end(&_atlas, nk_handle_id((int)1), &null_tex);
+    nk_font_atlas_end(&_atlas, nk_handle_id((int)0), &null_tex);
     if (_atlas.default_font)
         nk_style_set_font(&_ctx, &_atlas.default_font->handle);
 
@@ -296,30 +316,14 @@ void GUI::create(const glm::ivec2& size,vk::CommandBufferInheritanceInfo inherit
     Uniform orthoUniform;
 	orthoUniform.create(_device,sizeof(glm::mat4),&ortho);
 	_descSet->setUniformBuffer(orthoUniform,0,vk::ShaderStageFlagBits::eVertex);
-
-    vk::SamplerCreateInfo defaultSampler = vk::SamplerCreateInfo(
-            vk::SamplerCreateFlags(),
-            vk::Filter::eLinear, // Mag Filter
-            vk::Filter::eLinear, // Min Filter
-            vk::SamplerMipmapMode::eLinear, // MipMap Mode
-            vk::SamplerAddressMode::eRepeat, // U Address mode
-            vk::SamplerAddressMode::eRepeat, // V Address mode
-            vk::SamplerAddressMode::eRepeat, // W Address mode
-            0, // Mip Lod bias
-            0, // Anisotropic enabled
-            0, // Max anisotropy
-            0, // Compare enabled
-            vk::CompareOp::eAlways, // Compare Operator
-            0, // Min lod
-            0, // Max lod
-            vk::BorderColor::eFloatTransparentBlack, // Border color
-            0 // Unnormalized coordiante
-    );
-
-	_descSet->setTexture(_vkAtlas->ImageView(),createSampler(_device->getDevice(),defaultSampler),1,vk::ShaderStageFlagBits::eFragment);
 	_descSet->create();
 
-	_pipeline->descSet(_descSet);
+	spDescSet imageDescSet = _device->create<DescSet>();
+	imageDescSet->setTexture(_images[0]->ImageView(),createSampler(_device->getDevice(),defaultSampler),0,vk::ShaderStageFlagBits::eFragment);
+	imageDescSet->create();
+	_imageSet.push_back(imageDescSet);
+
+	_pipeline->descSets({_descSet,imageDescSet});
 	_pipeline->create(guiVertex::bindingDesc(),guiVertex::attributes());
 
     const nk_anti_aliasing AA = NK_ANTI_ALIASING_ON;
@@ -405,6 +409,18 @@ void GUI::updateBuffer(){
     _cpuIB->copy(*_cpuIB,*_gpuIB,_ibSize);
 }
 
+struct nk_image GUI::addImage(spImage image){
+	_images.push_back(image);
+	int id = _images.size()-1;
+
+	spDescSet imageDescSet = _device->create<DescSet>();
+	imageDescSet->setTexture(_images[id]->ImageView(),createSampler(_device->getDevice(),defaultSampler),0,vk::ShaderStageFlagBits::eFragment);
+	imageDescSet->create();
+	_imageSet.push_back(imageDescSet);
+
+	return nk_image_id(id);
+}
+
 void GUI::commands(){
 	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse | vk::CommandBufferUsageFlagBits::eRenderPassContinue);
 	beginInfo.pInheritanceInfo = &_inheritanceInfo;
@@ -413,9 +429,6 @@ void GUI::commands(){
 	_commandBuffer.begin(&beginInfo);
 
     _commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, *_pipeline);
-
-	vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet()};
-    _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipeline->getPipelineLayout(), 0, 1, descSets, 0, nullptr);
 
 	vk::DeviceSize buffer = 0;
     _commandBuffer.bindVertexBuffers(0,1,&_gpuVB->buffer,&buffer);
@@ -428,6 +441,11 @@ void GUI::commands(){
 		if (!cmd->elem_count) continue;
         //vk::Rect2D rect(vk::Offset2D(cmd->clip_rect.x,_size.y - (cmd->clip_rect.y + cmd->clip_rect.h)),vk::Extent2D(cmd->clip_rect.w,cmd->clip_rect.h));
         //_commandBuffer.setScissor(0,1,&rect);
+        std::cout << cmd->texture.id << std::endl;
+        if(cmd->texture.id >= _imageSet.size())continue;
+        vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet(),_imageSet[cmd->texture.id]->getDescriptorSet()};
+        _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipeline->getPipelineLayout(), 0, 2, descSets, 0, nullptr);
+
         _commandBuffer.drawIndexed((uint)cmd->elem_count,1,offset,0,0);
 		offset += cmd->elem_count;
 	}

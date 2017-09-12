@@ -32,6 +32,8 @@ class GUI {
 		bool actionUpdate(GLFWwindow* win);
 		vk::CommandBuffer commandBuffer();
 
+		struct nk_image addImage(spImage image);
+
 		nk_context* nkContext(){return &_ctx;}
 	protected:
 		void createBuffer();
@@ -44,7 +46,8 @@ class GUI {
 		spPipeline _pipeline;
 		spDescSet  _descSet;
 
-		spImage    _vkAtlas;
+		std::vector<spDescSet> _imageSet;
+		std::vector<spImage>   _images;
 
 		// Vertex and Index Buffers
 		vk::DeviceSize _vbSize;
