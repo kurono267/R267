@@ -187,6 +187,8 @@ void genMipmapsGPU(spDevice device,spImage image){
 // Simple loading image with usage OpenImageIO
 // Usage overheaded format
 #include <OpenImageIO/imageio.h>
+#include <OpenImageIO/imagebuf.h>
+#include <OpenImageIO/imagebufalgo.h>
 OIIO_NAMESPACE_USING
 
 template<typename T>
@@ -281,6 +283,7 @@ spImage r267::loadImage(spDevice device,const std::string& filename){
 		str << "Image " << filename << " don't found";
 		throw std::runtime_error(str.str());
 	}
+
 	const ImageSpec &spec = in->spec();
 	uint width = spec.width;
 	uint height = spec.height;
