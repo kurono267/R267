@@ -49,12 +49,25 @@ public:
                     _isPressed = true;
                     _isFirst = true;
                 } else _isPressed = false;
+            } else if(mouse.button == GLFW_MOUSE_BUTTON_2){
+                if(mouse.action == GLFW_PRESS){
+                    _isSecondPressed = true;
+                    _isFirst = true;
+                } else _isSecondPressed = false;
             }
         } else if (mouse.callState == GLFWMouse::onMousePosition){
             if(_isPressed){
                 if(!_isFirst){
                     glm::vec2 dp = glm::vec2(mouse.x,mouse.y)-_prev_mouse;
                     _camera->rotate(dp,_dt);
+                    status = true;
+                }
+                _prev_mouse = glm::vec2(mouse.x,mouse.y);
+                _isFirst = false;
+            } else if(_isSecondPressed){
+                if(!_isFirst){
+                    glm::vec2 dp = glm::vec2(mouse.x,mouse.y)-_prev_mouse;
+                    _camera->move(dp,_dt);
                     status = true;
                 }
                 _prev_mouse = glm::vec2(mouse.x,mouse.y);
@@ -118,6 +131,7 @@ protected:
 
     // For camera rotate
     bool _isPressed;
+    bool _isSecondPressed;
     bool _isFirst;
     glm::vec2 _prev_mouse;
     float _dt;

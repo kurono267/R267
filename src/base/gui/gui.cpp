@@ -441,7 +441,6 @@ void GUI::commands(){
 		if (!cmd->elem_count) continue;
         //vk::Rect2D rect(vk::Offset2D(cmd->clip_rect.x,_size.y - (cmd->clip_rect.y + cmd->clip_rect.h)),vk::Extent2D(cmd->clip_rect.w,cmd->clip_rect.h));
         //_commandBuffer.setScissor(0,1,&rect);
-        std::cout << cmd->texture.id << std::endl;
         if(cmd->texture.id >= _imageSet.size())continue;
         vk::DescriptorSet descSets[] = {_descSet->getDescriptorSet(),_imageSet[cmd->texture.id]->getDescriptorSet()};
         _commandBuffer.bindDescriptorSets(vk::PipelineBindPoint::eGraphics, _pipeline->getPipelineLayout(), 0, 2, descSets, 0, nullptr);

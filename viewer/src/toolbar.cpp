@@ -78,12 +78,12 @@ bool Toolbar::update(nk_context* ctx){
             float metallic = mat->data().diffuseColor.w;
             nk_property_float(ctx,"Metallic",0.01f,&metallic,1.0f,0.01f,0.01f);
             mat->setAlbedo(metallic);
-            /*if(isAll){
+            if(isAll){
                 for (auto m : _scene->materials()) {
                     m.second->setRoughness(rough);
                     m.second->setAlbedo(metallic);
                 }
-            }*/
+            }
             nk_layout_row_dynamic(ctx, 20, 1);
             int save = nk_button_label(ctx, "Save");
             if(save){

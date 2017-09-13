@@ -10,7 +10,14 @@ Camera::Camera(const vec3& pos,const vec3& lookAt,const vec3& up) : _pos(pos),_l
 Camera::~Camera(){}
 
 void Camera::move(const vec2& dmouse,const float& dt){
-	
+/*	const vec3 viewVec = normalize(_lookAt - _pos);
+	float dist = length(_lookAt - _pos);
+
+	_lookAt += vec3(0.0f,0.0f,1.0f)*dmouse.x*0.1f*dt;
+	_lookAt += vec3(1.0f,0.0f,0.0f)*dmouse.y*0.1f*dt;
+
+	_pos = _lookAt+dist*viewVec;
+	_view = lookAt(_pos,_lookAt,_up);*/
 }
 
 
@@ -19,10 +26,27 @@ inline mat4 rotateV(const vec3& p, const vec3& u, const float& r){
 }
 
 void Camera::rotate(const vec2& dmouse,const float& dt){
-	float angularSpeed = 0.5f*dt;
+	float angularSpeed = 0.1f*dt;
 	float theta = dmouse.x * angularSpeed;
 	float phi = dmouse.y * angularSpeed;
 
+	vec3 viewVec = normalize(_lookAt - _pos);
+	float dist = length(_lookAt - _pos);
+
+	// Rotate along Y
+	const vec3 dY = normalize(cross(viewVec,_up));
+	glm::quat qY(phi,dY);
+
+	//_up = normalize(qY*_up);
+
+	const vec3 dX = normalize(qY*_up);
+
+	glm::quat qX(theta,dX);
+	glm::quat r = normalize(qX*qY);
+
+	viewVec = normalize(r*viewVec);
+	_pos = _lookAt+dist*viewVec*vec3(-1.0f,1.0f,-1.0f);
+/*
 	const vec3 viewVec = normalize(_lookAt - _pos);
 	float dist = length(_lookAt - _pos);
 
@@ -34,7 +58,7 @@ void Camera::rotate(const vec2& dmouse,const float& dt){
 	_view = rot_x * _view; 
 	_view = rotateV(_lookAt,dY,theta) * _view; 
 	_pos  = _lookAt+vec3(dist*(vec4(0.0f,0.0f,1.0f,0.0f)*_view));
-
+*/
 	_view = lookAt(_pos,_lookAt,_up);
 }
 
