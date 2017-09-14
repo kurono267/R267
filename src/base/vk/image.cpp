@@ -92,6 +92,10 @@ void Image::createCubemap(const uint& width,const uint& height,
 			imageAspectFlags,
 			0, _mipLevels, 0, _layers)
 	);
+	if(_format == vk::Format::eR8Unorm || _format == vk::Format::eR32Sfloat || _format == vk::Format::eR16Sfloat){
+		_imageViewCreateInfo.components.g = vk::ComponentSwizzle::eR;
+		_imageViewCreateInfo.components.b = vk::ComponentSwizzle::eR;
+	}
 
 	_imageView = vk_device.createImageView(_imageViewCreateInfo);
 }

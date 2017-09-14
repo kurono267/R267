@@ -112,6 +112,10 @@ vk::ImageView r267::createImageView(vk::Device device, vk::Image image, vk::Form
 			aspectFlags,
 			0, mipLevels, 0, layers)
 	);
+	if(format == vk::Format::eR8Unorm || format == vk::Format::eR32Sfloat || format == vk::Format::eR16Sfloat){
+		createInfo.components.g = vk::ComponentSwizzle::eR;
+		createInfo.components.b = vk::ComponentSwizzle::eR;
+	}
 
 	return device.createImageView(createInfo);
 }

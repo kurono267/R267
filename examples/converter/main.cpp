@@ -110,12 +110,17 @@ spScene assimp_import(const std::string& filename){
 					aMat->GetTexture(aiTextureType_DIFFUSE,0,&map_Kd);
 					aiString map_Bump;
 					aMat->GetTexture(aiTextureType_NORMALS,0,&map_Bump);
+					std::cout << "Normals " << map_Bump.data << std::endl;
+					aiString map_Height;
+					aMat->GetTexture(aiTextureType_HEIGHT,0,&map_Height);
+					std::cout << "Normals " << map_Height.data << std::endl;
 
 					s_material = std::make_shared<Material>();
 					s_material->setDiffuseColor(glm::vec3(aKd.r,aKd.g,aKd.b));
 					s_material->setSpecularColor(glm::vec3(aKs.r,aKs.g,aKs.b));
 					s_material->setDiffuseTexture(map_Kd.data);
 					s_material->setNormalTexture(map_Bump.data);
+					s_material->setHeightmapTexture(map_Height.data);
 					s_material->setRoughness(1.0f-shininess);
 					result_scene->materials().insert(std::pair<std::string,spMaterial>(name,s_material));
 				}

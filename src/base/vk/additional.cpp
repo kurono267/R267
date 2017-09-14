@@ -198,7 +198,8 @@ spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format
 	in->close ();
 	ImageInput::destroy (in);
 
-	size_t pixelSize = 4*sizeof(T);
+	std::cout << channels << std::endl;
+
 	if(channels == 3){
 		// Bad case emulate RGBA8
 		std::vector<T> pixels4(width*height*4);
@@ -211,7 +212,9 @@ spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format
 			}
 		}
 		pixels = pixels4;
-	} else if(channels != 4)throw std::runtime_error("Unsupported format");
+		channels = 4;
+	}
+	size_t pixelSize = channels*sizeof(T);
 
 	vk::DeviceSize size = pixels.size()*sizeof(T);
 
@@ -276,6 +279,39 @@ spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format
 	return image;
 }
 
+vk::Format getFormat(TypeDesc format,int channels){
+	switch(channels){
+		case 1:
+		switch(format.basetype){
+			case TypeDesc::UINT8:
+			return vk::Format::eR8Unorm;
+			case TypeDesc::FLOAT:
+			return vk::Format::eR32Sfloat;
+			case TypeDesc::HALF:
+			return vk::Format::eR16Sfloat;
+		}
+		case 2:
+		switch(format.basetype){
+			case TypeDesc::UINT8:
+			return vk::Format::eR8G8Unorm;
+			case TypeDesc::FLOAT:
+			return vk::Format::eR32G32Sfloat;
+			case TypeDesc::HALF:
+			return vk::Format::eR16G16Sfloat;
+		}
+		case 3:
+		case 4:
+		switch(format.basetype){
+			case TypeDesc::UINT8:
+			return vk::Format::eR8G8B8A8Unorm;
+			case TypeDesc::FLOAT:
+			return vk::Format::eR32G32B32A32Sfloat;
+			case TypeDesc::HALF:
+			return vk::Format::eR16G16B16A16Sfloat;
+		}
+	}
+}
+
 spImage r267::loadImage(spDevice device,const std::string& filename){
 	ImageInput *in = ImageInput::open (filename);
 	if (! in){
@@ -293,17 +329,15 @@ spImage r267::loadImage(spDevice device,const std::string& filename){
 		if(format != spec.channelformat(i))throw std::runtime_error("Image channels has different channel");
 	}
 
-	std::cout << format << std::endl;
-
 	switch(format.basetype){
 		case TypeDesc::UINT8:
-		return readImage<uint8_t>(device,in,format,vk::Format::eR8G8B8A8Unorm,width,height,channels);
+		return readImage<uint8_t>(device,in,format,getFormat(format,channels),width,height,channels);
 		break;
 		case TypeDesc::FLOAT:
-		return readImage<float>(device,in,format,vk::Format::eR32G32B32A32Sfloat,width,height,channels);
+		return readImage<float>(device,in,format,getFormat(format,channels),width,height,channels);
 		break;
 		case TypeDesc::HALF:
-		return readImage<float>(device,in,format,vk::Format::eR16G16B16A16Unorm,width,height,channels);
+		return readImage<float>(device,in,format,getFormat(format,channels),width,height,channels);
 		break;
 		default:
 		throw std::runtime_error("Unsupported channels format");

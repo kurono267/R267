@@ -5,7 +5,7 @@ using namespace r267;
 
 Material::Material(){
 	_data.diffuseColor = glm::vec4(1.0f);
-	_data.specularColor = glm::vec4(1.0f,1.0f,1.0f,0.0f);
+	_data.data         = glm::vec4(DefaultSurface, 0.5f, 0.5f, 0.0f);
 }
 Material::~Material(){}
 
@@ -21,8 +21,11 @@ void Material::read(const ptree& tree){
 	float roughness = tree.get<float>("roughness",0.0f);
 	auto diffColor = tree.get_child_optional("diffuseColor");
 	auto specularColor = tree.get_child_optional("specularColor");
-	_data.diffuseColor = glm::vec4(1.0f,1.0f,1.0f,albedo);
-	_data.specularColor = glm::vec4(1.0f,1.0f,1.0f,roughness);
+
+	_data.data.y = roughness;
+	_data.data.z = albedo;
+
+	_data.diffuseColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
 
 	uint i = 0;
 	if(diffColor){
@@ -33,19 +36,13 @@ void Material::read(const ptree& tree){
 		}
 	}
 	i = 0;
-	if(specularColor){
-		for(auto& c : *specularColor){
-			if(i >= 3)throw std::logic_error("Wrong array format for specularColor");
-			_data.specularColor[i] = c.second.get_value<float>();
-			++i;
-		}
-	}
 
 	//std::cout << _data.diffuseColor.x << ", " << _data.diffuseColor.y << ", " << _data.diffuseColor.z << std::endl;
 	//std::cout << _data.specularColor.x << ", " << _data.specularColor.y << ", " << _data.specularColor.z << std::endl;
 
 	_diffuseFilename = tree.get<std::string>("diffuseTexture","");
 	_normalFilename  = tree.get<std::string>("normalTexture","");
+	_heightmapFilename = tree.get<std::string>("heightmapTexture","");
 }
 
 void Material::save(ptree& root,const std::string& object){
@@ -55,8 +52,8 @@ void Material::save(ptree& root,const std::string& object){
 }
 
 void Material::save(ptree& tree){
-	tree.put<float>("albedo",_data.diffuseColor.w);
-	tree.put<float>("roughness",_data.specularColor.w);
+	tree.put<float>("albedo",getMetallic());
+	tree.put<float>("roughness",getRoughness());
 	ptree diffColor;
 	for(int v = 0;v<3;++v){
 		ptree value;
@@ -64,15 +61,9 @@ void Material::save(ptree& tree){
 		diffColor.push_back(std::make_pair("",value));
 	}
 	tree.add_child("diffuseColor",diffColor);
-	ptree specularColor;
-	for(int v = 0;v<3;++v){
-		ptree value;
-		value.put<float>("",_data.specularColor[v]);
-		specularColor.push_back(std::make_pair("",value));
-	}
-	tree.add_child("specularColor",specularColor);
 	tree.put("diffuseTexture",_diffuseFilename);
 	tree.put("normalTexture",_normalFilename);
+	tree.put("heightmapTexture",_heightmapFilename);
 }
 
 MaterialUBO Material::data(){
@@ -83,13 +74,13 @@ void Material::setPath(const std::string& path){
 	_path = path;
 }
 
-void Material::setAlbedo(const float& albedo){
-	_data.diffuseColor.w = albedo;
+void Material::setMetallic(const float& metallic){
+	_data.data.z = metallic;
 	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
 void Material::setRoughness(const float& roughness){
-	_data.specularColor.w = roughness;
+	_data.data.y = roughness;
 	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
@@ -99,10 +90,16 @@ void Material::setDiffuseColor(const glm::vec3& color){
 	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
 }
 
-void Material::setSpecularColor(const glm::vec3& color){
-	float r = _data.specularColor.w;
-	_data.specularColor = glm::vec4(color,r);
-	if(_uniform)_uniform.set(sizeof(MaterialUBO),&_data);
+float Material::getMetallic(){
+	return _data.data.z;
+}
+
+float Material::getRoughness(){
+	return _data.data.y;
+}
+
+glm::vec3 Material::getDiffuseColor(){
+	return glm::vec3(_data.diffuseColor);
 }
 
 void Material::setDiffuseTexture(const std::string& filename){
@@ -115,13 +112,19 @@ void Material::setNormalTexture(const std::string& filename){
 
 bool Material::equal(const std::shared_ptr<Material>& material){
 	if(_data.diffuseColor != material->_data.diffuseColor)return false;
-	if(_data.specularColor != material->_data.specularColor)return false;
 	if(_diffuseFilename != material->_diffuseFilename)return false;
 	return true;
 }
 
 void Material::create(spDevice device,std::unordered_map<std::string,spImage>& imagesBuffer){
 	//std::cout << sizeof(MaterialUBO) << std::endl;
+	float type = DefaultSurface;
+	if(!_normalFilename.empty()){
+		if(!_heightmapFilename.empty())type = ParallaxSurface;
+		else type = NormalSurface;
+	}
+	_data.data.x = type;
+
 	_uniform.create(device,sizeof(MaterialUBO),&_data);
 	std::string filename = _path+_diffuseFilename;
 	auto tmp = imagesBuffer.find(filename);
@@ -141,6 +144,15 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 		else _normalTexture = whiteTexture(device,1,1);
 		imagesBuffer.insert(std::pair<std::string,spImage>(filename,_normalTexture));
 	}
+	filename = _path+_heightmapFilename;
+	tmp = imagesBuffer.find(filename);
+	if(tmp != imagesBuffer.end()){
+		_heightmapTexture = tmp->second;
+	} else {
+		if(!_heightmapFilename.empty())_heightmapTexture = loadImage(device,filename);
+		else _heightmapTexture = whiteTexture(device,1,1);
+		imagesBuffer.insert(std::pair<std::string,spImage>(filename,_heightmapTexture));
+	}
 
 	_diffView = _diffTexture->ImageView();
 	_sampler  = createSampler(device->getDevice(),linearSampler(_diffTexture->mipLevels()));
@@ -149,7 +161,12 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 	_descSet->setUniformBuffer(_uniform,0,vk::ShaderStageFlagBits::eFragment);
 	_descSet->setTexture(_diffView,_sampler,1,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
 	_descSet->setTexture(_normalTexture->ImageView(),_sampler,2,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
+	_descSet->setTexture(_heightmapTexture->ImageView(),_sampler,3,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
 	_descSet->create();
+}
+
+void Material::setHeightmapTexture(const std::string& filename){
+	_heightmapFilename = filename;
 }
 
 spDescSet Material::getDescSet(){

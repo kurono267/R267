@@ -12,12 +12,18 @@ namespace r267 {
 
 struct MaterialUBO {
 	// Material data
-	glm::vec4   diffuseColor;  // Diffuse Color and Albedo
-	glm::vec4   specularColor; // Specular Color and Roughness 
+	glm::vec4   diffuseColor;  // Diffuse Color
+	glm::vec4   data;          // X type of Shading, Y roughness, Z metallic, W mesh ID
 };
 
 class Material {
 	public:
+		enum SurfaceType {
+			DefaultSurface    = 0,
+			NormalSurface  = 1,
+			ParallaxSurface   = 2
+		};
+
 		Material();
 		virtual ~Material();
 
@@ -27,13 +33,17 @@ class Material {
 
 		void save(ptree& root,const std::string& object);
 
-		void setAlbedo(const float& albedo);
+		void setMetallic(const float& metallic);
 		void setRoughness(const float& roughness);
 		void setDiffuseColor(const glm::vec3& color);
-		void setSpecularColor(const glm::vec3& color);
+
+		float getMetallic();
+		float getRoughness();
+		glm::vec3 getDiffuseColor();
 
 		void setDiffuseTexture(const std::string& filename);
 		void setNormalTexture(const std::string& filename);
+		void setHeightmapTexture(const std::string& filename);
 
 		bool equal(const std::shared_ptr<Material>& material);
 
@@ -50,10 +60,12 @@ class Material {
 		// Material Texture
 		std::string _diffuseFilename;
 		std::string _normalFilename;
+		std::string _heightmapFilename;
 
 		Uniform       _uniform;
 		spImage       _diffTexture;
 		spImage       _normalTexture;
+		spImage       _heightmapTexture;
 		vk::ImageView _diffView;
 		vk::Sampler   _sampler;
 		spDescSet     _descSet;
