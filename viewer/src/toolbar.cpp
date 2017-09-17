@@ -65,6 +65,7 @@ bool Toolbar::update(nk_context* ctx){
                 }
                 nk_combo_end(ctx);
             }
+            mat = isAll?_all:_scene->materials()[_selected];
             glm::vec3 diffuseColor = glm::vec3(0.0f);
             if(!isAll){
 	            nk_layout_row_begin(ctx, NK_STATIC, 20, 2);

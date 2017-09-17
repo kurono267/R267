@@ -39,10 +39,9 @@ void testMaterialRead(){
 	try {
 		spMaterial material = std::make_shared<Material>();
 		// Create simple material
-		material->setAlbedo(0.5f);
+		material->setMetallic(0.5f);
 		material->setRoughness(0.4f);
 		material->setDiffuseColor(glm::vec3(0.1f,0.2f,0.3f));
-		material->setSpecularColor(glm::vec3(0.4f,0.5f,0.6f));
 		ptree out;
 		material->save(out,"Cube");
 		json_parser::write_json("assets/models/test.json",out);
@@ -110,14 +109,11 @@ spScene assimp_import(const std::string& filename){
 					aMat->GetTexture(aiTextureType_DIFFUSE,0,&map_Kd);
 					aiString map_Bump;
 					aMat->GetTexture(aiTextureType_NORMALS,0,&map_Bump);
-					std::cout << "Normals " << map_Bump.data << std::endl;
 					aiString map_Height;
 					aMat->GetTexture(aiTextureType_HEIGHT,0,&map_Height);
-					std::cout << "Normals " << map_Height.data << std::endl;
 
 					s_material = std::make_shared<Material>();
 					s_material->setDiffuseColor(glm::vec3(aKd.r,aKd.g,aKd.b));
-					s_material->setSpecularColor(glm::vec3(aKs.r,aKs.g,aKs.b));
 					s_material->setDiffuseTexture(map_Kd.data);
 					s_material->setNormalTexture(map_Bump.data);
 					s_material->setHeightmapTexture(map_Height.data);
@@ -178,95 +174,6 @@ spScene assimp_import(const std::string& filename){
 	return result_scene;
 }
 
-// TODO convert objects to const
-// TODO Add materials
-#if 0
-void assimp_export(spScene scene,const std::string& filename){
-	Assimp::Exporter exporter;
-	int formats = exporter.GetExportFormatCount();
-	
-	size_t pos = filename.find_first_of(".");
-	std::string res = filename.substr(pos+1,filename.size()-pos-1);
-	std::string fileId;
-	for(int i = 0;i<formats;++i){
-		if(res == exporter.GetExportFormatDescription(i)->fileExtension){
-			fileId = exporter.GetExportFormatDescription(i)->id;
-			break;
-		}
-	}
-
-	if(fileId.empty()){
-		std::stringstream error_message;
-		error_message << "This resolution " << res << "not supported for export";
-		throw std::runtime_error(error_message.str());
-	}
-
-	const auto models = scene->models();
-
-	aiScene* e_scene = new aiScene();
-
-	e_scene->mMaterials = new aiMaterial*[ 1 ];
-	e_scene->mNumMaterials = 1;
-
-	e_scene->mMaterials[ 0 ] = new aiMaterial(); 
-
-	e_scene->mRootNode = new aiNode();
-	e_scene->mRootNode->mMeshes = new unsigned int[models.size()];
-	e_scene->mRootNode->mNumMeshes = models.size();
-
-	e_scene->mMeshes = new aiMesh*[models.size()];
-	e_scene->mNumMeshes = models.size();
-	for(int i = 0;i<mesh.size();++i){
-		e_scene->mRootNode->mMeshes[i] = i;
-		aiMesh* e_mesh = new aiMesh();
-
-		const auto& vertexes = models[i]->mesh()->vertexes();
-		const auto& indexes = models[i]->mesh()->indexes();
-
-		// Compute size of model
-		Index e_size = vertexes.size();
-
-		e_mesh->mVertices = new aiVector3D[e_size];
-		e_mesh->mNormals  = new aiVector3D[e_size];
-		e_mesh->mTextureCoords[0] = new aiVector3D[e_size];
-		e_mesh->mNumUVComponents[0] = 2;
-
-		e_mesh->mNumVertices = e_size;
-
-		const size_t faces_num = indexes.size()/3;
-
-		e_mesh->mFaces = new aiFace[faces_num];
-		e_mesh->mNumFaces = faces_num;
-		for(int f = 0;f<faces_num;++f){
-			aiFace e_face;
-			e_face.mIndices = new unsigned int[3];
-			e_face.mNumIndices = 3;
-
-			for(int v = 0;v<3;++v){
-				size_t index_id = f*3+v;
-				if(index_id >= indexes.size())break;
-				uint32_t index = indexes[f*3+v];
-
-				e_face.mIndices[v] = index;
-
-				sVertex vertex = vertexes[index];
-
-				e_mesh->mVertices[index] = aiVector3D(vertex.pos.x,vertex.pos.y,vertex.pos.z);
-				e_mesh->mNormals[index] = aiVector3D(vertex.no.x,vertex.no.y,vertex.no.z);
-				e_mesh->mTextureCoords[0][index] = aiVector3D(vertex.uv.x,vertex.uv.y,0.0f);
-			}
-
-			e_mesh->mFaces[f] = aiFace(e_face);
-		}
-
-		e_scene->mMeshes[i] = e_mesh;
-	}
-
-	if(exporter.Export(e_scene,fileId,filename,aiProcess_JoinIdenticalVertices) == AI_SUCCESS)return true;
-	return false;
-}
-#endif
-
 void testSceneSaveLoad(){
 	try {
 		spScene scene = std::make_shared<Scene>();
@@ -279,10 +186,9 @@ void testSceneSaveLoad(){
 		// Create simple material
 		spMaterial material = std::make_shared<Material>();
 		// Create simple material
-		material->setAlbedo(0.5f);
+		material->setMetallic(0.5f);
 		material->setRoughness(0.4f);
 		material->setDiffuseColor(glm::vec3(0.66f));
-		material->setSpecularColor(glm::vec3(0.33f));
 		spModel model = std::make_shared<Model>("Cube");
 		model->setMesh(mesh);
 		model->setMaterial(material);
@@ -302,9 +208,9 @@ void testSceneSaveLoad(){
 
 int main(int argc, char const *argv[]) {
 	// Basic tests
-	testMeshPackUnpack();
-	testMaterialRead();
-	testSceneSaveLoad();
+	//testMeshPackUnpack();
+	//testMaterialRead();
+	//testSceneSaveLoad();
 	if(argc < 3){
 		std::cout << "Wrong arguments number" << std::endl;
 		std::cout << "converter input output" << std::endl;
