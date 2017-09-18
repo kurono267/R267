@@ -277,8 +277,8 @@ void GUI::create(const glm::ivec2& size,vk::CommandBufferInheritanceInfo inherit
 	pattern.createRenderPass(_device->getSwapchain()->getFormat(),_device->depthFormat());
 	// Create Pipeline
 	_pipeline = std::make_shared<Pipeline>(pattern,_device->getDevice());
-	_pipeline->addShader(vk::ShaderStageFlagBits::eVertex,"assets/gui/main_vert.spv");
-	_pipeline->addShader(vk::ShaderStageFlagBits::eFragment,"assets/gui/main_frag.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/gui/main_vert.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/gui/main_frag.spv");
 
 	_descSet = _device->create<DescSet>();
 	

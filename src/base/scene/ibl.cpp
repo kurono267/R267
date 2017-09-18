@@ -60,8 +60,8 @@ void IBL::initConvert(){
 	_descSets[Convert]->setTexture(_source->ImageView(),createSampler(_device->getDevice(),linearSampler(_source->mipLevels())),1,vk::ShaderStageFlagBits::eFragment);
 	_descSets[Convert]->create();
 
-	_pipelines[Convert]->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/image2cube_vert.spv");
-	_pipelines[Convert]->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/image2cube_frag.spv");
+	_pipelines[Convert]->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/cubemap/image2cube_vert.spv");
+	_pipelines[Convert]->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/cubemap/image2cube_frag.spv");
 	_pipelines[Convert]->descSet(_descSets[Convert]);
 	_pipelines[Convert]->create();
 
@@ -124,8 +124,8 @@ void IBL::initIrradiance(){
 	_descSets[Irradiance]->setTexture(_cubemap->ImageView(),createSampler(_device->getDevice(),linearSampler(_cubemap->mipLevels())),1,vk::ShaderStageFlagBits::eFragment);
 	_descSets[Irradiance]->create();
 
-	_pipelines[Irradiance]->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/image2cube_vert.spv");
-	_pipelines[Irradiance]->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/irradiance_frag.spv");
+	_pipelines[Irradiance]->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/cubemap/image2cube_vert.spv");
+	_pipelines[Irradiance]->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/cubemap/irradiance_frag.spv");
 	_pipelines[Irradiance]->descSet(_descSets[Irradiance]);
 	_pipelines[Irradiance]->create();
 
@@ -186,8 +186,8 @@ void IBL::initFilter(){
 	_descSets[Filter]->setTexture(_cubemap->ImageView(0,0,-1,1,vk::ImageViewType::eCube),createSampler(_device->getDevice(),linearSampler(1)),1,vk::ShaderStageFlagBits::eFragment);
 	_descSets[Filter]->create();
 
-	_pipelines[Filter]->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/filter_vert.spv");
-	_pipelines[Filter]->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/filter_frag.spv");
+	_pipelines[Filter]->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/cubemap/filter_vert.spv");
+	_pipelines[Filter]->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/cubemap/filter_frag.spv");
 	_pipelines[Filter]->descSet(_descSets[Filter]);
 	_pipelines[Filter]->create();
 
@@ -260,8 +260,8 @@ void IBL::initBRDF(){
 							vk::ImageUsageFlagBits::eSampled|vk::ImageUsageFlagBits::eColorAttachment);
 	_brdf->transition(vk::ImageLayout::eColorAttachmentOptimal);
 
-	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/brdf_vert.spv");
-	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/brdf_frag.spv");
+	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/cubemap/brdf_vert.spv");
+	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/cubemap/brdf_frag.spv");
 	_pipelines[BRDF]->create();
 
 	_brdfFramebuffer = _device->create<Framebuffer>();

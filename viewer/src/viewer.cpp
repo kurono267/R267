@@ -24,7 +24,7 @@ bool ViewerApp::init(){
 
     _toolbar.setScene(_scene);
 
-    _background = loadImage(device,"assets/texture/Jerusalem.ppm");
+    _background = loadImage(device,"models/temple/JerusalemPanorama.jpg");
 
     _ibl.init(device,_background);
     _ibl.run();
@@ -33,8 +33,8 @@ bool ViewerApp::init(){
     baseRP.blend(1,false);
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
 
-    _main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/effects/differed_vert.spv");
-    _main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/effects/differed_frag.spv");
+    _main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/effects/differed_vert.spv");
+    _main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/effects/differed_frag.spv");
 
     _camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
     _camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);

@@ -63,8 +63,8 @@ class GUIApp : public BaseApp {
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 			_texDesc = device->create<DescSet>();
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/gui/render_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/gui/render_frag.spv"); // Shaders for render quad with gui
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/gui/render_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/gui/render_frag.spv"); // Shaders for render quad with gui
 
 			//_main->descSet(_texDesc);
 			_main->create();

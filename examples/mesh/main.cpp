@@ -46,8 +46,8 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc = device->create<DescSet>();
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/mesh/main_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/mesh/main_frag.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/mesh/main_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/mesh/main_frag.spv");
 
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, -15.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
 			_camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);

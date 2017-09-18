@@ -55,8 +55,8 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
     baseRP.createRenderPass(vk::Format::eR16G16B16A16Sfloat,device->depthFormat(),1);
     _main = std::make_shared<Pipeline>(baseRP,device->getDevice());
 
-    _main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/effects/ssao_vert.spv");
-    _main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/effects/ssao_frag.spv");
+    _main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/effects/ssao_vert.spv");
+    _main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/effects/ssao_frag.spv");
 
      ssaoKernelGen(device,_ssaoData);
     _rotationImage = ssaoKernelRotationGen(device);

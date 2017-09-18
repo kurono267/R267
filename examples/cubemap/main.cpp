@@ -36,15 +36,15 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc = device->create<DescSet>();
 
-			_image = loadImage(device,"assets/texture/Jerusalem.ppm");
+			_image = loadImage(device,"models/temple/JerusalemPanorama.jpg");
 
 			_image2cube.init(device,_image);
 			_image2cube.run();
 
 			_cubemap = r267::defaultCubemap(device,512,512);
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/cubemap/cubemap_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/cubemap/cubemap_frag.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/cubemap/cubemap_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/cubemap/cubemap_frag.spv");
 
 			_camera = std::make_shared<Camera>(vec3(0.0f, 0.0f, 5.0f),vec3(0.0f,0.0f,0.0f),vec3(0.0,-1.0f,0.0f));
 			_camera->setProj(glm::radians(45.0f),(float)(wnd.x)/(float)(wnd.y),0.1f,10000.0f);
@@ -55,7 +55,7 @@ class MeshApp : public BaseApp {
 
 			_sceneDesc->setUniformBuffer(_mvp,0,vk::ShaderStageFlagBits::eVertex);
 
-			_sceneDesc->setTexture(_image2cube.irradiance(),createSampler(device->getDevice(),linearSampler(10)),1,vk::ShaderStageFlagBits::eFragment);
+			_sceneDesc->setTexture(_image2cube.cubemap(),createSampler(device->getDevice(),linearSampler(10)),1,vk::ShaderStageFlagBits::eFragment);
 			_sceneDesc->create();
 
 			_main->descSet(_sceneDesc);

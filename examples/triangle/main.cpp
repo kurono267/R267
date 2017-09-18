@@ -22,8 +22,8 @@ class TriangleApp : public BaseApp {
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/triangle/main_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/triangle/main_frag.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/triangle/main_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/triangle/main_frag.spv");
 
 			_main->create();
 

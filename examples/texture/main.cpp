@@ -25,13 +25,13 @@ class TextureApp : public BaseApp {
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 			_texDesc = device->create<DescSet>();
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/texture/main_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/texture/main_frag.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/texture/main_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/texture/main_frag.spv");
 			
 			_colorData.color = glm::vec4(0.5f,0.5f,0.0f,1.0f);
 			_color.create(device,sizeof(UBO),&_colorData);
 
-			spImage image = loadImage(device,"assets/texture/hdr.hdr");//checkboardTexture(device,512,512,64);
+			spImage image = loadImage(device,"models/temple/JerusalemPanorama.jpg");//checkboardTexture(device,512,512,64);
 
 			_texDesc->setTexture(image->ImageView(),createSampler(vk_device,linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
 			_texDesc->setUniformBuffer(_color,0,vk::ShaderStageFlagBits::eVertex);

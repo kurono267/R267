@@ -20,10 +20,10 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
 	rpGBuffer.createRenderPass(vk::Format::eR32G32B32A32Sfloat,_device->depthFormat(),3);
 
 	_pipeline = std::make_shared<Pipeline>(rpGBuffer,device->getDevice());
-	_pipeline->addShader(vk::ShaderStageFlagBits::eVertex,"assets/effects/gbuffer_vert.spv");
-	_pipeline->addShader(vk::ShaderStageFlagBits::eTessellationControl,"assets/effects/displace_tesc.spv");
-	_pipeline->addShader(vk::ShaderStageFlagBits::eTessellationEvaluation,"assets/effects/displace_tese.spv");
-	_pipeline->addShader(vk::ShaderStageFlagBits::eFragment,"assets/effects/gbuffer_frag.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/effects/gbuffer_vert.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eTessellationControl,"../shaders/effects/displace_tesc.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eTessellationEvaluation,"../shaders/effects/displace_tese.spv");
+	_pipeline->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/effects/gbuffer_frag.spv");
 
 	// Create and fill Uniform buffer
 

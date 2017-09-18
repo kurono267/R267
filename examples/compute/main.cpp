@@ -54,7 +54,7 @@ class ComputeApp : public BaseApp {
 			glm::ivec2 wndSize = mainApp->wndSize();
 
             _scene = std::make_shared<Scene>();
-            _scene->load("assets/models/temple/temple");
+            _scene->load("models/temple/temple");
 
             //spModel monkey = _scene->models()[0];
             //spMesh  mesh = monkey->mesh();
@@ -99,7 +99,7 @@ class ComputeApp : public BaseApp {
 
             _computeDescSets.resize(4);
             _computeDescSets[0] = device->create<DescSet>(); // Descriptor set for result image and camera settings
-            _computeDescSets[0]->setTexture(_surface->createImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eCompute,
+            _computeDescSets[0]->setTexture(_surface->ImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eCompute,
                                         vk::DescriptorType::eStorageImage, vk::ImageLayout::eGeneral);
             _computeDescSets[0]->setUniformBuffer(_cameraUniform,1,vk::ShaderStageFlagBits::eCompute,vk::DescriptorType::eUniformBuffer);
             _computeDescSets[1] = device->create<DescSet>();
@@ -112,18 +112,18 @@ class ComputeApp : public BaseApp {
             for(auto c : _computeDescSets)c->create();
 
             _quadDescSet = device->create<DescSet>();
-            _quadDescSet->setTexture(_surface->createImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eFragment);
+            _quadDescSet->setTexture(_surface->ImageView(),_defaultSampler,0,vk::ShaderStageFlagBits::eFragment);
             _quadDescSet->create();
 
 			_compute = std::make_shared<Compute>(device);
-			_compute->create("assets/compute/main_comp.spv",_computeDescSets);
+			_compute->create("../shaders/compute/main_comp.spv",_computeDescSets);
 			_compute->dispatch(glm::ivec2((computeSize.x/COMPUTE_LOCAL_SIZE)+1,(computeSize.y/COMPUTE_LOCAL_SIZE)+1));
 
 			auto baseRP = RenderPattern::basic(device);
 			_main = std::make_shared<Pipeline>(baseRP,vk_device);
 
-			_main->addShader(vk::ShaderStageFlagBits::eVertex,"assets/compute/main_vert.spv");
-			_main->addShader(vk::ShaderStageFlagBits::eFragment,"assets/compute/main_frag.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/compute/main_vert.spv");
+			_main->addShader(vk::ShaderStageFlagBits::eFragment,"../shaders/compute/main_frag.spv");
 
 			_main->descSet(_quadDescSet);
 			_main->create();
