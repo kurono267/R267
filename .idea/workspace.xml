@@ -54,7 +54,9 @@
   </component>
   <component name="ChangeListManager">
     <list id="6663eae5-514a-4e3c-a689-8003d859a022" name="Revert &quot;Add irradiance compute from image cubemap.&quot; This reverts commit 8035991" comment="Revert &quot;Add irradiance compute from image cubemap.&quot;&#10;&#10;This reverts commit 8035991" />
-    <list default="true" id="aacb2cb9-5da8-480a-8544-2ad7933b18a9" name="Default" comment="" />
+    <list default="true" id="aacb2cb9-5da8-480a-8544-2ad7933b18a9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -124,8 +126,8 @@
       <file leaf-file-name="main.frag" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/shaders/texture/main.frag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="37" lean-forward="true" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
+            <state relative-caret-position="180">
+              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -687,7 +689,7 @@
       <workItem from="1505225227568" duration="78264000" />
       <workItem from="1505658240836" duration="9040000" />
       <workItem from="1505679877378" duration="58000" />
-      <workItem from="1505690586656" duration="2999000" />
+      <workItem from="1505690586656" duration="4034000" />
     </task>
     <task id="LOCAL-00001" summary="Add compute shader example(Doesn't worked, still need to fix).&#10;Fixed cmake for correct building with CLion.">
       <created>1498607194708</created>
@@ -1008,7 +1010,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="402591000" />
+    <option name="totallyTimeSpent" value="403626000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="295" y="263" width="1920" height="1058" extended-state="7" />
@@ -1022,7 +1024,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46153846" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13820705" sideWeight="0.7676768" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12540022" sideWeight="0.23232323" order="2" side_tool="true" content_ui="tabs" x="820" y="76" width="280" height="949" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997833" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1339381" sideWeight="0.5010799" order="0" side_tool="true" content_ui="tabs" />
@@ -1510,8 +1512,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/shaders/texture/main.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="37" lean-forward="true" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
+        <state relative-caret-position="180">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
           <folding />
         </state>
       </provider>
