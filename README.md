@@ -20,7 +20,7 @@ Now have some examples of using and viewer with using simple model format and co
 * Viewer    - Loader models with described effects
 
 ### Known Issues ### 
-* Doesn't correct free vulkan memory
+* ~~Doesn't correct free vulkan memory~~
 * Has problem in Compute demo (Old vertex format in shader)
 
 ### Dependence: ### 

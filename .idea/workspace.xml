@@ -10,23 +10,23 @@
       <config projectName="R267" targetName="shader_triangle_main_vert" />
       <config projectName="R267" targetName="shader_cubemap_cubemap_vert" />
       <config projectName="R267" targetName="shader_viewer_displace_tesc" />
-      <config projectName="R267" targetName="shader_viewer_gbuffer_vert" />
+      <config projectName="R267" targetName="shader_cubemap_irradiance_frag" />
       <config projectName="R267" targetName="compute" />
       <config projectName="R267" targetName="shader_viewer_differed_frag" />
+      <config projectName="R267" targetName="shader_viewer_gbuffer_vert" />
       <config projectName="R267" targetName="shader_cubemap_filter_vert" />
-      <config projectName="R267" targetName="shader_viewer_gbuffer_frag" />
       <config projectName="R267" targetName="r267" />
       <config projectName="R267" targetName="shader_gui_render_vert" />
       <config projectName="R267" targetName="shader_texture_main_vert" />
       <config projectName="R267" targetName="shader_mesh_main_vert" />
-      <config projectName="R267" targetName="shader_triangle_main_frag" />
+      <config projectName="R267" targetName="shader_viewer_gbuffer_frag" />
       <config projectName="R267" targetName="shader_cubemap_cubemap_frag" />
       <config projectName="R267" targetName="shader_quad_main_vert" />
       <config projectName="R267" targetName="shader_cubemap_brdf_vert" />
-      <config projectName="R267" targetName="shader_cubemap_irradiance_frag" />
       <config projectName="R267" targetName="shader_cubemap_image2cube_geom" />
-      <config projectName="R267" targetName="mesh" />
       <config projectName="R267" targetName="shader_cubemap_filter_frag" />
+      <config projectName="R267" targetName="shader_triangle_main_frag" />
+      <config projectName="R267" targetName="shader_viewer_differed_vert" />
       <config projectName="R267" targetName="shader_compute_main_comp" />
       <config projectName="R267" targetName="shader_compute_main_frag" />
       <config projectName="R267" targetName="shader_gui_render_frag" />
@@ -42,7 +42,7 @@
       <config projectName="R267" targetName="texture" />
       <config projectName="R267" targetName="viewer" />
       <config projectName="R267" targetName="shader_cubemap_brdf_frag" />
-      <config projectName="R267" targetName="shader_viewer_differed_vert" />
+      <config projectName="R267" targetName="mesh" />
       <config projectName="R267" targetName="converter" />
       <config projectName="R267" targetName="shader_compute_main_vert" />
     </generated>
@@ -55,24 +55,9 @@
   <component name="ChangeListManager">
     <list id="6663eae5-514a-4e3c-a689-8003d859a022" name="Revert &quot;Add irradiance compute from image cubemap.&quot; This reverts commit 8035991" comment="Revert &quot;Add irradiance compute from image cubemap.&quot;&#10;&#10;This reverts commit 8035991" />
     <list default="true" id="aacb2cb9-5da8-480a-8544-2ad7933b18a9" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/preferred-vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/compute/main.cpp" afterPath="$PROJECT_DIR$/examples/compute/main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/cubemap/main.cpp" afterPath="$PROJECT_DIR$/examples/cubemap/main.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/compute/main_comp.spv" afterPath="$PROJECT_DIR$/shaders/compute/main_comp.spv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/gui/gui.cpp" afterPath="$PROJECT_DIR$/src/base/gui/gui.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/gui/gui.hpp" afterPath="$PROJECT_DIR$/src/base/gui/gui.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/scene/ibl.cpp" afterPath="$PROJECT_DIR$/src/base/scene/ibl.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/scene/ibl.hpp" afterPath="$PROJECT_DIR$/src/base/scene/ibl.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/additional.cpp" afterPath="$PROJECT_DIR$/src/base/vk/additional.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/image.cpp" afterPath="$PROJECT_DIR$/src/base/vk/image.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/image.hpp" afterPath="$PROJECT_DIR$/src/base/vk/image.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/pipeline.cpp" afterPath="$PROJECT_DIR$/src/base/vk/pipeline.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/gbuffer.cpp" afterPath="$PROJECT_DIR$/viewer/src/gbuffer.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/gbuffer.hpp" afterPath="$PROJECT_DIR$/viewer/src/gbuffer.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/ssao.cpp" afterPath="$PROJECT_DIR$/viewer/src/ssao.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/ssao.hpp" afterPath="$PROJECT_DIR$/viewer/src/ssao.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/viewer.cpp" afterPath="$PROJECT_DIR$/viewer/src/viewer.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/viewer.hpp" afterPath="$PROJECT_DIR$/viewer/src/viewer.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -91,7 +76,7 @@
       <file leaf-file-name="viewer.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
+            <state relative-caret-position="975">
               <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding />
             </state>
@@ -101,7 +86,7 @@
       <file leaf-file-name="viewer.hpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1515">
+            <state relative-caret-position="1620">
               <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
               <folding>
                 <element signature="e#58#75#0" expanded="true" />
@@ -110,20 +95,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gui.hpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/base/gui/gui.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="47" column="28" lean-forward="false" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="gui.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/base/gui/gui.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
+            <state relative-caret-position="3570">
               <caret line="238" column="42" lean-forward="false" selection-start-line="238" selection-start-column="28" selection-end-line="238" selection-end-column="42" />
               <folding />
             </state>
@@ -133,7 +108,7 @@
       <file leaf-file-name="gbuffer.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1244">
+            <state relative-caret-position="1830">
               <caret line="122" column="19" lean-forward="false" selection-start-line="122" selection-start-column="19" selection-end-line="122" selection-end-column="19" />
               <folding />
             </state>
@@ -143,7 +118,7 @@
       <file leaf-file-name="pipeline.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="1860">
               <caret line="124" column="124" lean-forward="false" selection-start-line="124" selection-start-column="124" selection-end-line="124" selection-end-column="124" />
               <folding />
             </state>
@@ -153,19 +128,32 @@
       <file leaf-file-name="ssao.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
+            <state relative-caret-position="945">
               <caret line="63" column="59" lean-forward="false" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ibl.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ibl.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/base/scene/ibl.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="265" column="101" lean-forward="true" selection-start-line="265" selection-start-column="101" selection-end-line="265" selection-end-column="101" />
+            <state relative-caret-position="4125">
+              <caret line="275" column="34" lean-forward="false" selection-start-line="275" selection-start-column="34" selection-end-line="275" selection-end-column="34" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="330">
+                <caret line="22" column="40" lean-forward="true" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -173,7 +161,7 @@
       <file leaf-file-name="pipeline.hpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
+            <state relative-caret-position="780">
               <caret line="52" column="122" lean-forward="false" selection-start-line="52" selection-start-column="122" selection-end-line="52" selection-end-column="122" />
               <folding />
             </state>
@@ -183,7 +171,7 @@
       <file leaf-file-name="image.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/base/vk/image.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2321">
+            <state relative-caret-position="630">
               <caret line="42" column="28" lean-forward="false" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
               <folding />
             </state>
@@ -252,7 +240,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/examples/cubemap/ImageCube.cpp" />
         <option value="$PROJECT_DIR$/bin/assets/cubemap/filter.vert" />
         <option value="$PROJECT_DIR$/bin/assets/cubemap/cubemap.frag" />
         <option value="$PROJECT_DIR$/bin/assets/cubemap/irradiance.frag" />
@@ -303,6 +290,7 @@
         <option value="$PROJECT_DIR$/src/base/vk/pipeline.hpp" />
         <option value="$PROJECT_DIR$/src/base/vk/pipeline.cpp" />
         <option value="$PROJECT_DIR$/src/base/scene/ibl.cpp" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -379,13 +367,6 @@
               <item name="r267" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="r267" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-              <item name="vk" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -754,7 +735,8 @@
       <workItem from="1505658240836" duration="9040000" />
       <workItem from="1505679877378" duration="58000" />
       <workItem from="1505690586656" duration="7999000" />
-      <workItem from="1505748397548" duration="4314000" />
+      <workItem from="1505748397548" duration="4896000" />
+      <workItem from="1505753318708" duration="178000" />
     </task>
     <task id="LOCAL-00001" summary="Add compute shader example(Doesn't worked, still need to fix).&#10;Fixed cmake for correct building with CLion.">
       <created>1498607194708</created>
@@ -1071,29 +1053,39 @@
       <option name="project" value="LOCAL" />
       <updated>1505693426386</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Fixed crash and destroy vulkan objects in all examples.">
+      <created>1505752741555</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1505752741556</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="411905000" />
+    <option name="totallyTimeSpent" value="412665000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="295" y="263" width="1920" height="1058" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1398079" sideWeight="0.7676768" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3066089" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3097998" sideWeight="0.50416666" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46153846" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2524377" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12540022" sideWeight="0.23232323" order="2" side_tool="true" content_ui="tabs" x="820" y="76" width="280" height="949" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2524377" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14140876" sideWeight="0.7676768" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12540022" sideWeight="0.23232323" order="2" side_tool="true" content_ui="tabs" x="820" y="76" width="280" height="949" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1339381" sideWeight="0.5010799" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997833" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Salesforce" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3066089" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1144,7 +1136,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Some fixes of view space." />
     <MESSAGE value="Update main command buffer every frame." />
     <MESSAGE value="Fixed all examples. Begin on example for cubemap using." />
     <MESSAGE value="Some prepare of image to support of cubemap" />
@@ -1169,7 +1160,8 @@
     <MESSAGE value="Some fixes of lighting and other." />
     <MESSAGE value="Some fixes of shaders and start separete differed shading from main viewer code to Differed class." />
     <MESSAGE value="Fixed paths" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed paths" />
+    <MESSAGE value="Fixed crash and destroy vulkan objects in all examples." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed crash and destroy vulkan objects in all examples." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1185,13 +1177,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/base/vk/buffer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="47" lean-forward="false" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/buffer.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1278,9 +1263,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="133" column="72" lean-forward="false" selection-start-line="133" selection-start-column="72" selection-end-line="133" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#31#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1309,7 +1291,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
           <caret line="33" column="81" lean-forward="false" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="81" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1324,7 +1305,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="12" column="1" lean-forward="false" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1332,7 +1312,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1340,7 +1319,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1260">
           <caret line="84" column="25" lean-forward="false" selection-start-line="84" selection-start-column="25" selection-end-line="84" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1348,7 +1326,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="31890">
           <caret line="2126" column="0" lean-forward="false" selection-start-line="2126" selection-start-column="0" selection-end-line="2126" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1356,7 +1333,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375255">
           <caret line="25017" column="0" lean-forward="false" selection-start-line="25017" selection-start-column="0" selection-end-line="25017" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1364,7 +1340,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="58" column="24" lean-forward="false" selection-start-line="58" selection-start-column="24" selection-end-line="58" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1372,7 +1347,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1380,7 +1354,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="454">
           <caret line="31" column="75" lean-forward="false" selection-start-line="31" selection-start-column="75" selection-end-line="31" selection-end-column="75" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1388,7 +1361,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
           <caret line="47" column="46" lean-forward="false" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1396,7 +1368,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1980">
           <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1404,7 +1375,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-180">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1412,7 +1382,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1420,7 +1389,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1820">
           <caret line="261" column="29" lean-forward="false" selection-start-line="261" selection-start-column="29" selection-end-line="261" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1428,7 +1396,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="36" column="8" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1436,7 +1403,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="22" column="8" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1444,13 +1410,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
           <caret line="47" column="28" lean-forward="false" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1515">
+        <state relative-caret-position="1620">
           <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
           <folding>
             <element signature="e#58#75#0" expanded="true" />
@@ -1462,7 +1427,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1470,15 +1434,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <element signature="e#58#89#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/base/gui/gui.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
+        <state relative-caret-position="3570">
           <caret line="238" column="42" lean-forward="false" selection-start-line="238" selection-start-column="28" selection-end-line="238" selection-end-column="42" />
           <folding />
         </state>
@@ -1486,7 +1447,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
+        <state relative-caret-position="975">
           <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
           <folding />
         </state>
@@ -1496,13 +1457,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="273" column="53" lean-forward="true" selection-start-line="273" selection-start-column="53" selection-end-line="273" selection-end-column="53" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1244">
+        <state relative-caret-position="1830">
           <caret line="122" column="19" lean-forward="false" selection-start-line="122" selection-start-column="19" selection-end-line="122" selection-end-column="19" />
           <folding />
         </state>
@@ -1510,7 +1470,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
+        <state relative-caret-position="945">
           <caret line="63" column="59" lean-forward="false" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
           <folding />
         </state>
@@ -1518,7 +1478,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/image.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2321">
+        <state relative-caret-position="630">
           <caret line="42" column="28" lean-forward="false" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
           <folding />
         </state>
@@ -1526,7 +1486,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
+        <state relative-caret-position="780">
           <caret line="52" column="122" lean-forward="false" selection-start-line="52" selection-start-column="122" selection-end-line="52" selection-end-column="122" />
           <folding />
         </state>
@@ -1534,7 +1494,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="1860">
           <caret line="124" column="124" lean-forward="false" selection-start-line="124" selection-start-column="124" selection-end-line="124" selection-end-column="124" />
           <folding />
         </state>
@@ -1542,9 +1502,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/base/scene/ibl.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="265" column="101" lean-forward="true" selection-start-line="265" selection-start-column="101" selection-end-line="265" selection-end-column="101" />
+        <state relative-caret-position="4125">
+          <caret line="275" column="34" lean-forward="false" selection-start-line="275" selection-start-column="34" selection-end-line="275" selection-end-column="34" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="330">
+            <caret line="22" column="40" lean-forward="true" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
