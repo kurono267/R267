@@ -33,6 +33,8 @@ class GBuffer {
 		vk::ImageView colorMap() const;
 
 		vk::Semaphore render(vk::Semaphore& wait);
+
+		void release();
 	protected:
 		spDevice _device;
 

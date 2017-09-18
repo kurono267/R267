@@ -2,49 +2,49 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
-      <config projectName="R267" targetName="shader_cubemap_filter_frag" />
-      <config projectName="R267" targetName="texture" />
-      <config projectName="R267" targetName="shader_viewer_differed_vert" />
-      <config projectName="R267" targetName="shader_viewer_ssao_vert" />
-      <config projectName="R267" targetName="shader_gui_render_vert" />
-      <config projectName="R267" targetName="shader_viewer_ssao_frag" />
-      <config projectName="R267" targetName="shader_cubemap_filter_vert" />
-      <config projectName="R267" targetName="shader_cubemap_brdf_vert" />
-      <config projectName="R267" targetName="shader_viewer_differed_frag" />
-      <config projectName="R267" targetName="shader_compute_main_comp" />
-      <config projectName="R267" targetName="r267" />
-      <config projectName="R267" targetName="shader_gui_render_frag" />
-      <config projectName="R267" targetName="shader_compute_main_vert" />
-      <config projectName="R267" targetName="shader_compute_main_frag" />
       <config projectName="R267" targetName="quad" />
+      <config projectName="R267" targetName="shader_viewer_displace_tese" />
+      <config projectName="R267" targetName="shader_gui_main_frag" />
+      <config projectName="R267" targetName="shader_cubemap_image2cube_frag" />
+      <config projectName="R267" targetName="shader_viewer_ssao_frag" />
       <config projectName="R267" targetName="shader_triangle_main_vert" />
-      <config projectName="R267" targetName="cubemap" />
+      <config projectName="R267" targetName="shader_cubemap_cubemap_vert" />
+      <config projectName="R267" targetName="shader_viewer_displace_tesc" />
+      <config projectName="R267" targetName="shader_viewer_gbuffer_vert" />
+      <config projectName="R267" targetName="compute" />
+      <config projectName="R267" targetName="shader_viewer_differed_frag" />
+      <config projectName="R267" targetName="shader_cubemap_filter_vert" />
+      <config projectName="R267" targetName="shader_viewer_gbuffer_frag" />
+      <config projectName="R267" targetName="r267" />
+      <config projectName="R267" targetName="shader_gui_render_vert" />
+      <config projectName="R267" targetName="shader_texture_main_vert" />
       <config projectName="R267" targetName="shader_mesh_main_vert" />
       <config projectName="R267" targetName="shader_triangle_main_frag" />
-      <config projectName="R267" targetName="converter" />
-      <config projectName="R267" targetName="shader_cubemap_image2cube_frag" />
-      <config projectName="R267" targetName="shader_gui_main_vert" />
-      <config projectName="R267" targetName="shader_quad_main_vert" />
-      <config projectName="R267" targetName="mesh" />
-      <config projectName="R267" targetName="shader_viewer_displace_tese" />
-      <config projectName="R267" targetName="shader_mesh_main_frag" />
-      <config projectName="R267" targetName="shader_viewer_displace_tesc" />
-      <config projectName="R267" targetName="shader_texture_main_vert" />
-      <config projectName="R267" targetName="triangle" />
-      <config projectName="R267" targetName="gui" />
-      <config projectName="R267" targetName="shader_gui_main_frag" />
-      <config projectName="R267" targetName="shader_cubemap_image2cube_vert" />
-      <config projectName="R267" targetName="shader_quad_main_frag" />
-      <config projectName="R267" targetName="shader_texture_main_frag" />
-      <config projectName="R267" targetName="shader_cubemap_cubemap_vert" />
-      <config projectName="R267" targetName="shader_cubemap_image2cube_geom" />
-      <config projectName="R267" targetName="shader_viewer_gbuffer_vert" />
-      <config projectName="R267" targetName="shader_cubemap_brdf_frag" />
-      <config projectName="R267" targetName="compute" />
       <config projectName="R267" targetName="shader_cubemap_cubemap_frag" />
+      <config projectName="R267" targetName="shader_quad_main_vert" />
+      <config projectName="R267" targetName="shader_cubemap_brdf_vert" />
       <config projectName="R267" targetName="shader_cubemap_irradiance_frag" />
-      <config projectName="R267" targetName="shader_viewer_gbuffer_frag" />
+      <config projectName="R267" targetName="shader_cubemap_image2cube_geom" />
+      <config projectName="R267" targetName="mesh" />
+      <config projectName="R267" targetName="shader_cubemap_filter_frag" />
+      <config projectName="R267" targetName="shader_compute_main_comp" />
+      <config projectName="R267" targetName="shader_compute_main_frag" />
+      <config projectName="R267" targetName="shader_gui_render_frag" />
+      <config projectName="R267" targetName="shader_texture_main_frag" />
+      <config projectName="R267" targetName="shader_gui_main_vert" />
+      <config projectName="R267" targetName="shader_mesh_main_frag" />
+      <config projectName="R267" targetName="shader_cubemap_image2cube_vert" />
+      <config projectName="R267" targetName="shader_viewer_ssao_vert" />
+      <config projectName="R267" targetName="cubemap" />
+      <config projectName="R267" targetName="triangle" />
+      <config projectName="R267" targetName="shader_quad_main_frag" />
+      <config projectName="R267" targetName="gui" />
+      <config projectName="R267" targetName="texture" />
       <config projectName="R267" targetName="viewer" />
+      <config projectName="R267" targetName="shader_cubemap_brdf_frag" />
+      <config projectName="R267" targetName="shader_viewer_differed_vert" />
+      <config projectName="R267" targetName="converter" />
+      <config projectName="R267" targetName="shader_compute_main_vert" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -56,6 +56,23 @@
     <list id="6663eae5-514a-4e3c-a689-8003d859a022" name="Revert &quot;Add irradiance compute from image cubemap.&quot; This reverts commit 8035991" comment="Revert &quot;Add irradiance compute from image cubemap.&quot;&#10;&#10;This reverts commit 8035991" />
     <list default="true" id="aacb2cb9-5da8-480a-8544-2ad7933b18a9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/compute/main.cpp" afterPath="$PROJECT_DIR$/examples/compute/main.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/cubemap/main.cpp" afterPath="$PROJECT_DIR$/examples/cubemap/main.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/compute/main_comp.spv" afterPath="$PROJECT_DIR$/shaders/compute/main_comp.spv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/gui/gui.cpp" afterPath="$PROJECT_DIR$/src/base/gui/gui.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/gui/gui.hpp" afterPath="$PROJECT_DIR$/src/base/gui/gui.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/scene/ibl.cpp" afterPath="$PROJECT_DIR$/src/base/scene/ibl.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/scene/ibl.hpp" afterPath="$PROJECT_DIR$/src/base/scene/ibl.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/additional.cpp" afterPath="$PROJECT_DIR$/src/base/vk/additional.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/image.cpp" afterPath="$PROJECT_DIR$/src/base/vk/image.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/image.hpp" afterPath="$PROJECT_DIR$/src/base/vk/image.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/pipeline.cpp" afterPath="$PROJECT_DIR$/src/base/vk/pipeline.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/gbuffer.cpp" afterPath="$PROJECT_DIR$/viewer/src/gbuffer.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/gbuffer.hpp" afterPath="$PROJECT_DIR$/viewer/src/gbuffer.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/ssao.cpp" afterPath="$PROJECT_DIR$/viewer/src/ssao.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/ssao.hpp" afterPath="$PROJECT_DIR$/viewer/src/ssao.hpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/viewer.cpp" afterPath="$PROJECT_DIR$/viewer/src/viewer.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/viewer.hpp" afterPath="$PROJECT_DIR$/viewer/src/viewer.hpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -74,73 +91,41 @@
       <file leaf-file-name="viewer.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="22" column="5" lean-forward="false" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+            <state relative-caret-position="360">
+              <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/cubemap/main.cpp">
+      <file leaf-file-name="viewer.hpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="38" column="74" lean-forward="false" selection-start-line="38" selection-start-column="39" selection-end-line="38" selection-end-column="74" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="toolbar.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/viewer/src/toolbar.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="76" column="17" lean-forward="false" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/quad/main.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="26" column="75" lean-forward="false" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
+            <state relative-caret-position="1515">
+              <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
               <folding>
-                <element signature="e#0#31#0" expanded="true" />
+                <element signature="e#58#75#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/texture/main.cpp">
+      <file leaf-file-name="gui.hpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/base/gui/gui.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="33" column="81" lean-forward="false" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="81" />
+            <state relative-caret-position="104">
+              <caret line="47" column="28" lean-forward="false" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.frag" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/shaders/texture/main.frag">
+      <file leaf-file-name="gui.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/base/gui/gui.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+            <state relative-caret-position="195">
+              <caret line="238" column="42" lean-forward="false" selection-start-line="238" selection-start-column="28" selection-end-line="238" selection-end-column="42" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/triangle/main.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -148,8 +133,18 @@
       <file leaf-file-name="gbuffer.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-795">
-              <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
+            <state relative-caret-position="1244">
+              <caret line="122" column="19" lean-forward="false" selection-start-line="122" selection-start-column="19" selection-end-line="122" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pipeline.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="124" column="124" lean-forward="false" selection-start-line="124" selection-start-column="124" selection-end-line="124" selection-end-column="124" />
               <folding />
             </state>
           </provider>
@@ -158,8 +153,38 @@
       <file leaf-file-name="ssao.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-795">
-              <caret line="58" column="67" lean-forward="false" selection-start-line="58" selection-start-column="67" selection-end-line="58" selection-end-column="67" />
+            <state relative-caret-position="333">
+              <caret line="63" column="59" lean-forward="false" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ibl.cpp" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/base/scene/ibl.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="265" column="101" lean-forward="true" selection-start-line="265" selection-start-column="101" selection-end-line="265" selection-end-column="101" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pipeline.hpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="52" column="122" lean-forward="false" selection-start-line="52" selection-start-column="122" selection-end-line="52" selection-end-column="122" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="image.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/base/vk/image.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2321">
+              <caret line="42" column="28" lean-forward="false" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -176,9 +201,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Sampler</find>
-      <find>validationLayers</find>
-      <find>blend</find>
       <find>_descLayouts</find>
       <find>_pool</find>
       <find>poolInfo</find>
@@ -206,6 +228,9 @@
       <find>_imageView</find>
       <find>ro</find>
       <find>initialTexCoord</find>
+      <find>defaultSampler</find>
+      <find>noiseSampler</find>
+      <find>createSampler</find>
     </findStrings>
     <replaceStrings>
       <replace>BVHNode</replace>
@@ -227,32 +252,19 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/base/vk/image.hpp" />
-        <option value="$PROJECT_DIR$/src/base/vk/pipeline.cpp" />
-        <option value="$PROJECT_DIR$/src/base/vk/pipeline.hpp" />
-        <option value="$PROJECT_DIR$/bin/assets/cubemap/filter.frag" />
-        <option value="$PROJECT_DIR$/examples/cubemap/ImageCube.hpp" />
-        <option value="$PROJECT_DIR$/bin/assets/cubemap/brdf.vert" />
-        <option value="$PROJECT_DIR$/examples/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/bin/assets/cubemap/brdf.frag" />
         <option value="$PROJECT_DIR$/examples/cubemap/ImageCube.cpp" />
         <option value="$PROJECT_DIR$/bin/assets/cubemap/filter.vert" />
         <option value="$PROJECT_DIR$/bin/assets/cubemap/cubemap.frag" />
         <option value="$PROJECT_DIR$/bin/assets/cubemap/irradiance.frag" />
-        <option value="$PROJECT_DIR$/src/base/scene/ibl.hpp" />
         <option value="$PROJECT_DIR$/src/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/bin/assets/effects/differed.vert" />
         <option value="$PROJECT_DIR$/src/base/scene/scene.hpp" />
         <option value="$PROJECT_DIR$/src/base/scene/scene.cpp" />
-        <option value="$PROJECT_DIR$/src/base/gui/gui.hpp" />
         <option value="$PROJECT_DIR$/bin/assets/gui/main.frag" />
         <option value="$PROJECT_DIR$/viewer/src/toolbar.hpp" />
-        <option value="$PROJECT_DIR$/viewer/src/viewer.hpp" />
         <option value="$PROJECT_DIR$/src/base/scene/camera.cpp" />
         <option value="$PROJECT_DIR$/src/base/scene/material.hpp" />
         <option value="$PROJECT_DIR$/src/base/scene/material.cpp" />
-        <option value="$PROJECT_DIR$/src/base/vk/additional.cpp" />
-        <option value="$PROJECT_DIR$/src/base/vk/image.cpp" />
         <option value="$PROJECT_DIR$/src/base/vk/utils.cpp" />
         <option value="$PROJECT_DIR$/bin/assets/effects/gbuffer.vert" />
         <option value="$PROJECT_DIR$/examples/converter/main.cpp" />
@@ -264,24 +276,37 @@
         <option value="$PROJECT_DIR$/viewer/src/differed.hpp" />
         <option value="$PROJECT_DIR$/bin/assets/effects/differed.frag" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
-        <option value="$PROJECT_DIR$/examples/compute/main.cpp" />
         <option value="$PROJECT_DIR$/shaders/compute/main.comp" />
-        <option value="$PROJECT_DIR$/src/base/scene/ibl.cpp" />
-        <option value="$PROJECT_DIR$/examples/cubemap/main.cpp" />
-        <option value="$PROJECT_DIR$/src/base/gui/gui.cpp" />
         <option value="$PROJECT_DIR$/examples/gui/main.cpp" />
         <option value="$PROJECT_DIR$/examples/mesh/main.cpp" />
         <option value="$PROJECT_DIR$/examples/quad/main.cpp" />
         <option value="$PROJECT_DIR$/examples/texture/main.cpp" />
         <option value="$PROJECT_DIR$/shaders/texture/main.frag" />
         <option value="$PROJECT_DIR$/examples/triangle/main.cpp" />
+        <option value="$PROJECT_DIR$/shaders/effects/light.glsl" />
+        <option value="$PROJECT_DIR$/examples/compute/main.cpp" />
+        <option value="$PROJECT_DIR$/examples/cubemap/main.cpp" />
+        <option value="$PROJECT_DIR$/src/base/scene/ibl.hpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/framebuffer.hpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/framebuffer.cpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/image.hpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/image.cpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/additional.cpp" />
+        <option value="$PROJECT_DIR$/viewer/src/gbuffer.hpp" />
         <option value="$PROJECT_DIR$/viewer/src/gbuffer.cpp" />
-        <option value="$PROJECT_DIR$/viewer/src/ssao.cpp" />
+        <option value="$PROJECT_DIR$/viewer/src/ssao.hpp" />
         <option value="$PROJECT_DIR$/viewer/src/viewer.cpp" />
+        <option value="$PROJECT_DIR$/src/base/gui/gui.hpp" />
+        <option value="$PROJECT_DIR$/src/base/gui/gui.cpp" />
+        <option value="$PROJECT_DIR$/viewer/src/viewer.hpp" />
+        <option value="$PROJECT_DIR$/viewer/src/ssao.cpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/pipeline.hpp" />
+        <option value="$PROJECT_DIR$/src/base/vk/pipeline.cpp" />
+        <option value="$PROJECT_DIR$/src/base/scene/ibl.cpp" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="295" />
     <option name="y" value="263" />
     <option name="width" value="1440" />
@@ -333,6 +358,45 @@
             <path>
               <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="r267" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="examples" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="shaders" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="vk" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="viewer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
+              <item name="r267" type="462c0819:PsiDirectoryNode" />
+              <item name="viewer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -689,7 +753,8 @@
       <workItem from="1505225227568" duration="78264000" />
       <workItem from="1505658240836" duration="9040000" />
       <workItem from="1505679877378" duration="58000" />
-      <workItem from="1505690586656" duration="4034000" />
+      <workItem from="1505690586656" duration="7999000" />
+      <workItem from="1505748397548" duration="4314000" />
     </task>
     <task id="LOCAL-00001" summary="Add compute shader example(Doesn't worked, still need to fix).&#10;Fixed cmake for correct building with CLion.">
       <created>1498607194708</created>
@@ -1010,30 +1075,30 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="403626000" />
+    <option name="totallyTimeSpent" value="411905000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="295" y="263" width="1920" height="1058" extended-state="7" />
+    <frame x="295" y="263" width="1920" height="1058" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1398079" sideWeight="0.7676768" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3066089" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3097998" sideWeight="0.50416666" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2524377" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46153846" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13820705" sideWeight="0.7676768" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2524377" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12540022" sideWeight="0.23232323" order="2" side_tool="true" content_ui="tabs" x="820" y="76" width="280" height="949" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997833" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1339381" sideWeight="0.5010799" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997833" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1120,97 +1185,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/base/scene/scene.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1905">
-          <caret line="127" column="1" lean-forward="false" selection-start-line="127" selection-start-column="1" selection-end-line="127" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/toolbar.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="24" lean-forward="false" selection-start-line="23" selection-start-column="24" selection-end-line="23" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/glm/fwd.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="43" column="49" lean-forward="false" selection-start-line="43" selection-start-column="49" selection-end-line="43" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/glm/gtc/quaternion.inl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="131" column="36" lean-forward="false" selection-start-line="131" selection-start-column="36" selection-end-line="131" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/glm/gtc/quaternion.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="107" column="23" lean-forward="false" selection-start-line="107" selection-start-column="23" selection-end-line="107" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/scene/camera.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="25" column="56" lean-forward="false" selection-start-line="25" selection-start-column="56" selection-end-line="25" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/scene/camera.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4020">
-          <caret line="311" column="55" lean-forward="false" selection-start-line="311" selection-start-column="55" selection-end-line="311" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="37" column="26" lean-forward="false" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/scene/scene.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="25" column="31" lean-forward="false" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/cubemap/filter.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="34" column="61" lean-forward="false" selection-start-line="34" selection-start-column="48" selection-end-line="34" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/ssao.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/vulkan/vulkan.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="25017" column="0" lean-forward="false" selection-start-line="25017" selection-start-column="0" selection-end-line="25017" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/buffer.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="435">
@@ -1232,27 +1206,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/vk/image.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/vk/image.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1410">
-          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="97" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/vk/additional.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3270">
-          <caret line="218" column="50" lean-forward="false" selection-start-line="218" selection-start-column="50" selection-end-line="218" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/utils.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1830">
@@ -1260,13 +1213,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/gbuffer.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="37" lean-forward="false" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/assets/effects/gbuffer.vert" />
     <entry file="file://$PROJECT_DIR$/examples/converter/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="59">
@@ -1274,13 +1221,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/light.glsl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="717">
-          <caret line="91" column="67" lean-forward="false" selection-start-line="91" selection-start-column="67" selection-end-line="91" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/assets/effects/light.glsl" />
     <entry file="file://$PROJECT_DIR$/src/base/scene/material.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1292,23 +1233,228 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="15" lean-forward="false" selection-start-line="0" selection-start-column="15" selection-end-line="0" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/assets/effects/displace.tese" />
+    <entry file="file://$PROJECT_DIR$/bin/assets/effects/gbuffer.frag" />
+    <entry file="file://$PROJECT_DIR$/bin/assets/effects/differed.frag" />
+    <entry file="file://$PROJECT_DIR$/examples/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="43" column="40" lean-forward="false" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/compute/main.comp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="15" lean-forward="false" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/cubemap/cubemap.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/gui/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="68" column="39" lean-forward="false" selection-start-line="68" selection-start-column="39" selection-end-line="68" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/mesh/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="133" column="72" lean-forward="false" selection-start-line="133" selection-start-column="72" selection-end-line="133" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#31#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/quad/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="26" column="75" lean-forward="false" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/triangle/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/toolbar.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="76" column="17" lean-forward="false" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/texture/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="81" lean-forward="false" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="81" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/displace.tese">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="51" column="31" lean-forward="false" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/texture/main.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="1" lean-forward="false" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/gbuffer.frag">
+    <entry file="file://$PROJECT_DIR$/shaders/effects/differed.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1455">
-          <caret line="97" column="13" lean-forward="false" selection-start-line="97" selection-start-column="13" selection-end-line="97" selection-end-column="13" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/effects/light.glsl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1260">
+          <caret line="84" column="25" lean-forward="false" selection-start-line="84" selection-start-column="25" selection-end-line="84" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/6/functional">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="31890">
+          <caret line="2126" column="0" lean-forward="false" selection-start-line="2126" selection-start-column="0" selection-end-line="2126" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/vulkan/vulkan.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375255">
+          <caret line="25017" column="0" lean-forward="false" selection-start-line="25017" selection-start-column="0" selection-end-line="25017" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/scene/ibl.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="58" column="24" lean-forward="false" selection-start-line="58" selection-start-column="24" selection-end-line="58" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/framebuffer.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/framebuffer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="31" column="75" lean-forward="false" selection-start-line="31" selection-start-column="75" selection-end-line="31" selection-end-column="75" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/image.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="47" column="46" lean-forward="false" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/cubemap/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1980">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/device.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-180">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/device.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="138" column="0" lean-forward="false" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/compute/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1820">
+          <caret line="261" column="29" lean-forward="false" selection-start-line="261" selection-start-column="29" selection-end-line="261" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="36" column="8" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="22" column="8" lean-forward="false" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/gui/gui.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="47" column="28" lean-forward="false" selection-start-line="47" selection-start-column="19" selection-end-line="47" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1515">
+          <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+          <folding>
+            <element signature="e#58#75#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1320,200 +1466,84 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="42" column="35" lean-forward="false" selection-start-line="42" selection-start-column="35" selection-end-line="42" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/viewer/src/differed.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding>
-            <element signature="e#58#89#0" expanded="true" />
+            <element signature="e#58#89#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="22" lean-forward="false" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
-          <folding>
-            <element signature="e#58#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/differed.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="122" column="57" lean-forward="true" selection-start-line="122" selection-start-column="57" selection-end-line="122" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="20" lean-forward="false" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="43" column="40" lean-forward="false" selection-start-line="43" selection-start-column="40" selection-end-line="43" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/compute/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="123" column="0" lean-forward="false" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#31#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shaders/compute/main.comp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="15" lean-forward="false" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/base/scene/ibl.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="18" lean-forward="false" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shaders/cubemap/cubemap.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/base/gui/gui.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1339">
-          <caret line="280" column="71" lean-forward="false" selection-start-line="280" selection-start-column="71" selection-end-line="280" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/gui/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="68" column="39" lean-forward="false" selection-start-line="68" selection-start-column="39" selection-end-line="68" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#31#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/mesh/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="133" column="72" lean-forward="false" selection-start-line="133" selection-start-column="72" selection-end-line="133" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/quad/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="26" column="75" lean-forward="false" selection-start-line="26" selection-start-column="75" selection-end-line="26" selection-end-column="75" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/cubemap/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="38" column="74" lean-forward="false" selection-start-line="38" selection-start-column="39" selection-end-line="38" selection-end-column="74" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/triangle/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-795">
-          <caret line="25" column="71" lean-forward="false" selection-start-line="25" selection-start-column="71" selection-end-line="25" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-795">
-          <caret line="58" column="67" lean-forward="false" selection-start-line="58" selection-start-column="67" selection-end-line="58" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/toolbar.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="76" column="17" lean-forward="false" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/examples/texture/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="33" column="81" lean-forward="false" selection-start-line="33" selection-start-column="46" selection-end-line="33" selection-end-column="81" />
+        <state relative-caret-position="195">
+          <caret line="238" column="42" lean-forward="false" selection-start-line="238" selection-start-column="28" selection-end-line="238" selection-end-column="42" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="22" column="5" lean-forward="false" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+        <state relative-caret-position="360">
+          <caret line="65" column="0" lean-forward="false" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/src/base/vk/additional.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="15">
+          <caret line="273" column="53" lean-forward="true" selection-start-line="273" selection-start-column="53" selection-end-line="273" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shaders/texture/main.frag">
+    <entry file="file://$PROJECT_DIR$/viewer/src/gbuffer.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+        <state relative-caret-position="1244">
+          <caret line="122" column="19" lean-forward="false" selection-start-line="122" selection-start-column="19" selection-end-line="122" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="63" column="59" lean-forward="false" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/image.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2321">
+          <caret line="42" column="28" lean-forward="false" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="52" column="122" lean-forward="false" selection-start-line="52" selection-start-column="122" selection-end-line="52" selection-end-column="122" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/vk/pipeline.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="124" column="124" lean-forward="false" selection-start-line="124" selection-start-column="124" selection-end-line="124" selection-end-column="124" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/scene/ibl.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="265" column="101" lean-forward="true" selection-start-line="265" selection-start-column="101" selection-end-line="265" selection-end-column="101" />
           <folding />
         </state>
       </provider>

@@ -2,7 +2,7 @@
 
 using namespace r267;
 
-Image::Image(spDevice device,vk::Queue queue,vk::CommandPool pool) : _device(device),_queue(queue),_pool(pool),_imageView(nullptr) {}
+Image::Image(spDevice device,vk::Queue queue,vk::CommandPool pool) : _device(device),_queue(queue),_pool(pool) {}
 Image::~Image(){}
 
 void Image::create(const uint& width,const uint& height,
@@ -40,8 +40,10 @@ void Image::create(const uint& width,const uint& height,
 
 	vk_device.bindImageMemory(_image,_memory,0);
 
-	if(hasDepthComponent(_format))_imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eDepth, _mipLevels,_layers);
-	else _imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels,_layers);
+	vk::ImageView imageView;
+	if(hasDepthComponent(_format))imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eDepth, _mipLevels,_layers);
+	else imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels,_layers);
+	_imageViews.push_back(imageView);
 }
 
 void Image::createCubemap(const uint& width,const uint& height,
@@ -97,7 +99,7 @@ void Image::createCubemap(const uint& width,const uint& height,
 		_imageViewCreateInfo.components.b = vk::ComponentSwizzle::eR;
 	}
 
-	_imageView = vk_device.createImageView(_imageViewCreateInfo);
+	_imageViews.push_back(vk_device.createImageView(_imageViewCreateInfo));
 }
 
 void Image::set(const spBuffer& buffer){
@@ -231,7 +233,7 @@ void Image::setMipmaps(const spBuffer& buffer, const std::vector<uint>& offsets,
 }
 
 vk::ImageView Image::ImageView(){
-	return _imageView;
+	return _imageViews[0];
 }
 
 // TODO Suport only cubemap
@@ -242,7 +244,10 @@ vk::ImageView Image::ImageView(const int layer,const int level,const int numLaye
 	_imageViewCreateInfo.subresourceRange.baseMipLevel   = level;
 	_imageViewCreateInfo.subresourceRange.levelCount     = numLevels<0?_mipLevels:numLevels;
 
-	return _device->getDevice().createImageView(_imageViewCreateInfo);
+	auto imageView = _device->getDevice().createImageView(_imageViewCreateInfo);
+	_imageViews.push_back(imageView);
+
+	return imageView;
 }
 
 uint Image::mipLevels(){
@@ -259,7 +264,11 @@ uint Image::height(){
 
 void Image::release(spDevice device){
 	auto vk_device = device->getDevice();
-	vk_device.destroyImageView(_imageView);
+
+	for(auto i : _imageViews){
+		vk_device.destroyImageView(i);
+	}
+
 	vk_device.freeMemory(_memory);
 	vk_device.destroyImage(_image);
 }

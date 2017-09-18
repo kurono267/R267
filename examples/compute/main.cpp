@@ -257,6 +257,7 @@ class ComputeApp : public BaseApp {
 		}
 		bool onExit(){
 			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
+			vk_device.destroySampler(_defaultSampler);
 			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
 			_main->release();
 		}

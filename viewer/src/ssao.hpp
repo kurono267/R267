@@ -19,6 +19,8 @@ class SSAO {
 		vk::ImageView ssaoImage();
 
 		vk::Semaphore render(spDevice device,vk::Semaphore& wait);
+
+		void release();
 	protected:
 		void createCommands(spDevice device);
 

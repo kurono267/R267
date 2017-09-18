@@ -421,6 +421,10 @@ struct nk_image GUI::addImage(spImage image){
 	return nk_image_id(id);
 }
 
+void GUI::release(){
+	_pipeline->release();
+}
+
 void GUI::commands(){
 	vk::CommandBufferBeginInfo beginInfo(vk::CommandBufferUsageFlagBits::eSimultaneousUse | vk::CommandBufferUsageFlagBits::eRenderPassContinue);
 	beginInfo.pInheritanceInfo = &_inheritanceInfo;

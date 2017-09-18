@@ -123,6 +123,10 @@ void GBuffer::createCommands(){
     _command.end();
 }
 
+void GBuffer::release(){
+	_pipeline->release();
+}
+
 vk::ImageView GBuffer::posMap() const {
 	return _posMap->ImageView();
 }

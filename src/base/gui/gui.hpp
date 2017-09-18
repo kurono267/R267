@@ -34,6 +34,8 @@ class GUI {
 
 		struct nk_image addImage(spImage image);
 
+		void release();
+
 		nk_context* nkContext(){return &_ctx;}
 	protected:
 		void createBuffer();

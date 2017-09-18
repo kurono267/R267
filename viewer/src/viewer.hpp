@@ -84,6 +84,11 @@ public:
 
     bool onExit(){
         vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
+        _ibl.release();
+        _gbuffer.release();
+        _ssao.release();
+        _gui->release();
+
         vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
         _main->release();
         return true;

@@ -273,6 +273,8 @@ spImage readImage(spDevice device,ImageInput* in,TypeDesc inputFormat,vk::Format
 	device->getGraphicsQueue().submit(submitInfo,fence);
 	vk_device.waitForFences(fence,true,100000000000);
 
+	vk_device.destroyFence(fence);
+
 	// Transition image to shader read optimal
 	image->transition(vk::ImageLayout::eShaderReadOnlyOptimal,vk::ImageLayout::eTransferSrcOptimal);
 

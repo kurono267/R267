@@ -174,6 +174,7 @@ class MeshApp : public BaseApp {
 		}
 		bool onExit(){
 			vulkan = mainApp->vulkan();device = vulkan->device();vk_device = device->getDevice();
+			_image2cube.release();
 			vk_device.freeCommandBuffers(device->getCommandPool(),_commandBuffers);
 			_main->release();
 		}

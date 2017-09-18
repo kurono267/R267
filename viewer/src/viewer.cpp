@@ -43,8 +43,6 @@ bool ViewerApp::init(){
     _gbuffer.init(device,_scene,_camera,matDesc,glm::ivec2(1280,720));
     _ssao.init(device,_gbuffer,glm::ivec2(1280,720));
 
-    vk::Sampler noiseSampler = createSampler(device->getDevice(),nearsetSampler());
-
     _ubo.view = glm::vec4(_camera->getPos(),1.0f);
     _ubo.viewMat = _camera->getView();
     _ubo.proj = _camera->getProj();

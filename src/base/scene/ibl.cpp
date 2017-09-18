@@ -32,6 +32,9 @@ void IBL::init(spDevice device,spImage source){
 	for(int i = 0;i<NumSteps;++i)
 		_cmds[i] = cmds[i];
 
+	vk::FenceCreateInfo fenceCreateInfo;
+	_fence = _device->getDevice().createFence(fenceCreateInfo);
+
 	initConvert();
 	initIrradiance();
 	initFilter();
@@ -257,7 +260,7 @@ void IBL::initBRDF(){
 	_brdf = _device->create<Image>();
 	_brdf->create(BRDF_SIZE,BRDF_SIZE,
 							vk::Format::eR16G16Sfloat,1,vk::ImageTiling::eOptimal,
-							vk::ImageUsageFlagBits::eSampled|vk::ImageUsageFlagBits::eColorAttachment);
+							vk::ImageUsageFlagBits::eSampled|vk::ImageUsageFlagBits::eColorAttachment,vk::ImageLayout::ePreinitialized);
 	_brdf->transition(vk::ImageLayout::eColorAttachmentOptimal);
 
 	_pipelines[BRDF]->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/cubemap/brdf_vert.spv");
@@ -295,19 +298,15 @@ void IBL::initBRDF(){
 void IBL::run(){
 	auto vk_device = _device->getDevice();
 
-	vk::FenceCreateInfo fenceCreateInfo;
-	vk::Fence fence;
-	fence = vk_device.createFence(fenceCreateInfo);
-
 	vk::SubmitInfo submitInfo;
 	submitInfo.commandBufferCount = 1;
 	for(int i = 0;i<NumSteps;++i){
 		submitInfo.pCommandBuffers = &_cmds[i];
 
-		_device->getGraphicsQueue().submit(submitInfo,fence);
-		vk_device.waitForFences(fence,true,1000000000);
+		_device->getGraphicsQueue().submit(submitInfo,_fence);
+		vk_device.waitForFences(_fence,true,1000000000);
 
-		vk_device.resetFences(fence);
+		vk_device.resetFences(_fence);
 	}
 }
 
@@ -321,4 +320,11 @@ vk::ImageView IBL::brdf(){
 
 vk::ImageView IBL::irradiance(){
 	return _irradiance->ImageView();
+}
+
+void IBL::release(){
+	for(int i = 0;i<NumSteps;++i){
+		if(_pipelines[i])_pipelines[i]->release();
+	}
+	vkDestroyFence(_device->getDevice(),_fence, nullptr);
 }

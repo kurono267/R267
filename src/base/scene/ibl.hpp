@@ -27,6 +27,8 @@ class IBL {
 		void init(spDevice device,spImage source);
 		void run();
 
+		void release();
+
 		vk::ImageView cubemap();
 		vk::ImageView irradiance();
 		vk::ImageView brdf();
@@ -53,6 +55,8 @@ class IBL {
 		spImage    _cubemap;
 		spImage    _irradiance;
 		spImage    _brdf;
+
+		vk::Fence _fence;
 
 		glm::mat4  _mats[6];
 

@@ -326,9 +326,15 @@ void DescSet::setTexture(const vk::ImageView& imageView,const vk::Sampler& sampl
 void DescSet::release(spDevice device){
 	auto vk_device = device->getDevice();
 
+	std::set<vk::Sampler> samplerSet;
 	for(auto s : _samplerBinds){
-		vk_device.destroySampler(s.sampler);
+		samplerSet.insert(s.sampler);
 	}
+
+	for(auto s : samplerSet){
+		vk_device.destroySampler(s);
+	}
+
 
 	vk_device.destroyDescriptorSetLayout(_descLayout);
 	vk_device.destroyDescriptorPool(_descPool);

@@ -63,8 +63,6 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
 
     _ssaoUniform.create(device,sizeof(ssaoUBO),&_ssaoData);
 
-    vk::Sampler noiseSampler = createSampler(device->getDevice(),nearsetSampler());
-
     _descSet = device->create<DescSet>();
 	_descSet->setTexture(gbuffer.posMap(),createSampler(device->getDevice(),linearSampler()),0,vk::ShaderStageFlagBits::eFragment);
 	_descSet->setTexture(gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
@@ -146,6 +144,10 @@ void SSAO::createCommands(spDevice device){
 
     _command.endRenderPass();
     _command.end();
+}
+
+void SSAO::release(){
+	_main->release();
 }
 
 vk::ImageView SSAO::ssaoImage(){

@@ -45,7 +45,7 @@ class Image {
 
 		vk::Image        _image;
 		vk::DeviceMemory _memory;
-		vk::ImageView    _imageView;
+		std::vector<vk::ImageView> _imageViews;
 
 		uint             _width;
 		uint             _height;
