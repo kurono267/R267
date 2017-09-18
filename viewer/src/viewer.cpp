@@ -138,6 +138,9 @@ bool ViewerApp::draw(){
 
     auto next = std::chrono::steady_clock::now();
     _dt = std::chrono::duration_cast<std::chrono::duration<double> >(next - prev).count();
+    std::stringstream title;
+    title << "Viewer " << " FPS: " << 1.0f/_dt;
+    glfwSetWindowTitle(mainApp->window(),title.str().c_str());
     prev = next;
 
     vk::Semaphore waitGBuffer = _gbuffer.render(_imageAvailable);

@@ -180,5 +180,5 @@ vec3 lightCompute(){
 
 void main() {
 	//vec3 localReflection = reflection();
-	outColor = vec4(lightCompute(),1.0f);
+	outColor = vec4(texture(ssaoMap,uv).rgb,1.0f);
 }

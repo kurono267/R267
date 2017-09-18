@@ -14,6 +14,11 @@ namespace r267 {
 class RenderPattern {
 	friend class Pipeline;
 	public:
+		struct Attachment {
+			vk::AttachmentDescription desc;
+			vk::AttachmentReference   ref;
+		};
+
 		RenderPattern();
 		RenderPattern(const RenderPattern& r);
 		~RenderPattern();
@@ -51,6 +56,7 @@ class RenderPattern {
 		void constants(const size_t& offset, const size_t& size,const vk::ShaderStageFlagBits& stage);
 
 		void createRenderPass(const vk::Format& swapchainFormat,const vk::Format& depthFormat,const uint& attachments = 1);
+		void createRenderPass(const std::vector<Attachment>& attachments,const Attachment& depth);
 
 		static RenderPattern basic(const spDevice& device){
 			// Create Basic Render Pattern
@@ -67,11 +73,6 @@ class RenderPattern {
 			pattern.createRenderPass(device->getSwapchain()->getFormat(),device->depthFormat());
 			return pattern;
 		}
-
-		struct Attachment {
-			vk::AttachmentDescription desc;
-			vk::AttachmentReference   ref;
-		};
 	private:
 		vk::PipelineInputAssemblyStateCreateInfo _assembly;
 		vk::Viewport                             _viewport;
@@ -93,6 +94,7 @@ class RenderPattern {
 
 		std::vector<vk::PushConstantRange> _pushConsts;
 };
+RenderPattern::Attachment createAttachment(const vk::Format& format, const bool& depth, const int index);
 
 class DescSet {
 	public:

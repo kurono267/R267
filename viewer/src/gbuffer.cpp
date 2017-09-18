@@ -17,7 +17,12 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
 	rpGBuffer.blend(3,false);
 	//rpGBuffer.rasterizer(vk::PolygonMode::eLine);
 	rpGBuffer.inputAssembly(vk::PrimitiveTopology::ePatchList);
-	rpGBuffer.createRenderPass(vk::Format::eR32G32B32A32Sfloat,_device->depthFormat(),3);
+	std::vector<RenderPattern::Attachment> attachments;
+	attachments.push_back(createAttachment(vk::Format::eR32Sfloat,false,0)); // Z buffer
+	attachments.push_back(createAttachment(vk::Format::eR32G32B32A32Sfloat,false,1)); // Normal Buffer and roughness
+	attachments.push_back(createAttachment(vk::Format::eR32G32B32A32Sfloat,false,2)); // Color Buffer and metallic
+	auto depthAtt = createAttachment(_device->depthFormat(),true,3);
+	rpGBuffer.createRenderPass(attachments,depthAtt);
 
 	_pipeline = std::make_shared<Pipeline>(rpGBuffer,device->getDevice());
 	_pipeline->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/effects/gbuffer_vert.spv");
@@ -45,12 +50,12 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
     _posMap = device->create<Image>();
     _normalMap = device->create<Image>();
     _colorMap  = device->create<Image>();
-    _posMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
+    _posMap->create(_size.x,_size.y,vk::Format::eR32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
     _normalMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
     _colorMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
 
     _framebuffer = device->create<Framebuffer>();
-    _framebuffer->attachment(_posMap->ImageView());
+    _framebuffer->attachment(_posMap->ImageViewSwizzle(vk::ComponentSwizzle::eR,vk::ComponentSwizzle::eG,vk::ComponentSwizzle::eB,vk::ComponentSwizzle::eA));
     _framebuffer->attachment(_normalMap->ImageView());
     _framebuffer->attachment(_colorMap->ImageView());
     _framebuffer->depth(_size.x,_size.y);

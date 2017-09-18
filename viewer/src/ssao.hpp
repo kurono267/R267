@@ -5,6 +5,8 @@
 
 struct ssaoUBO {
     glm::mat4 proj;
+    glm::mat4 view;
+	glm::mat4 invmvp;
     glm::vec4 kernels[64];
 };
 

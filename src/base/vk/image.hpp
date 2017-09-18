@@ -26,6 +26,7 @@ class Image {
 		void release(spDevice device);
 
 		vk::ImageView ImageView();
+		vk::ImageView ImageViewSwizzle(const vk::ComponentSwizzle& r,const vk::ComponentSwizzle& g,const vk::ComponentSwizzle& b,const vk::ComponentSwizzle& a);
 		vk::ImageView ImageView(const int layer,const int level = 0,const int numLayers = -1,const int numLevels = -1,const vk::ImageViewType type = vk::ImageViewType::e2D);
 
 		uint mipLevels();

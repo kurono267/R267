@@ -96,7 +96,7 @@ void RenderPattern::depth(const bool& enable, const bool& write,const vk::Compar
 	);
 }
 
-RenderPattern::Attachment createAttachment(const vk::Format& format, const bool& depth, const int index){
+RenderPattern::Attachment r267::createAttachment(const vk::Format& format, const bool& depth, const int index){
 	RenderPattern::Attachment att;
 	att.desc.setFormat(format);
 	att.desc.setSamples(vk::SampleCountFlagBits::e1);
@@ -127,7 +127,6 @@ void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk:
 	_attachmentsRef.clear();
 	for(int i = 0;i<attachments;++i){
 		auto a = createAttachment(swapchainFormat,false,i);
-		std::cout << "Att " << i << " " << a.ref.attachment << std::endl;
 		_attachmentsDesc.push_back(a.desc);
 		_attachmentsRef.push_back(a.ref);
 	}
@@ -140,6 +139,45 @@ void RenderPattern::createRenderPass(const vk::Format& swapchainFormat,const vk:
 	_subPass.setColorAttachmentCount(attachments);
 	_subPass.setPColorAttachments(_attachmentsRef.data());
 	_subPass.setPDepthStencilAttachment(&_attachmentsRef[attachments]);
+
+	_subPassDep[0].srcSubpass = VK_SUBPASS_EXTERNAL;
+	_subPassDep[0].dstSubpass = 0;
+	_subPassDep[0].srcStageMask = vk::PipelineStageFlagBits::eBottomOfPipe;
+	_subPassDep[0].dstStageMask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+	_subPassDep[0].srcAccessMask = vk::AccessFlagBits::eMemoryRead;
+	_subPassDep[0].dstAccessMask = vk::AccessFlagBits::eColorAttachmentRead| vk::AccessFlagBits::eColorAttachmentWrite;
+	_subPassDep[0].dependencyFlags = vk::DependencyFlagBits::eByRegion;
+
+	_subPassDep[1].srcSubpass = 0;
+	_subPassDep[1].dstSubpass = VK_SUBPASS_EXTERNAL;
+	_subPassDep[1].srcStageMask = vk::PipelineStageFlagBits::eColorAttachmentOutput;
+	_subPassDep[1].dstStageMask = vk::PipelineStageFlagBits::eBottomOfPipe;
+	_subPassDep[1].srcAccessMask = vk::AccessFlagBits::eColorAttachmentRead| vk::AccessFlagBits::eColorAttachmentWrite;
+	_subPassDep[1].dstAccessMask = vk::AccessFlagBits::eMemoryRead;
+	_subPassDep[1].dependencyFlags = vk::DependencyFlagBits::eByRegion;
+
+	_renderPassInfo.setAttachmentCount(_attachmentsDesc.size());
+	_renderPassInfo.setPAttachments(_attachmentsDesc.data());
+	_renderPassInfo.setSubpassCount(1);
+	_renderPassInfo.setPSubpasses(&_subPass);
+	_renderPassInfo.setDependencyCount(2);
+	_renderPassInfo.setPDependencies(_subPassDep);
+}
+
+void RenderPattern::createRenderPass(const std::vector<Attachment>& attachments,const Attachment& depth){
+	_attachmentsDesc.clear();
+	_attachmentsRef.clear();
+	for(auto a : attachments){
+		_attachmentsDesc.push_back(a.desc);
+		_attachmentsRef.push_back(a.ref);
+	}
+	_attachmentsDesc.push_back(depth.desc);
+	_attachmentsRef.push_back(depth.ref);
+
+	_subPass.setPipelineBindPoint(vk::PipelineBindPoint::eGraphics);
+	_subPass.setColorAttachmentCount(attachments.size());
+	_subPass.setPColorAttachments(_attachmentsRef.data());
+	_subPass.setPDepthStencilAttachment(&_attachmentsRef[attachments.size()]);
 
 	_subPassDep[0].srcSubpass = VK_SUBPASS_EXTERNAL;
 	_subPassDep[0].dstSubpass = 0;

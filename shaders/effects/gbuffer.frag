@@ -1,7 +1,7 @@
 #version 450
 #extension GL_ARB_separate_shader_objects : enable
 
-layout(location = 0) out vec4 posMap;
+layout(location = 0) out float posMap;
 layout(location = 1) out vec4 normalMap;
 layout(location = 2) out vec4 colorMap;
 
@@ -15,7 +15,7 @@ layout(set = 1, binding = 0) uniform Material {
 } mat;
 
 layout(location = 0) in vec2 uv;
-layout(location = 1) in vec3 pos;
+layout(location = 1) in vec4 pos;
 
 layout(location = 2) in vec3 Tangent;
 layout(location = 3) in vec3 Binormal;
@@ -101,7 +101,7 @@ vec3 sample3D(uint i, uint N) {
 void main() {
 	vec2 parallaxUV = mat.data.x==2.0f?parallax():uv;
 
-    colorMap  = vec4(texture(diffuseTexture,parallaxUV).rgb*mat.diffuseColor.xyz,1.0f); // Simple gamma
+    colorMap  = vec4(texture(diffuseTexture,parallaxUV).rgb*mat.diffuseColor.xyz,mat.data.y); // Simple gamma
 
     vec3 normalTex = texture(normalTexture, parallaxUV).rgb;
     if(mat.data.x != 0.0f){
@@ -112,7 +112,7 @@ void main() {
 
 	vec3 posOffset = vec3(0.0f);
 	if(mat.data.x==2.0f)posOffset = height_scale*(1.0f-texture(heightmap,parallaxUV).r)*Normal;
-    posMap    = vec4(pos+posOffset,mat.data.y);
+    posMap    = pos.z/pos.w;
 
     normalMap = vec4(normalTex,mat.data.z);
 }

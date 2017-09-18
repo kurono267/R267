@@ -21,7 +21,7 @@ void Framebuffer::depth(const uint& width,const uint& height){
 }
 
 void Framebuffer::create(const uint& width,const uint& height,const vk::RenderPass& renderPass){
-	vk::FramebufferCreateInfo framebufferInfo(
+	vk::FramebufferCreateInfo framebufferInfo = vk::FramebufferCreateInfo(
 		vk::FramebufferCreateFlags(), // Default
 		renderPass, // Current render pass
 		_imageViews.size(), _imageViews.data(), // Attachments

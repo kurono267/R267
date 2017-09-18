@@ -40,6 +40,20 @@ void Image::create(const uint& width,const uint& height,
 
 	vk_device.bindImageMemory(_image,_memory,0);
 
+	vk::ImageAspectFlags imageAspectFlags = vk::ImageAspectFlagBits::eColor;
+	if(hasDepthComponent(_format))imageAspectFlags = vk::ImageAspectFlagBits::eDepth;
+
+	_imageViewCreateInfo = vk::ImageViewCreateInfo(
+		vk::ImageViewCreateFlags(),
+		_image,
+		vk::ImageViewType::e2D,
+		_format,
+		vk::ComponentMapping(),
+		vk::ImageSubresourceRange(
+			imageAspectFlags,
+			0, _mipLevels, 0, _layers)
+	);
+
 	vk::ImageView imageView;
 	if(hasDepthComponent(_format))imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eDepth, _mipLevels,_layers);
 	else imageView = r267::createImageView(_device->getDevice(),_image,_format,vk::ImageAspectFlagBits::eColor, _mipLevels,_layers);
@@ -234,6 +248,18 @@ void Image::setMipmaps(const spBuffer& buffer, const std::vector<uint>& offsets,
 
 vk::ImageView Image::ImageView(){
 	return _imageViews[0];
+}
+
+vk::ImageView Image::ImageViewSwizzle(const vk::ComponentSwizzle& r,const vk::ComponentSwizzle& g,const vk::ComponentSwizzle& b,const vk::ComponentSwizzle& a){
+	_imageViewCreateInfo.components.r = r;
+	_imageViewCreateInfo.components.g = g;
+	_imageViewCreateInfo.components.b = b;
+	_imageViewCreateInfo.components.a = a;
+
+	auto imageView = _device->getDevice().createImageView(_imageViewCreateInfo);
+	_imageViews.push_back(imageView);
+
+	return imageView;
 }
 
 // TODO Suport only cubemap

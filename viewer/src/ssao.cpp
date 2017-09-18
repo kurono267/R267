@@ -92,11 +92,12 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
 
 void SSAO::update(spCamera camera){
     _ssaoData.proj = camera->getProj();
+    _ssaoData.view = camera->getView();
+    _ssaoData.invmvp = glm::inverse(camera->getProj());
+    _ssaoUniform.set(sizeof(ssaoUBO),&_ssaoData);
 }
 
 vk::Semaphore SSAO::render(spDevice device,vk::Semaphore& wait){
-    _ssaoUniform.set(sizeof(ssaoUBO),&_ssaoData);
-
 	vk::Semaphore waitSemaphores[] = {wait};
     vk::PipelineStageFlags waitStages[] = {vk::PipelineStageFlagBits::eColorAttachmentOutput};
 

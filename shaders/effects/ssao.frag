@@ -11,6 +11,8 @@ layout(binding = 3) uniform sampler2D rotationSSAO;
 
 layout(binding = 4) uniform UBO {
 	mat4        proj;
+	mat4        view;
+	mat4        invmvp;
 	vec4        kernels[64];
 } ubo;
 
@@ -20,9 +22,14 @@ const float biasSSAO   = 0.025f;
 const int   kernelSize = 64;
 const float radius = 0.5f;
 
+vec3 viewPos(float proj_depth){
+	vec4 result = ubo.invmvp*vec4(uv.x*2.0f-1.0f,uv.y*2.0f-1.0f,proj_depth,1.0f);
+	return result.xyz/result.w;
+}
+
 void main() {
-	vec4 posData = vec4(texture(posMap,uv).rgb,1.0f);
-	vec3 pos    = posData.xyz;
+	vec3 viewP = viewPos(textureLod(posMap,uv,0).r);
+	float pos_z    = viewP.z;
 	vec3 normal = (texture(normalMap,uv)).rgb;
 	vec3 random = texture(rotationSSAO,uv*noiseScale).xyz;
 
@@ -35,20 +42,20 @@ void main() {
 	for(int i = 0; i < kernelSize; ++i){
 	    // get sample position
 	    vec3 s = TBN * ubo.kernels[i].xyz; // From tangent to view-space
-	    s = pos + s * radius;
+	    s = viewP + s * radius;
 
 	    vec4 offset = vec4(s, 1.0);
 		offset      = ubo.proj * offset;
 		offset.xyz /= offset.w;
 		offset.xyz  = offset.xyz * 0.5 + 0.5;
 
-		vec4 posCurr = vec4(texture(posMap, offset.xy).rgb,1.0f);
-		float sampleDepth = posCurr.z;
+		float sampleDepth = viewPos(textureLod(posMap, offset.xy, 0).r).z;
 
-		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(pos.z - sampleDepth));
+		float rangeCheck = smoothstep(0.0, 1.0, radius / abs(pos_z - sampleDepth));
 		occlusion       += (sampleDepth >= s.z + biasSSAO ? 1.0 : 0.0) * rangeCheck;
 	}
 
 	occlusion = 1.0 - (occlusion / kernelSize);
+
 	outColor = vec4(vec3(occlusion),1.0f);
 }

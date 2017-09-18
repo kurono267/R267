@@ -12,13 +12,13 @@ layout(set = 0, binding = 0) uniform UniformBufferObject {
 } ubo;
 
 layout(location = 0) in vec2 inUV[];
-layout(location = 1) in vec3 inPos[];
+layout(location = 1) in vec4 inPos[];
 layout(location = 2) in vec3 inTangent[];
 layout(location = 3) in vec3 inBinormal[];
 layout(location = 4) in vec3 inNormal[];
 
 layout(location = 0) out vec2 outUV[];
-layout(location = 1) out vec3 outPos[];
+layout(location = 1) out vec4 outPos[];
 layout(location = 2) out vec3 outTangent[];
 layout(location = 3) out vec3 outBinormal[];
 layout(location = 4) out vec3 outNormal[];
@@ -61,8 +61,7 @@ void main(){
 	outBinormal[gl_InvocationID] = inBinormal[gl_InvocationID];
 	outNormal[gl_InvocationID] = inNormal[gl_InvocationID];
 
-	if (gl_InvocationID == 0)
-	{
+	if (gl_InvocationID == 0) {
 		gl_TessLevelOuter[0] = 1.0f;//screenSpaceTessFactor(gl_in[2].gl_Position,gl_in[0].gl_Position);
 		gl_TessLevelOuter[1] = 1.0f;//screenSpaceTessFactor(gl_in[1].gl_Position,gl_in[2].gl_Position);
 		gl_TessLevelOuter[2] = 1.0f;//screenSpaceTessFactor(gl_in[2].gl_Position,gl_in[0].gl_Position);
