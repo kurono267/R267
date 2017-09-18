@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
+    <sourceRoots>
+      <file path="$PROJECT_DIR$/examples" />
+      <file path="$PROJECT_DIR$/shaders" />
+      <file path="$PROJECT_DIR$/src" />
+      <file path="$PROJECT_DIR$/viewer" />
+    </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/bin" />
     </excludeRoots>
