@@ -128,7 +128,17 @@ vec3 reflection(){
 	//return texture(colorMap,test.uv).xyz;
 }
 
+vec3 viewPos(float proj_depth){
+	vec4 result = ubo.invproj*vec4(uv.x*2.0f-1.0f,uv.y*2.0f-1.0f,proj_depth,1.0f);
+	return result.xyz/result.w;
+}
+
 vec3 lightCompute(){
+	const vec4 colorData = texture(colorMap,uv);
+	if(colorData.a == 0.0f){
+		// Background
+		return textureLod(background,rayDir,0).rgb;
+	}
 	vec3 ssao = vec3(0.0f);
 	vec2 texelSize = 1.0 / vec2(textureSize(ssaoMap, 0));
 	for(int y = -2;y<2;++y){
@@ -138,26 +148,21 @@ vec3 lightCompute(){
 	}
 	ssao /= 16.0f;
 
-	vec4 posData = texture(posMap,uv);
+	vec3 pos = viewPos(texture(posMap,uv).r);
 	vec4 normalData = texture(normalMap,uv);
 
 	vec4 viewPosView  = ubo.viewMat*ubo.view;
 
-	const vec4 colorData = texture(colorMap,uv);
-	if(colorData.a == 0.0f){
-		// Background
-		return textureLod(background,rayDir,0).rgb;
-	}
 	const float metallic = normalData.a;
 
-	const float r = posData.w;
+	const float r = colorData.w;
 	const vec3  specColor = vec3(1.0f);//reflection(posData.xyz,normalData.xyz);
 
 	vec3 lightColor = vec3(0.0f);
 	const float lightPower = 500.0f;
 	float iblShadow = 0.0f;
 	for(int s = 0;s<5;++s){
-		iblShadow += shadow(posData.xyz,(sample3D(s,5)+normalData.xyz)*vec3(1000.0f));
+		iblShadow += shadow(pos,(sample3D(s,5)+normalData.xyz)*vec3(1000.0f));
 	}
 	iblShadow /= 5;
 	//vec3 localReflection = reflection();
@@ -165,12 +170,12 @@ vec3 lightCompute(){
 		vec4 lightPosView = ubo.viewMat*vec4(lightPoses[i],1.0f);
 		const vec3 lightPos3 = lightPosView.xyz/lightPosView.w;
 
-		float distance    = length(lightPos3 - posData.xyz);
+		float distance    = length(lightPos3 - pos);
         float attenuation = lightPower / (distance * distance);
 
-		lightColor += light(lightPos3,normalData.xyz,viewPosView.xyz/viewPosView.w,posData.xyz,metallic,r,colorData.rgb,specColor)*attenuation;
+		lightColor += light(lightPos3,normalData.xyz,viewPosView.xyz/viewPosView.w,pos,metallic,r,colorData.rgb,specColor)*attenuation;
 	}
-	lightColor += ibl(normalData.xyz,viewPosView.xyz,posData.xyz,colorData.rgb,metallic,r,1.0f);
+	lightColor += ibl(normalData.xyz,viewPosView.xyz,pos,colorData.rgb,metallic,r,1.0f);
 	lightColor = iblShadow*ssao*lightColor;//*colorData.a;
 	lightColor /= lightColor+vec3(1.0f);
 	lightColor = pow(lightColor,vec3(1.0f/2.2f));
@@ -180,5 +185,5 @@ vec3 lightCompute(){
 
 void main() {
 	//vec3 localReflection = reflection();
-	outColor = vec4(texture(ssaoMap,uv).rgb,1.0f);
+	outColor = vec4(lightCompute(),1.0f);
 }

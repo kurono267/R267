@@ -27,11 +27,20 @@ vec3 viewPos(float proj_depth){
 	return result.xyz/result.w;
 }
 
+float getZ(float proj_depth){
+	const float zNear = 1.0f;const float zFar = 10000.0f;
+	float z_n = 2.0 * proj_depth - 1.0;
+    float z_e = 2.0 * zNear * zFar / (zFar + zNear - z_n * (zFar - zNear));
+    return z_e;
+}
+
 void main() {
-	vec3 viewP = viewPos(textureLod(posMap,uv,0).r);
+	float depth = textureLod(posMap,uv,0).r;
+	if(depth == 1.0f)discard;
+	vec3 viewP = viewPos(depth);
 	float pos_z    = viewP.z;
-	vec3 normal = (texture(normalMap,uv)).rgb;
-	vec3 random = texture(rotationSSAO,uv*noiseScale).xyz;
+	vec3 normal = (textureLod(normalMap,uv,0)).rgb;
+	vec3 random = textureLod(rotationSSAO,uv*noiseScale, 0).xyz;
 
 	vec3 tangent = normalize(random-normal*dot(random,normal));
 	vec3 bi      = cross(normal,tangent);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/shaders/effects/ssao.frag" line="51" mnemonic="9" />
+    <bookmark url="file://$PROJECT_DIR$/shaders/effects/ssao.frag" line="60" mnemonic="9" />
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true" buildAllGenerated="true">
     <generated>
@@ -61,25 +61,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/differed.frag" afterPath="$PROJECT_DIR$/shaders/effects/differed.frag" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/differed_frag.spv" afterPath="$PROJECT_DIR$/shaders/effects/differed_frag.spv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/displace.tesc" afterPath="$PROJECT_DIR$/shaders/effects/displace.tesc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/displace.tese" afterPath="$PROJECT_DIR$/shaders/effects/displace.tese" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/displace_tesc.spv" afterPath="$PROJECT_DIR$/shaders/effects/displace_tesc.spv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/displace_tese.spv" afterPath="$PROJECT_DIR$/shaders/effects/displace_tese.spv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/gbuffer.frag" afterPath="$PROJECT_DIR$/shaders/effects/gbuffer.frag" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/gbuffer.vert" afterPath="$PROJECT_DIR$/shaders/effects/gbuffer.vert" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/gbuffer_frag.spv" afterPath="$PROJECT_DIR$/shaders/effects/gbuffer_frag.spv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/gbuffer_vert.spv" afterPath="$PROJECT_DIR$/shaders/effects/gbuffer_vert.spv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/ssao.frag" afterPath="$PROJECT_DIR$/shaders/effects/ssao.frag" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shaders/effects/ssao_frag.spv" afterPath="$PROJECT_DIR$/shaders/effects/ssao_frag.spv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/framebuffer.cpp" afterPath="$PROJECT_DIR$/src/base/vk/framebuffer.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/image.cpp" afterPath="$PROJECT_DIR$/src/base/vk/image.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/image.hpp" afterPath="$PROJECT_DIR$/src/base/vk/image.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/pipeline.cpp" afterPath="$PROJECT_DIR$/src/base/vk/pipeline.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/vk/pipeline.hpp" afterPath="$PROJECT_DIR$/src/base/vk/pipeline.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/gbuffer.cpp" afterPath="$PROJECT_DIR$/viewer/src/gbuffer.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/ssao.cpp" afterPath="$PROJECT_DIR$/viewer/src/ssao.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/ssao.hpp" afterPath="$PROJECT_DIR$/viewer/src/ssao.hpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/viewer/src/viewer.cpp" afterPath="$PROJECT_DIR$/viewer/src/viewer.cpp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/base/wnd/MainApp.cpp" afterPath="$PROJECT_DIR$/src/base/wnd/MainApp.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -98,19 +82,21 @@
       <file leaf-file-name="viewer.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="42" column="70" lean-forward="false" selection-start-line="42" selection-start-column="70" selection-end-line="42" selection-end-column="70" />
+            <state relative-caret-position="457">
+              <caret line="139" column="74" lean-forward="false" selection-start-line="139" selection-start-column="74" selection-end-line="139" selection-end-column="74" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ssao.hpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/viewer/src/ssao.hpp">
+      <file leaf-file-name="viewer.hpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
-              <folding />
+            <state relative-caret-position="364">
+              <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+              <folding>
+                <element signature="e#58#75#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -125,34 +111,52 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ssao.frag" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ssao.frag" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shaders/effects/ssao.frag">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="394">
-              <caret line="48" column="31" lean-forward="true" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
+            <state relative-caret-position="334">
+              <caret line="53" column="31" lean-forward="false" selection-start-line="53" selection-start-column="31" selection-end-line="53" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ssao.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="differed.frag" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shaders/effects/differed.frag">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="139" column="51" lean-forward="false" selection-start-line="139" selection-start-column="51" selection-end-line="139" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ssao.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="95" column="55" lean-forward="false" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
+            <state relative-caret-position="319">
+              <caret line="74" column="20" lean-forward="true" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="camera.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/base/scene/camera.cpp">
+      <file leaf-file-name="ssao.hpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/viewer/src/ssao.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-990">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="450">
+              <caret line="34" column="35" lean-forward="false" selection-start-line="34" selection-start-column="35" selection-end-line="34" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainApp.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/base/wnd/MainApp.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="62" column="23" lean-forward="false" selection-start-line="62" selection-start-column="23" selection-end-line="62" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -167,31 +171,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="displace.tese" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shaders/effects/displace.tese">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="492">
-              <caret line="55" column="28" lean-forward="false" selection-start-line="55" selection-start-column="28" selection-end-line="55" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="displace.tesc" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shaders/effects/displace.tesc">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="454">
               <caret line="63" column="30" lean-forward="false" selection-start-line="63" selection-start-column="30" selection-end-line="63" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="gbuffer.vert" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shaders/effects/gbuffer.vert">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="26" lean-forward="false" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -208,7 +192,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_descLayouts</find>
       <find>_pool</find>
       <find>poolInfo</find>
       <find>command</find>
@@ -238,6 +221,7 @@
       <find>defaultSampler</find>
       <find>noiseSampler</find>
       <find>createSampler</find>
+      <find>_dt</find>
     </findStrings>
     <replaceStrings>
       <replace>BVHNode</replace>
@@ -259,7 +243,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/base/scene/scene.cpp" />
         <option value="$PROJECT_DIR$/bin/assets/gui/main.frag" />
         <option value="$PROJECT_DIR$/viewer/src/toolbar.hpp" />
         <option value="$PROJECT_DIR$/src/base/scene/camera.cpp" />
@@ -302,14 +285,15 @@
         <option value="$PROJECT_DIR$/src/base/vk/image.hpp" />
         <option value="$PROJECT_DIR$/viewer/src/gbuffer.cpp" />
         <option value="$PROJECT_DIR$/src/base/vk/image.cpp" />
-        <option value="$PROJECT_DIR$/shaders/effects/differed.frag" />
         <option value="$PROJECT_DIR$/viewer/src/ssao.hpp" />
         <option value="$PROJECT_DIR$/shaders/effects/gbuffer.vert" />
-        <option value="$PROJECT_DIR$/viewer/src/ssao.cpp" />
         <option value="$PROJECT_DIR$/shaders/effects/gbuffer.frag" />
         <option value="$PROJECT_DIR$/shaders/effects/displace.tese" />
         <option value="$PROJECT_DIR$/shaders/effects/displace.tesc" />
+        <option value="$PROJECT_DIR$/src/base/wnd/MainApp.cpp" />
+        <option value="$PROJECT_DIR$/shaders/effects/differed.frag" />
         <option value="$PROJECT_DIR$/shaders/effects/ssao.frag" />
+        <option value="$PROJECT_DIR$/viewer/src/ssao.cpp" />
       </list>
     </option>
   </component>
@@ -374,31 +358,7 @@
             <path>
               <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
               <item name="r267" type="462c0819:PsiDirectoryNode" />
-              <item name="shaders" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="r267" type="462c0819:PsiDirectoryNode" />
-              <item name="shaders" type="462c0819:PsiDirectoryNode" />
-              <item name="effects" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="r267" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="r267" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
-              <item name="r267" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
-              <item name="scene" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="R267" type="dad4c3:CidrFilesViewHelper$MyProjectTreeStructure$1" />
@@ -768,7 +728,7 @@
       <workItem from="1505679877378" duration="58000" />
       <workItem from="1505690586656" duration="7999000" />
       <workItem from="1505748397548" duration="4896000" />
-      <workItem from="1505753318708" duration="11102000" />
+      <workItem from="1505753318708" duration="13235000" />
     </task>
     <task id="LOCAL-00001" summary="Add compute shader example(Doesn't worked, still need to fix).&#10;Fixed cmake for correct building with CLion.">
       <created>1498607194708</created>
@@ -1099,11 +1059,18 @@
       <option name="project" value="LOCAL" />
       <updated>1505753512176</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Rewrite viewer to using z buffer and reproject that.">
+      <created>1505764459110</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1505764459110</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="423589000" />
+    <option name="totallyTimeSpent" value="425722000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="295" y="263" width="1920" height="1058" extended-state="6" />
@@ -1175,7 +1142,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Fixed all examples. Begin on example for cubemap using." />
     <MESSAGE value="Some prepare of image to support of cubemap" />
     <MESSAGE value="Rewrite mipmap generation to using cmdBlit." />
     <MESSAGE value="Fixes of ImageView, create demo for cubemap." />
@@ -1200,7 +1166,8 @@
     <MESSAGE value="Fixed paths" />
     <MESSAGE value="Fixed crash and destroy vulkan objects in all examples." />
     <MESSAGE value="Update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
+    <MESSAGE value="Rewrite viewer to using z buffer and reproject that." />
+    <option name="LAST_COMMIT_MESSAGE" value="Rewrite viewer to using z buffer and reproject that." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1216,7 +1183,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bin/assets/effects/gbuffer.frag" />
     <entry file="file://$PROJECT_DIR$/bin/assets/effects/differed.frag" />
     <entry file="file://$PROJECT_DIR$/examples/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
@@ -1440,16 +1406,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1174">
-          <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-          <folding>
-            <element signature="e#58#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shaders/effects/differed.vert">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1498,14 +1454,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shaders/effects/differed.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/base/vk/framebuffer.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1532,34 +1480,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="42" column="70" lean-forward="false" selection-start-line="42" selection-start-column="70" selection-end-line="42" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="12" lean-forward="false" selection-start-line="0" selection-start-column="12" selection-end-line="0" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shaders/effects/displace.tese">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="492">
           <caret line="55" column="28" lean-forward="false" selection-start-line="55" selection-start-column="28" selection-end-line="55" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="95" column="55" lean-forward="false" selection-start-line="95" selection-start-column="55" selection-end-line="95" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -1596,10 +1520,60 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/base/wnd/MainApp.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="62" column="23" lean-forward="false" selection-start-line="62" selection-start-column="23" selection-end-line="62" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/viewer.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="108" column="0" lean-forward="false" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+          <folding>
+            <element signature="e#58#75#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shaders/effects/differed.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="139" column="51" lean-forward="false" selection-start-line="139" selection-start-column="51" selection-end-line="139" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/shaders/effects/ssao.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="394">
-          <caret line="48" column="31" lean-forward="true" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
+        <state relative-caret-position="334">
+          <caret line="53" column="31" lean-forward="false" selection-start-line="53" selection-start-column="31" selection-end-line="53" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/viewer.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="457">
+          <caret line="139" column="74" lean-forward="false" selection-start-line="139" selection-start-column="74" selection-end-line="139" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="34" column="35" lean-forward="false" selection-start-line="34" selection-start-column="35" selection-end-line="34" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/viewer/src/ssao.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="319">
+          <caret line="74" column="20" lean-forward="true" selection-start-line="74" selection-start-column="20" selection-end-line="74" selection-end-column="20" />
           <folding />
         </state>
       </provider>

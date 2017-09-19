@@ -62,7 +62,7 @@ void MainApp::run(){
 		//glFinish();
 		_app->update();
 		_app->draw();
-		_vulkan->device()->getDevice().waitIdle();
+		//_vulkan->device()->getDevice().waitIdle();
 		glfwPollEvents();
 
 		if(glfwWindowShouldClose(_window))_isRun = false;
