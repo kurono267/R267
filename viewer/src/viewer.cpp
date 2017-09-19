@@ -31,6 +31,7 @@ bool ViewerApp::init(){
 
     auto baseRP = RenderPattern::basic(device);
     baseRP.blend(1,false);
+    baseRP.depth(false,false);
     _main = std::make_shared<Pipeline>(baseRP,vk_device);
 
     _main->addShader(vk::ShaderStageFlagBits::eVertex,"../shaders/effects/differed_vert.spv");
@@ -50,11 +51,30 @@ bool ViewerApp::init(){
     _ubo.invproj  = inverse(_camera->getProj());
     _uniform.create(device,sizeof(UBO),&_ubo);
 
+    vk::SamplerCreateInfo info(
+		vk::SamplerCreateFlags(),
+		vk::Filter::eNearest, // Mag Filter
+		vk::Filter::eNearest, // Min Filter
+		vk::SamplerMipmapMode::eNearest, // MipMap Mode
+		vk::SamplerAddressMode::eRepeat, // U Address mode
+		vk::SamplerAddressMode::eRepeat, // V Address mode
+		vk::SamplerAddressMode::eRepeat, // W Address mode
+		0, // Mip Lod bias
+		0, // Anisotropic enabled
+		0, // Max anisotropy
+		0, // Compare enabled
+		vk::CompareOp::eAlways, // Compare Operator
+		0, // Min lod
+		0, // Max lod
+		vk::BorderColor::eFloatTransparentBlack, // Border color
+		0 // Unnormalized coordiante
+    );
+
 	_differedDesc = device->create<DescSet>();
-	_differedDesc->setTexture(_gbuffer.posMap(),createSampler(device->getDevice(),linearSampler()),0,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setTexture(_gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
-	_differedDesc->setTexture(_ssao.ssaoImage(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_gbuffer.posMap(),createSampler(device->getDevice(),info),0,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_gbuffer.normalMap(),createSampler(device->getDevice(),info),1,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_gbuffer.colorMap(),createSampler(device->getDevice(),info),2,vk::ShaderStageFlagBits::eFragment);
+	_differedDesc->setTexture(_ssao.ssaoImage(),createSampler(device->getDevice(),info),3,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_ibl.cubemap(),createSampler(device->getDevice(),linearSampler(10)),4,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_ibl.irradiance(),createSampler(device->getDevice(),linearSampler(1)),5,vk::ShaderStageFlagBits::eFragment);
 	_differedDesc->setTexture(_ibl.brdf(),createSampler(device->getDevice(),linearSampler(1)),6,vk::ShaderStageFlagBits::eFragment);

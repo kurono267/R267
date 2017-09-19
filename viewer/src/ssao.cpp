@@ -52,6 +52,7 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
 
 	auto baseRP = RenderPattern::basic(device);
     baseRP.blend(1,false);
+    baseRP.depth(false,false);
     baseRP.createRenderPass(vk::Format::eR16G16B16A16Sfloat,device->depthFormat(),1);
     _main = std::make_shared<Pipeline>(baseRP,device->getDevice());
 
@@ -63,11 +64,30 @@ void SSAO::init(spDevice device,const GBuffer& gbuffer,const glm::ivec2& size){
 
     _ssaoUniform.create(device,sizeof(ssaoUBO),&_ssaoData);
 
+    vk::SamplerCreateInfo info(
+		vk::SamplerCreateFlags(),
+		vk::Filter::eNearest, // Mag Filter
+		vk::Filter::eNearest, // Min Filter
+		vk::SamplerMipmapMode::eNearest, // MipMap Mode
+		vk::SamplerAddressMode::eRepeat, // U Address mode
+		vk::SamplerAddressMode::eRepeat, // V Address mode
+		vk::SamplerAddressMode::eRepeat, // W Address mode
+		0, // Mip Lod bias
+		0, // Anisotropic enabled
+		0, // Max anisotropy
+		0, // Compare enabled
+		vk::CompareOp::eAlways, // Compare Operator
+		0, // Min lod
+		0, // Max lod
+		vk::BorderColor::eFloatTransparentBlack, // Border color
+		0 // Unnormalized coordiante
+    );
+
     _descSet = device->create<DescSet>();
-	_descSet->setTexture(gbuffer.posMap(),createSampler(device->getDevice(),linearSampler()),0,vk::ShaderStageFlagBits::eFragment);
-	_descSet->setTexture(gbuffer.normalMap(),createSampler(device->getDevice(),linearSampler()),1,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(gbuffer.posMap(),createSampler(device->getDevice(),info),0,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(gbuffer.normalMap(),createSampler(device->getDevice(),info),1,vk::ShaderStageFlagBits::eFragment);
 	_descSet->setTexture(gbuffer.colorMap(),createSampler(device->getDevice(),linearSampler()),2,vk::ShaderStageFlagBits::eFragment);
-	_descSet->setTexture(_rotationImage->ImageView(),createSampler(device->getDevice(),linearSampler()),3,vk::ShaderStageFlagBits::eFragment);
+	_descSet->setTexture(_rotationImage->ImageView(),createSampler(device->getDevice(),info),3,vk::ShaderStageFlagBits::eFragment);
 	_descSet->setUniformBuffer(_ssaoUniform,4,vk::ShaderStageFlagBits::eFragment);
 	_descSet->create();
 
