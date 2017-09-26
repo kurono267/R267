@@ -20,7 +20,7 @@ const vec2 noiseScale = vec2(1280.0/4.0f,720.0/4.0f);
 
 const float biasSSAO   = 0.025f;
 const int   kernelSize = 64;
-const float radius = 0.5f;
+const float radius = 1.0f;
 
 vec3 viewPos(float proj_depth){
 	vec4 result = ubo.invmvp*vec4(uv.x*2.0f-1.0f,uv.y*2.0f-1.0f,proj_depth,1.0f);
