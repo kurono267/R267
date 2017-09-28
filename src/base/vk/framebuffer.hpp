@@ -11,7 +11,7 @@ class Framebuffer {
 		virtual ~Framebuffer();
 		
 		void attachment(const vk::ImageView& imageView);
-		void depth(const uint& width,const uint& height); // Create Depth Buffer
+		void depth(const uint& width,const uint& height,const uint& samples = 1); // Create Depth Buffer
 
 		void create(const uint& width,const uint& height,const vk::RenderPass& renderPass);
 		vk::Framebuffer vk_framebuffer();

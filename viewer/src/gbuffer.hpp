@@ -14,14 +14,13 @@
 
 using namespace r267;
 
-struct CameraData {
-	glm::mat4 mvp;
-	glm::mat4 viewMat;
-	glm::mat4 proj;
-	glm::vec4 view;
-};
-
 class GBuffer {
+	struct CameraData {
+		glm::mat4 mvp;
+		glm::mat4 viewMat;
+		glm::mat4 proj;
+		glm::vec4 view;
+	};
 	public:
 		GBuffer(){}
 		~GBuffer(){}

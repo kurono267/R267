@@ -67,7 +67,6 @@ class Material {
 		spImage       _normalTexture;
 		spImage       _heightmapTexture;
 		vk::ImageView _diffView;
-		vk::Sampler   _sampler;
 		spDescSet     _descSet;
 
 		std::string   _path;

@@ -155,33 +155,13 @@ void Material::create(spDevice device,std::unordered_map<std::string,spImage>& i
 	}
 
 	_diffView = _diffTexture->ImageView();
-	_sampler  = createSampler(device->getDevice(),linearSampler(_diffTexture->mipLevels())); // Color sampler with anisotropic filter
-	vk::SamplerCreateInfo dataSamplerInfo(
-		vk::SamplerCreateFlags(),
-		vk::Filter::eLinear, // Mag Filter
-		vk::Filter::eLinear, // Min Filter
-		vk::SamplerMipmapMode::eLinear, // MipMap Mode
-		vk::SamplerAddressMode::eRepeat, // U Address mode
-		vk::SamplerAddressMode::eRepeat, // V Address mode
-		vk::SamplerAddressMode::eRepeat, // W Address mode
-		0, // Mip Lod bias
-		0, // Anisotropic enabled
-		0, // Max anisotropy
-		0, // Compare enabled
-		vk::CompareOp::eAlways, // Compare Operator
-		0, // Min lod
-		_diffTexture->mipLevels()-1, // Max lod
-		vk::BorderColor::eFloatTransparentBlack, // Border color
-		0 // Unnormalized coordiante
-    );
-
-	vk::Sampler dataSampler = createSampler(device->getDevice(),dataSamplerInfo);
+	auto diffSamp  = createSampler(device->getDevice(),anisoSampler(_diffTexture->mipLevels())); // Color sampler with anisotropic filter
 
 	_descSet  = device->create<DescSet>();
 	_descSet->setUniformBuffer(_uniform,0,vk::ShaderStageFlagBits::eFragment);
-	_descSet->setTexture(_diffView,_sampler,1,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
-	_descSet->setTexture(_normalTexture->ImageView(),dataSampler,2,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
-	_descSet->setTexture(_heightmapTexture->ImageView(),dataSampler,3,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
+	_descSet->setTexture(_diffView,diffSamp,1,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
+	_descSet->setTexture(_normalTexture->ImageView(),_normalTexture->linearSampler(),2,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
+	_descSet->setTexture(_heightmapTexture->ImageView(),_heightmapTexture->linearSampler(),3,vk::ShaderStageFlagBits::eFragment|vk::ShaderStageFlagBits::eTessellationEvaluation);
 	_descSet->create();
 }
 

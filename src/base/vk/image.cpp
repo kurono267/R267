@@ -8,13 +8,15 @@ Image::~Image(){}
 void Image::create(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels,const vk::ImageTiling& tiling,
 					const vk::ImageUsageFlags& usage,const vk::ImageLayout& layout,
-					const vk::MemoryPropertyFlags& properties){
+					const vk::MemoryPropertyFlags& properties,const uint& samples){
 	_width = width;
 	_height = height;
 	_format = format;
 	_mipLevels = mipLevels;
 	_currLayout    = layout;
 	_layers   = 1;
+
+	std::cout << to_string(format) << std::endl;
 
 	vk::ImageCreateInfo imageInfo(
 		vk::ImageCreateFlags(), // Basic
@@ -23,7 +25,7 @@ void Image::create(const uint& width,const uint& height,
 		vk::Extent3D(width,height,1), // Width, Height and Depth
 		mipLevels, // Mip Levels
 		_layers, // Array Layers
-		vk::SampleCountFlagBits::e1, // Samples
+		(vk::SampleCountFlagBits)samples, // Samples
 		tiling,
 		usage,
 		vk::SharingMode::eExclusive, 0, nullptr, layout
@@ -274,6 +276,21 @@ vk::ImageView Image::ImageView(const int layer,const int level,const int numLaye
 	_imageViews.push_back(imageView);
 
 	return imageView;
+}
+
+vk::Sampler Image::nearestSampler(){
+	auto info = r267::nearsetSampler(_mipLevels);
+	return _device->getDevice().createSampler(info);
+}
+
+vk::Sampler Image::anisoSampler(const int& maxAniso){
+	auto info = r267::anisoSampler(_mipLevels,maxAniso);
+	return _device->getDevice().createSampler(info);
+}
+
+vk::Sampler Image::linearSampler(){
+	auto info = r267::linearSampler(_mipLevels);
+	return _device->getDevice().createSampler(info);
 }
 
 uint Image::mipLevels(){

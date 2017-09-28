@@ -50,9 +50,9 @@ void GBuffer::init(spDevice device,spScene scene,spCamera camera,spDescSet matDe
     _posMap = device->create<Image>();
     _normalMap = device->create<Image>();
     _colorMap  = device->create<Image>();
-    _posMap->create(_size.x,_size.y,vk::Format::eR32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
-    _normalMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
-    _colorMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled);
+    _posMap->create(_size.x,_size.y,vk::Format::eR32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled,vk::ImageLayout::ePreinitialized,vk::MemoryPropertyFlagBits::eDeviceLocal);
+    _normalMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled,vk::ImageLayout::ePreinitialized,vk::MemoryPropertyFlagBits::eDeviceLocal);
+    _colorMap->create(_size.x,_size.y,vk::Format::eR32G32B32A32Sfloat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eColorAttachment | vk::ImageUsageFlagBits::eSampled,vk::ImageLayout::ePreinitialized,vk::MemoryPropertyFlagBits::eDeviceLocal);
 
     _framebuffer = device->create<Framebuffer>();
     _framebuffer->attachment(_posMap->ImageViewSwizzle(vk::ComponentSwizzle::eR,vk::ComponentSwizzle::eG,vk::ComponentSwizzle::eB,vk::ComponentSwizzle::eA));

@@ -9,11 +9,11 @@ void Framebuffer::attachment(const vk::ImageView& imageView){
 	_imageViews.push_back(imageView);
 }
 
-void Framebuffer::depth(const uint& width,const uint& height){
+void Framebuffer::depth(const uint& width,const uint& height,const uint& samples){
 	vk::Format depthFormat = _device->depthFormat();
 
 	_depthBuffer = _device->create<Image>();
-	_depthBuffer->create(width,height,depthFormat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eDepthStencilAttachment,vk::ImageLayout::eUndefined);
+	_depthBuffer->create(width,height,depthFormat,1,vk::ImageTiling::eOptimal,vk::ImageUsageFlagBits::eDepthStencilAttachment,vk::ImageLayout::eUndefined,vk::MemoryPropertyFlagBits::eDeviceLocal,samples);
 	_depthView  = createImageView(_device->getDevice(),_depthBuffer->vk_image(),depthFormat,vk::ImageAspectFlagBits::eDepth);
 	_depthBuffer->transition(vk::ImageLayout::eDepthStencilAttachmentOptimal);
 

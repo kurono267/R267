@@ -94,7 +94,7 @@ class RenderPattern {
 
 		std::vector<vk::PushConstantRange> _pushConsts;
 };
-RenderPattern::Attachment createAttachment(const vk::Format& format, const bool& depth, const int index);
+RenderPattern::Attachment createAttachment(const vk::Format& format, const bool& depth, const int index,const int samples = 1);
 
 class DescSet {
 	public:

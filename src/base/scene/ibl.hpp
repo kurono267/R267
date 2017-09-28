@@ -32,6 +32,8 @@ class IBL {
 		vk::ImageView cubemap();
 		vk::ImageView irradiance();
 		vk::ImageView brdf();
+
+		vk::Sampler cubemapSampler();
 	protected:
 		enum Step {
 			Convert = 0,

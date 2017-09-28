@@ -18,12 +18,16 @@ class Image {
 		void create(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
 					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled | vk::ImageUsageFlagBits::eColorAttachment,
-					const vk::ImageLayout& layout = vk::ImageLayout::ePreinitialized,const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
+					const vk::ImageLayout& layout = vk::ImageLayout::ePreinitialized,const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal,const uint& samples = 1);
 		void createCubemap(const uint& width,const uint& height,
 					const vk::Format& format,const uint& mipLevels = 1,const vk::ImageTiling& tiling = vk::ImageTiling::eOptimal,
 					const vk::ImageUsageFlags& usage = vk::ImageUsageFlagBits::eTransferDst | vk::ImageUsageFlagBits::eSampled,
 					const vk::ImageLayout& layout = vk::ImageLayout::ePreinitialized,const vk::MemoryPropertyFlags& properties = vk::MemoryPropertyFlagBits::eDeviceLocal);
 		void release(spDevice device);
+
+		vk::Sampler nearestSampler();
+		vk::Sampler anisoSampler(const int& maxAniso = 16);
+		vk::Sampler linearSampler();
 
 		vk::ImageView ImageView();
 		vk::ImageView ImageViewSwizzle(const vk::ComponentSwizzle& r,const vk::ComponentSwizzle& g,const vk::ComponentSwizzle& b,const vk::ComponentSwizzle& a);

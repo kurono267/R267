@@ -15,6 +15,13 @@
 #include "ssao.hpp"
 
 class Differed {
+	struct UBO {
+	    glm::vec4 view;
+	    glm::mat4 viewMat;
+	    glm::mat4 proj;
+	    glm::mat4 invview;
+	    glm::mat4 invproj;
+	};
 	public:
 		Differed(){}
 		~Differed(){}
@@ -26,5 +33,11 @@ class Differed {
 	protected:
 		vk::Semaphore _finish;
 
+		spPipeline    _pipeline;
+		spDescSet     _descSet;
 
+		Uniform _uniform;
+		UBO     _ubo;
+
+		spShape _quad;
 };

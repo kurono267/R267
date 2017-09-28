@@ -134,8 +134,8 @@ vk::SamplerCreateInfo r267::linearSampler(const uint& mipLevels){
 		vk::SamplerAddressMode::eRepeat, // V Address mode
 		vk::SamplerAddressMode::eRepeat, // W Address mode
 		0, // Mip Lod bias
-		1, // Anisotropic enabled
-		16, // Max anisotropy
+		0, // Anisotropic enabled
+		0, // Max anisotropy
 		0, // Compare enabled
 		vk::CompareOp::eAlways, // Compare Operator
 		0, // Min lod
@@ -155,8 +155,29 @@ vk::SamplerCreateInfo r267::nearsetSampler(const uint& mipLevels){
 		vk::SamplerAddressMode::eRepeat, // V Address mode
 		vk::SamplerAddressMode::eRepeat, // W Address mode
 		0, // Mip Lod bias
+		0, // Anisotropic enabled
+		0, // Max anisotropy
+		0, // Compare enabled
+		vk::CompareOp::eAlways, // Compare Operator
+		0, // Min lod
+		mipLevels-1, // Max lod
+		vk::BorderColor::eFloatTransparentBlack, // Border color
+		0 // Unnormalized coordiante
+	);
+}
+
+vk::SamplerCreateInfo r267::anisoSampler(const uint& mipLevels,const uint& aniso){
+	return vk::SamplerCreateInfo(
+		vk::SamplerCreateFlags(),
+		vk::Filter::eLinear, // Mag Filter
+		vk::Filter::eLinear, // Min Filter
+		vk::SamplerMipmapMode::eLinear, // MipMap Mode
+		vk::SamplerAddressMode::eRepeat, // U Address mode
+		vk::SamplerAddressMode::eRepeat, // V Address mode
+		vk::SamplerAddressMode::eRepeat, // W Address mode
+		0, // Mip Lod bias
 		1, // Anisotropic enabled
-		1, // Max anisotropy
+		aniso, // Max anisotropy
 		0, // Compare enabled
 		vk::CompareOp::eAlways, // Compare Operator
 		0, // Min lod

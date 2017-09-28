@@ -96,10 +96,10 @@ void RenderPattern::depth(const bool& enable, const bool& write,const vk::Compar
 	);
 }
 
-RenderPattern::Attachment r267::createAttachment(const vk::Format& format, const bool& depth, const int index){
+RenderPattern::Attachment r267::createAttachment(const vk::Format& format, const bool& depth, const int index,const int samples){
 	RenderPattern::Attachment att;
 	att.desc.setFormat(format);
-	att.desc.setSamples(vk::SampleCountFlagBits::e1);
+	att.desc.setSamples((vk::SampleCountFlagBits)samples);
 	att.desc.setLoadOp(vk::AttachmentLoadOp::eClear);
 	if(!depth)att.desc.setStoreOp(vk::AttachmentStoreOp::eStore);
 	else att.desc.setStoreOp(vk::AttachmentStoreOp::eDontCare);

@@ -310,6 +310,10 @@ void IBL::run(){
 	}
 }
 
+vk::Sampler IBL::cubemapSampler(){
+	return _cubemap->anisoSampler();
+}
+
 vk::ImageView IBL::cubemap(){
 	return _cubemap->ImageView();
 }
