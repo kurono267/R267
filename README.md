@@ -18,6 +18,7 @@ Now have some examples of using and viewer with using simple model format and co
 * Compute   - Simple raytracing at Compute Shaders (Not finish yet)
 * GUI       - Simple GUI example (GUI based at nuklear)
 * Viewer    - Loader models with described effects
+* Cubemap   - Load image, convert to cubemap and display
 
 ### Known Issues ### 
 * ~~Doesn't correct free vulkan memory~~

@@ -58,7 +58,7 @@
   </component>
   <component name="ChangeListManager">
     <list id="6663eae5-514a-4e3c-a689-8003d859a022" name="Revert &quot;Add irradiance compute from image cubemap.&quot; This reverts commit 8035991" comment="Revert &quot;Add irradiance compute from image cubemap.&quot;&#10;&#10;This reverts commit 8035991" />
-    <list default="true" id="aacb2cb9-5da8-480a-8544-2ad7933b18a9" name="Default" comment="">
+    <list default="true" id="aacb2cb9-5da8-480a-8544-2ad7933b18a9" name="Default" comment="Update README.md">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
@@ -101,8 +101,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="360">
-                <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <first_editor relative-caret-position="285">
+                <caret line="19" column="50" lean-forward="true" selection-start-line="19" selection-start-column="50" selection-end-line="19" selection-end-column="50" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -748,14 +748,7 @@
       <workItem from="1505917906039" duration="16000" />
       <workItem from="1506075275723" duration="7210000" />
       <workItem from="1506561912932" duration="8091000" />
-      <workItem from="1507649665938" duration="2264000" />
-    </task>
-    <task id="LOCAL-00005" summary="First raytracing at compute shaders.">
-      <created>1499166473167</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1499166473167</updated>
+      <workItem from="1507649665938" duration="2428000" />
     </task>
     <task id="LOCAL-00006" summary="Rewrite BVH. Improve speed of build and traversal.">
       <created>1499366941867</created>
@@ -1093,11 +1086,18 @@
       <option name="project" value="LOCAL" />
       <updated>1507652695836</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Update README.md">
+      <created>1507652823041</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1507652823041</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="446585000" />
+    <option name="totallyTimeSpent" value="446749000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="295" y="263" width="1920" height="1058" extended-state="6" />
@@ -1108,8 +1108,8 @@
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3097998" sideWeight="0.50416666" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2524377" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46153846" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2524377" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.46153846" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14781217" sideWeight="0.7676768" order="1" side_tool="false" content_ui="combo" />
@@ -1211,14 +1211,14 @@
     <MESSAGE value="Some fixes of shaders and start separete differed shading from main viewer code to Differed class." />
     <MESSAGE value="Fixed paths" />
     <MESSAGE value="Fixed crash and destroy vulkan objects in all examples." />
-    <MESSAGE value="Update README.md" />
     <MESSAGE value="Rewrite viewer to using z buffer and reproject that." />
     <MESSAGE value="Finish fixes of differed to working with depth based buffer." />
     <MESSAGE value="Fixed speed problem in viewer." />
     <MESSAGE value="Some fixes of quality" />
     <MESSAGE value="Add sampler functions for image. And add multisampling option for renderpass and image." />
     <MESSAGE value="Fixed raytracing at compute demo." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed raytracing at compute demo." />
+    <MESSAGE value="Update README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1614,8 +1614,8 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="360">
-            <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <first_editor relative-caret-position="285">
+            <caret line="19" column="50" lean-forward="true" selection-start-line="19" selection-start-column="50" selection-end-line="19" selection-end-column="50" />
             <folding />
           </first_editor>
           <second_editor />
