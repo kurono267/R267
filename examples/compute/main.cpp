@@ -54,7 +54,7 @@ class ComputeApp : public BaseApp {
 			glm::ivec2 wndSize = mainApp->wndSize();
 
             _scene = std::make_shared<Scene>();
-            _scene->load("models/temple/temple");
+            _scene->load("models/lambo/lambo");
 
             //spModel monkey = _scene->models()[0];
             //spMesh  mesh = monkey->mesh();
@@ -305,7 +305,7 @@ int main(){
 	spMainApp main = MainApp::instance();
 	spBaseApp app = std::make_shared<ComputeApp>(main);
 
-	main->create("Quad",1280,720);
+	main->create("Compute",1280,720);
 	main->setBaseApp(app);
 
 	main->run();

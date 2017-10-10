@@ -13,9 +13,11 @@ struct Node {
 // TODO Fixed Vertexes stride
 
 struct VertexPack {
-    vec4 data0; // Pos (xyz), normal.x
+    /*vec4 data0; // Pos (xyz), normal.x
     vec4 data1; // Normal yz , uv
-    vec4 data2;
+    vec4 data2; // Tangent xyz BiTangent X
+    vec2 data3;*/
+    float data[14];
 };
 
 struct Vertex {
@@ -164,6 +166,16 @@ void add_stack(int id){
     }
 }
 
+Vertex convert(VertexPack pack){
+	Vertex v;
+	v.pos = vec3(pack.data[0],pack.data[1],pack.data[2]);
+	v.normal = vec3(pack.data[3],pack.data[4],pack.data[5]);
+	v.uv = vec2(pack.data[6],pack.data[7]);
+	v.tangent = vec3(pack.data[8],pack.data[9],pack.data[10]);
+	v.binormal = vec3(pack.data[11],pack.data[12],pack.data[13]);
+	return v;
+}
+
 RayHit trace(Ray ray){
 	// Check root, if not return
 	int rootID = camera.data.w;
@@ -194,11 +206,12 @@ RayHit trace(Ray ray){
                 for(int i = 0;i<4;++i){
                     int triId = triIds[i];
                     if(triId >= 0){
-                        VertexPack vp0 = vertexes[indexes[triId+0]];VertexPack vp1 = vertexes[indexes[triId+1]];VertexPack vp2 = vertexes[indexes[triId+2]];
-                        test = intersect(ray,vp0.data0.xyz,vp1.data0.xyz,vp2.data0.xyz);
+                        Vertex vp0 = convert(vertexes[indexes[triId+0]]);Vertex vp1 = convert(vertexes[indexes[triId+1]]);Vertex vp2 = convert(vertexes[indexes[triId+2]]);
+                        test = intersect(ray,vp0.pos,vp1.pos,vp2.pos);
                         if(test.tmin < hit.tmin){
                             hit = test;
                             hit.id1 = triId;
+                            //break;
                         }
                     }
                 }
@@ -233,9 +246,9 @@ RayHit trace(Ray ray){
 
 Point postIntersect(RayHit hit,Ray ray){
     int triId = hit.id1;
-    VertexPack vp0 = vertexes[indexes[triId+0]];VertexPack vp1 = vertexes[indexes[triId+1]];VertexPack vp2 = vertexes[indexes[triId+2]];
-    vec3 n0 = vec3(vp0.data0.w,vp0.data1.x,vp0.data1.y); vec3 n1 = vec3(vp1.data0.w,vp1.data1.x,vp1.data1.y); vec3 n2 = vec3(vp2.data0.w,vp2.data1.x,vp2.data1.y);
-    vec2 u0 = vp0.data1.zw; vec2 u1 = vp1.data1.zw; vec2 u2 = vp2.data1.zw;
+    Vertex vp0 = convert(vertexes[indexes[triId+0]]);Vertex vp1 = convert(vertexes[indexes[triId+1]]);Vertex vp2 = convert(vertexes[indexes[triId+2]]);
+    vec3 n0 = vp0.normal; vec3 n1 = vp1.normal; vec3 n2 = vp2.normal;
+    vec2 u0 = vp0.uv; vec2 u1 = vp1.uv; vec2 u2 = vp2.uv;
     Point p;
     p.pos    = ray.org+ray.dir*hit.tmin;
     p.normal = normalize(hit.bc.x*n0+hit.bc.y*n1+hit.bc.z*n2);
@@ -268,7 +281,7 @@ void main() {
         Point p = postIntersect(hit,ray);
         vec3 lightColor = vec3(0.0f);
         for(int i = 0;i<6;++i){
-    	    lightColor = lightColor+light(lightPos[i],p.normal,ray.org,p.pos,0.66f,0.33f,vec3(1.0, 0.86, 0.56));
+    	    lightColor = lightColor+light(lightPos[i],p.normal,ray.org,p.pos,0.1f,0.33f,vec3(1.0, 0.86, 0.56));
     	}
     	color = vec4(lightColor,1.0f);
     }
