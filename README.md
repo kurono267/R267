@@ -21,7 +21,7 @@ Now have some examples of using and viewer with using simple model format and co
 
 ### Known Issues ### 
 * ~~Doesn't correct free vulkan memory~~
-* Has problem in Compute demo (Old vertex format in shader)
+* ~~Has problem in Compute demo (Old vertex format in shader)~~
 
 ### Dependence: ### 
 * GLFW3 
