@@ -70,13 +70,11 @@ vec3 light(vec3 lpos,vec3 normal,vec3 vpos,vec3 pos,float metallic,float r,vec3 
 	return (spec+diff*clamp((1.0f-F)*(1.0f-metallic),0.0,1.0));
 }
 
-vec3 ibl(vec3 N,vec3 vpos, vec3 pos, vec3 albedo, float metallic, float roughness, float lightScale){
-	vec3 V = normalize(vpos-pos);
+vec3 ibl(vec3 N,vec3 R, vec3 pos, vec3 albedo, float metallic, float roughness, float lightScale){
+	vec3 V = normalize(-pos);
 
 	vec3 F0 = vec3(0.04f);
     F0      = mix(F0, albedo, metallic);
-
-    vec3 R = reflect(V, N);
 
 	vec3 F = fresnelSchlickRoughness(max(dot(N, V), 0.0), F0, roughness);
 

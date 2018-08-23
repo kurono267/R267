@@ -61,3 +61,6 @@ add_shader("cubemap/filter.frag" cubemap)
 add_shader("cubemap/filter.vert" cubemap)
 add_shader("cubemap/brdf.frag" cubemap)
 add_shader("cubemap/brdf.vert" cubemap)
+
+add_executable(cubemap_conv cubemap/main.cpp)
+target_link_libraries(cubemap_conv r267)

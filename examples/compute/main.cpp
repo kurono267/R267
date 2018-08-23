@@ -147,7 +147,7 @@ class ComputeApp : public BaseApp {
 				_commandBuffers[i].pipelineBarrier(
 						vk::PipelineStageFlagBits::eComputeShader,
 						vk::PipelineStageFlagBits::eFragmentShader,
-						vk::DependencyFlagBits::eViewLocalKHX,
+						vk::DependencyFlagBits::eViewLocal,
 						0, nullptr,
 						0, nullptr,
 						1, &surfaceBarrier

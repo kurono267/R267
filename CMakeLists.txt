@@ -2,13 +2,13 @@ cmake_minimum_required (VERSION 3.7.2)
 # r267 render library and examples
 project (R267)
 
-add_definitions(-std=c++17)
+add_definitions(-std=c++14)
 
 find_package(PkgConfig REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(Vulkan REQUIRED)
 find_package(glm REQUIRED)
-include_directories(${GLFW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS} ${VULKAN_INCLUDE_DIRS})
+include_directories(${GLFW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
 link_directories(${PROJECT_SOURCE_DIR}/bin)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)

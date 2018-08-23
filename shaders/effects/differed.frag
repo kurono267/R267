@@ -80,7 +80,7 @@ vec3 lightCompute(){
 	vec3 lightColor = vec3(0.0f);
 	const float lightPower = 500.0f;
 	//vec3 localReflection = reflection();
-	for(int i = 0;i<4;++i){
+	/*for(int i = 0;i<4;++i){
 		vec4 lightPosView = ubo.viewMat*vec4(lightPoses[i],1.0f);
 		const vec3 lightPos3 = lightPosView.xyz/lightPosView.w;
 
@@ -88,12 +88,14 @@ vec3 lightCompute(){
         float attenuation = lightPower / (distance * distance);
 
 		lightColor += light(lightPos3,normalData.xyz,viewPosView.xyz/viewPosView.w,pos,metallic,r,colorData.rgb,specColor)*attenuation;
-	}
-	lightColor += ibl(normalData.xyz,viewPosView.xyz,pos,colorData.rgb,metallic,r,1.0f);
-	lightColor /= lightColor+vec3(1.0f);
-	lightColor = pow(lightColor,vec3(1.0f/2.2f));
+	}*/
+	vec3 R = vec3(ubo.invview * vec4(reflect(normalize(pos), normalData.xyz), 0.0));
+	lightColor += ibl(normalData.xyz,R,pos.xyz,colorData.rgb,metallic,r,1.0f);
+	lightColor *= ssao;
+	//lightColor /= lightColor+vec3(1.0f);
+	lightColor = pow(lightColor,vec3(1.0f/2.0f));
 
-	return ssao*lightColor;
+	return lightColor;
 }
 
 void main() {

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <set>
 #include "utils.hpp"
+#include <functional>
 
 namespace r267 {
 

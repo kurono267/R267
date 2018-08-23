@@ -305,7 +305,7 @@ vk::Format getFormat(TypeDesc format,int channels){
 		case 4:
 		switch(format.basetype){
 			case TypeDesc::UINT8:
-			return vk::Format::eR8G8B8A8Unorm;
+			return vk::Format::eR8G8B8A8Unorm;//vk::Format::eR8G8B8A8Srgb;
 			case TypeDesc::FLOAT:
 			return vk::Format::eR32G32B32A32Sfloat;
 			case TypeDesc::HALF:

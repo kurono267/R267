@@ -3,8 +3,7 @@
 using namespace r267;
 
 const std::vector<const char*> deviceExtensions = {
-	VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-	VK_KHX_MULTIVIEW_EXTENSION_NAME
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
 void Device::pickPhysicalDevice(){
